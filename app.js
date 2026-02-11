@@ -1,109 +1,112 @@
 /* ==========================================================
-   NKU AI Skills Dashboard
-   - Cleaner structure, premium interactions, KPI strip support
-   - Better chart styling + accessibility
-   - Resilient loading + graceful fallback UI
+   NKU AI Skills Dashboard (Executive Edition)
+   - Clear modules + “wow” polish
+   - Resilient loading + user-friendly failures
+   - Chart lifecycle management (no duplicates)
+   - KPI strip support + accessible explorer
    ========================================================== */
 
 let dashboardData;
-let charts = { trend: null, family: null, donut: null };
+const charts = { trend: null, family: null, donut: null };
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-async function loadData() {
-  const response = await fetch("./data.json", { cache: "no-store" });
-  if (!response.ok) throw new Error(`Failed to load data.json (${response.status})`);
-  return response.json();
+/* ---------------------------
+   Data loading
+---------------------------- */
+async function loadDashboardData() {
+  const res = await fetch("./data.json", { cache: "no-store" });
+  if (!res.ok) throw new Error(`Failed to load data.json (${res.status})`);
+  return res.json();
 }
 
 /* ---------------------------
-   Executive header + takeaway
+   Hero + dates
 ---------------------------- */
-function setHero(data) {
-  $("#hero-title").textContent = "NKU — AI Skills & Job-Market Readiness";
+function renderHero(data) {
+  const titleEl = $("#hero-title");
+  const t1 = $("#hero-takeaway-1");
+  const t2 = $("#hero-takeaway-2");
 
-  $("#hero-takeaway-1").textContent = data.takeaway?.headline ?? "";
-  $("#hero-takeaway-2").textContent = data.takeaway?.subhead ?? "";
+  if (titleEl) titleEl.textContent = "NKU — AI Skills & Job-Market Readiness";
+  if (t1) t1.textContent = data.takeaway?.headline ?? "";
+  if (t2) t2.textContent = data.takeaway?.subhead ?? "";
 
   const updated = data.lastUpdated ?? "";
-  const updatedEl = $("#last-updated");
-  if (updatedEl) {
-    updatedEl.textContent = updated;
-    updatedEl.dateTime = updated;
-  }
-
-  // Optional: if you added the sticky topbar time element in the HTML rewrite
+  const updatedMain = $("#last-updated");
   const updatedTop = $("#last-updated-top");
+
+  if (updatedMain) {
+    updatedMain.textContent = updated;
+    updatedMain.dateTime = updated;
+  }
   if (updatedTop) {
     updatedTop.textContent = updated;
     updatedTop.dateTime = updated;
   }
 
-  // Optional badge in chart header (if present)
   const trendWindow = $("#trend-window");
-  if (trendWindow) trendWindow.textContent = "Dec 2025 snapshot";
+  if (trendWindow) trendWindow.textContent = "Auto-updating window";
 }
 
 /* ---------------------------
-   KPI strip (optional)
-   Expects these IDs in your HTML:
-   kpiTopFamily, kpiTopFamilySub
-   kpiFastestGrowing, kpiFastestGrowingSub
-   kpiCoverageGap, kpiCoverageGapSub
-   kpiNextMove, kpiNextMoveSub
+   KPI strip
+   (safe to run even if KPI elements are not present)
 ---------------------------- */
-function setExecutiveKPIs(data) {
-  // Safe lookups for when KPIs aren’t in the DOM yet
-  const setText = (id, text) => {
+function renderKPIs(data) {
+  const setText = (id, value) => {
     const el = document.getElementById(id);
-    if (el) el.textContent = text;
+    if (el) el.textContent = value;
   };
 
-  // Pull from known chart structures as “best available”
   const byFamily = data.charts?.aiMentionsByFamily;
   const trend = data.charts?.aiMentionsTrend;
 
-  // Top family = max in aiMentionsByFamily (if present)
+  // KPI 1 — Top family (snapshot)
   let topFamily = "—";
   let topFamilyVal = null;
+
   if (byFamily?.labels?.length && byFamily?.values?.length) {
-    const pairs = byFamily.labels.map((label, i) => ({ label, value: Number(byFamily.values[i]) }));
+    const pairs = byFamily.labels.map((label, i) => ({
+      label,
+      value: Number(byFamily.values[i])
+    }));
     const best = pairs.reduce((a, b) => (b.value > a.value ? b : a), pairs[0]);
     topFamily = best?.label ?? "—";
     topFamilyVal = Number.isFinite(best?.value) ? best.value : null;
   }
 
-  // Fastest growing = simple “last - first” on trend (placeholder logic)
-  let fastest = "—";
-  let fastestDelta = null;
-  if (trend?.labels?.length && trend?.values?.length && trend.values.length >= 2) {
+  // KPI 2 — Growth (simple first/last delta)
+  let trendDelta = null;
+  if (trend?.values?.length >= 2) {
     const first = Number(trend.values[0]);
     const last = Number(trend.values[trend.values.length - 1]);
-    if (Number.isFinite(first) && Number.isFinite(last)) {
-      fastest = "AI Mentions";
-      fastestDelta = last - first;
-    }
+    if (Number.isFinite(first) && Number.isFinite(last)) trendDelta = last - first;
   }
 
-  // Coverage gap + next move: set as narrative defaults (you can later compute)
   setText("kpiTopFamily", topFamily);
   setText(
     "kpiTopFamilySub",
-    topFamilyVal != null ? `Highest share: ${topFamilyVal.toFixed(1)}% of postings (snapshot)` : "Highest share of postings (snapshot)"
+    topFamilyVal != null
+      ? `Highest AI signal: ${topFamilyVal.toFixed(1)}% (snapshot)`
+      : "Highest AI signal (snapshot)"
   );
 
-  setText("kpiFastestGrowing", fastest);
+  setText("kpiFastestGrowing", "AI Mentions");
   setText(
     "kpiFastestGrowingSub",
-    fastestDelta != null ? `Change: +${fastestDelta.toFixed(1)} pts across the period shown` : "Largest increase in mentions over time"
+    trendDelta != null
+      ? `Net change across period: +${trendDelta.toFixed(1)} pts`
+      : "Directionally rising across the period shown"
   );
 
+  // These are intentionally leadership-forward defaults (you can compute later)
   setText("kpiCoverageGap", "Responsible AI");
-  setText("kpiCoverageGapSub", "High employer signal + requires cross-college coverage");
+  setText("kpiCoverageGapSub", "High employer relevance + cross-college readiness");
 
-  setText("kpiNextMove", "Baseline AI literacy in core + applied pathways");
-  setText("kpiNextMoveSub", "INF 125: AI Literacy + role-based depth (power-user / builder / governance)");
+  setText("kpiNextMove", "Scale baseline AI literacy + role-based depth");
+  setText("kpiNextMoveSub", "INF 125 + pathway modules (power-user / builder / governance)");
 }
 
 /* ---------------------------
@@ -120,22 +123,21 @@ function renderCoreSkills(data) {
     card.className = "skill-card";
     card.setAttribute("role", "listitem");
 
-    const title = document.createElement("h3");
-    title.textContent = skill.title ?? "";
+    const h3 = document.createElement("h3");
+    h3.textContent = skill.title ?? "";
 
-    const description = document.createElement("p");
-    description.textContent = skill.desc ?? "";
+    const p = document.createElement("p");
+    p.textContent = skill.desc ?? "";
 
-    card.append(title, description);
+    card.append(h3, p);
     grid.append(card);
   });
 }
 
 /* ---------------------------
-   Chart defaults (executive polish)
+   Chart setup
 ---------------------------- */
-function chartDefaults() {
-  // Subtle, executive look. Avoids “default demo chart” vibes.
+function applyChartDefaults() {
   Chart.defaults.font.family =
     "Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif";
   Chart.defaults.font.size = 12;
@@ -146,15 +148,12 @@ function chartDefaults() {
   Chart.defaults.plugins.tooltip.callbacks = {
     label: (ctx) => {
       const v = ctx.parsed?.y ?? ctx.parsed;
-      if (typeof v === "number") return `${ctx.dataset.label}: ${v.toFixed(1)}%`;
+      if (typeof v === "number") return `${ctx.dataset.label}: ${v.toFixed(2)}%`;
       return `${ctx.dataset.label}: ${v}`;
     }
   };
 }
 
-/* ---------------------------
-   Chart helpers
----------------------------- */
 function destroyChart(key) {
   if (charts[key]) {
     charts[key].destroy();
@@ -162,12 +161,13 @@ function destroyChart(key) {
   }
 }
 
-function createLineChart(data) {
+/* ---------------------------
+   Charts
+---------------------------- */
+function renderTrendChart(data) {
   const trend = data.charts?.aiMentionsTrend;
-  if (!trend) return;
-
   const canvas = $("#aiMentionsTrendChart");
-  if (!canvas) return;
+  if (!trend || !canvas) return;
 
   destroyChart("trend");
 
@@ -195,10 +195,7 @@ function createLineChart(data) {
       maintainAspectRatio: false,
       interaction: { mode: "index", intersect: false },
       scales: {
-        x: {
-          grid: { display: false },
-          ticks: { maxRotation: 0 }
-        },
+        x: { grid: { display: false }, ticks: { maxRotation: 0 } },
         y: {
           beginAtZero: true,
           grid: { drawBorder: false },
@@ -209,12 +206,10 @@ function createLineChart(data) {
   });
 }
 
-function createBarChart(data) {
+function renderFamilyChart(data) {
   const byFamily = data.charts?.aiMentionsByFamily;
-  if (!byFamily) return;
-
   const canvas = $("#aiMentionsByFamilyChart");
-  if (!canvas) return;
+  if (!byFamily || !canvas) return;
 
   destroyChart("family");
 
@@ -240,10 +235,7 @@ function createBarChart(data) {
       responsive: true,
       maintainAspectRatio: false,
       scales: {
-        x: {
-          grid: { display: false },
-          title: { display: true, text: "Job family" }
-        },
+        x: { grid: { display: false }, title: { display: true, text: "Job family" } },
         y: {
           beginAtZero: true,
           grid: { drawBorder: false },
@@ -254,12 +246,10 @@ function createBarChart(data) {
   });
 }
 
-function createDonutChart(data) {
+function renderOutsideITChart(data) {
   const share = data.charts?.aiOutsideITShare;
-  if (!share) return;
-
   const canvas = $("#aiOutsideITShareChart");
-  if (!canvas) return;
+  if (!share || !canvas) return;
 
   destroyChart("donut");
 
@@ -284,10 +274,7 @@ function createDonutChart(data) {
         },
         tooltip: {
           callbacks: {
-            label: (ctx) => {
-              const v = ctx.parsed;
-              return `${ctx.label}: ${v}%`;
-            }
+            label: (ctx) => `${ctx.label}: ${ctx.parsed}%`
           }
         }
       }
@@ -296,85 +283,81 @@ function createDonutChart(data) {
 }
 
 /* ---------------------------
-   Job family explorer (exec feel)
-   - Stronger focus management
-   - Keyboard nav (left/right)
+   Job Family Explorer
 ---------------------------- */
 function renderJobFamilyExplorer(data) {
-  const buttonGroup = $("#job-family-buttons");
+  const group = $("#job-family-buttons");
   const title = $("#selected-family-title");
   const list = $("#selected-family-skills");
-  if (!buttonGroup || !title || !list) return;
+  if (!group || !title || !list) return;
 
-  buttonGroup.innerHTML = "";
+  group.innerHTML = "";
   title.textContent = "";
   list.innerHTML = "";
 
   const families = Object.keys(data.jobFamilies ?? {});
-  if (families.length === 0) return;
+  if (!families.length) return;
 
-  function setSelectedButton(familyName) {
-    $$("button", buttonGroup).forEach((btn) => {
-      const isSelected = btn.dataset.family === familyName;
-      btn.setAttribute("aria-selected", String(isSelected));
-      btn.tabIndex = isSelected ? 0 : -1;
+  const setSelectedButton = (familyName) => {
+    $$("button", group).forEach((btn) => {
+      const selected = btn.dataset.family === familyName;
+      btn.setAttribute("aria-selected", String(selected));
+      btn.tabIndex = selected ? 0 : -1;
     });
-  }
+  };
 
-  function renderSkillList(skillsArray) {
+  const renderSkills = (skills) => {
     list.innerHTML = "";
-    skillsArray.forEach((skill) => {
-      const item = document.createElement("li");
-      item.textContent = skill;
-      list.append(item);
+    (skills ?? []).forEach((s) => {
+      const li = document.createElement("li");
+      li.textContent = s;
+      list.append(li);
     });
-  }
+  };
 
-  function showFamily(familyName) {
+  const show = (familyName) => {
     title.textContent = familyName;
-
-    const skillsArray = data.jobFamilies?.[familyName] ?? [];
-    renderSkillList(skillsArray);
+    renderSkills(data.jobFamilies?.[familyName] ?? []);
     setSelectedButton(familyName);
-  }
+  };
 
-  function onKeyNav(e) {
-    const buttons = $$("button", buttonGroup);
-    const currentIndex = buttons.findIndex((b) => b.getAttribute("aria-selected") === "true");
-    if (currentIndex < 0) return;
+  const onKeyNav = (e) => {
+    const buttons = $$("button", group);
+    const current = buttons.findIndex((b) => b.getAttribute("aria-selected") === "true");
+    if (current < 0) return;
 
-    let nextIndex = currentIndex;
-    if (e.key === "ArrowRight") nextIndex = Math.min(buttons.length - 1, currentIndex + 1);
-    if (e.key === "ArrowLeft") nextIndex = Math.max(0, currentIndex - 1);
-    if (nextIndex !== currentIndex) {
+    let next = current;
+    if (e.key === "ArrowRight") next = Math.min(buttons.length - 1, current + 1);
+    if (e.key === "ArrowLeft") next = Math.max(0, current - 1);
+
+    if (next !== current) {
       e.preventDefault();
-      buttons[nextIndex].focus();
-      showFamily(buttons[nextIndex].dataset.family);
+      buttons[next].focus();
+      show(buttons[next].dataset.family);
     }
-  }
+  };
 
-  families.forEach((familyName, index) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "family-btn";
-    button.dataset.family = familyName;
-    button.setAttribute("role", "tab");
-    button.setAttribute("aria-controls", "selected-family-skills");
-    button.setAttribute("aria-selected", index === 0 ? "true" : "false");
-    button.tabIndex = index === 0 ? 0 : -1;
-    button.textContent = familyName;
+  families.forEach((familyName, idx) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "family-btn";
+    btn.dataset.family = familyName;
+    btn.setAttribute("role", "tab");
+    btn.setAttribute("aria-controls", "selected-family-skills");
+    btn.setAttribute("aria-selected", idx === 0 ? "true" : "false");
+    btn.tabIndex = idx === 0 ? 0 : -1;
+    btn.textContent = familyName;
 
-    button.addEventListener("click", () => showFamily(familyName));
-    button.addEventListener("keydown", onKeyNav);
-
-    buttonGroup.append(button);
+    btn.addEventListener("click", () => show(familyName));
+    btn.addEventListener("keydown", onKeyNav);
+    group.append(btn);
   });
 
-  showFamily(families[0]);
+  show(families[0]);
 }
 
 /* ---------------------------
-   Sources (executive format)
+   Sources
 ---------------------------- */
 function renderSources(data) {
   const list = $("#sources-list");
@@ -382,12 +365,12 @@ function renderSources(data) {
 
   list.innerHTML = "";
 
-  (data.sources ?? []).forEach((source) => {
+  (data.sources ?? []).forEach((src) => {
     const li = document.createElement("li");
-
     const a = document.createElement("a");
-    a.href = source.url ?? "#";
-    a.textContent = source.name ?? source.url ?? "Source";
+
+    a.href = src.url ?? "#";
+    a.textContent = src.name ?? src.url ?? "Source";
     a.target = "_blank";
     a.rel = "noopener noreferrer";
 
@@ -397,45 +380,44 @@ function renderSources(data) {
 }
 
 /* ---------------------------
-   Error experience (feels “product”)
+   Friendly fatal error panel
 ---------------------------- */
-function showFatalError(error) {
+function renderFatalError(error) {
   console.error(error);
 
-  const heroContainer = document.querySelector(".hero .container") || document.body;
+  const host = document.querySelector(".hero .container") || document.body;
 
   const panel = document.createElement("div");
   panel.className = "explorer-panel";
   panel.style.borderLeft = "6px solid #b91c1c";
 
-  const title = document.createElement("h3");
-  title.textContent = "Dashboard data could not be loaded";
+  panel.innerHTML = `
+    <h3 style="margin-top:0;">Dashboard data could not be loaded</h3>
+    <p style="margin:0.4rem 0 0; color:#7f1d1d;">
+      We couldn’t load <code>data.json</code>. ${error.message}
+    </p>
+    <p class="meta" style="margin:0.55rem 0 0;">
+      Tip: If this is GitHub Pages, confirm <code>data.json</code> is in the same folder as <code>index.html</code>
+      and the path is <code>./data.json</code>.
+    </p>
+  `;
 
-  const msg = document.createElement("p");
-  msg.style.marginTop = "0.4rem";
-  msg.style.color = "#7f1d1d";
-  msg.textContent = `We couldn’t load data.json. ${error.message}`;
-
-  const tip = document.createElement("p");
-  tip.className = "meta";
-  tip.style.marginTop = "0.5rem";
-  tip.textContent = "Tip: If this is GitHub Pages, confirm data.json is in the same folder as index.html and the path is ./data.json.";
-
-  panel.append(title, msg, tip);
-  heroContainer.append(panel);
+  host.append(panel);
 }
 
 /* ---------------------------
-   Init
+   Orchestration
 ---------------------------- */
-function init(data) {
-  chartDefaults();
-  setHero(data);
-  setExecutiveKPIs(data);
+function renderDashboard(data) {
+  applyChartDefaults();
+  renderHero(data);
+  renderKPIs(data);
   renderCoreSkills(data);
-  createLineChart(data);
-  createBarChart(data);
-  createDonutChart(data);
+
+  renderTrendChart(data);
+  renderFamilyChart(data);
+  renderOutsideITChart(data);
+
   renderJobFamilyExplorer(data);
   renderSources(data);
 }
@@ -443,9 +425,9 @@ function init(data) {
 /* ---------------------------
    Boot
 ---------------------------- */
-loadData()
+loadDashboardData()
   .then((data) => {
     dashboardData = data;
-    init(dashboardData);
+    renderDashboard(dashboardData);
   })
-  .catch(showFatalError);
+  .catch(renderFatalError);
