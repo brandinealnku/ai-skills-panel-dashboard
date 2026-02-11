@@ -1,75 +1,111 @@
 {
   "lastUpdated": "2026-02-11",
   "takeaway": {
-    "headline": "Teach baseline AI literacy for all students, then add role-based depth.",
-    "subhead": "Job postings show AI skills spreading beyond tech roles, and the most valuable skills differ by job family (power-user vs builder vs high-stakes governance)."
+    "headline": "NKU is well-positioned to lead: make AI literacy a universal baseline, then build role-based depth across every college.",
+    "subhead": "Multiple high-credibility labor market and government sources show AI capability is becoming a cross-discipline expectation—not just a tech specialty. The highest-impact approach is a shared foundation (AI literacy + data literacy + responsible use) paired with job-family pathways (power-user, builder, and high-stakes governance).",
+    "executiveNotes": [
+      "This dashboard combines near–real-time job-posting signals (Indeed Hiring Lab) with authoritative government frameworks for occupations and skills (U.S. BLS and U.S. Department of Labor/O*NET).",
+      "Job postings provide a leading indicator of employer demand; BLS and O*NET provide durable context for workforce planning, occupation definitions, and skill language that translates cleanly to curriculum."
+    ]
   },
   "coreSkills": [
-    { "title": "AI literacy & judgment", "desc": "Limits, failure modes, verification habits, and when not to use AI." },
-    { "title": "Prompting + iteration", "desc": "Clear constraints, examples, critique loops, and evaluation criteria." },
-    { "title": "Data literacy", "desc": "Data quality, privacy basics, measurement, and experimentation mindset." },
-    { "title": "Responsible AI", "desc": "Bias, privacy/security, transparency, and human oversight." },
-    { "title": "Human skills amplified by AI", "desc": "Problem framing, communication, domain context, ethical reasoning." }
+    {
+      "title": "AI literacy & professional judgment",
+      "desc": "What AI can/can’t do, where it fails, and how to verify outputs—so graduates use AI confidently, responsibly, and with appropriate human oversight."
+    },
+    {
+      "title": "Prompting + iteration (workplace productivity)",
+      "desc": "Turning ambiguous work into clear instructions: constraints, examples, critique loops, and simple evaluation criteria to produce higher-quality results faster."
+    },
+    {
+      "title": "Data literacy (the engine behind AI value)",
+      "desc": "Data quality, privacy basics, measurement, experimentation, and interpreting outputs—skills that make AI adoption safer and measurably useful."
+    },
+    {
+      "title": "Responsible AI & governance readiness",
+      "desc": "Bias and fairness awareness, privacy/security implications, transparency expectations, documentation habits, and responsible escalation paths."
+    },
+    {
+      "title": "Human skills amplified by AI",
+      "desc": "Problem framing, communication, domain context, ethical reasoning, and stakeholder alignment—what differentiates high-impact graduates in AI-enabled workplaces."
+    }
   ],
   "charts": {
     "aiMentionsTrend": {
-      "title": "AI mentions in job postings are rising (Indeed Hiring Lab — Indeed AI Tracker)",
+      "title": "AI mentions in job postings continue to rise (Indeed Hiring Lab — Indeed AI Tracker)",
       "labels": ["2020", "2021", "2022", "2023", "2024", "Dec 2025"],
       "values": [1.0, 1.6, 1.2, 2.0, 3.0, 4.2],
-      "note": "Placeholders until you replace with exact points from the Indeed AI Tracker chart. Anchor point: 4.2% in Dec 2025 (Indeed Hiring Lab, Jan 22, 2026)."
+      "note": "These values are placeholders for the visual trend line until exact points are transcribed from the Indeed AI Tracker chart. The key anchor point reflected here is 4.2% of U.S. job postings mentioning AI in Dec 2025, as reported by Indeed Hiring Lab (Jan 22, 2026).",
+      "whyItMatters": "This is a leading indicator: employer language is changing now, which typically precedes curriculum and workforce shifts. It supports scaling baseline AI literacy beyond tech majors."
     },
     "aiMentionsByFamily": {
-      "title": "AI mentions differ by job family (Dec 2025, Indeed Hiring Lab)",
+      "title": "AI mentions differ by job family (Dec 2025 snapshot, Indeed Hiring Lab)",
       "labels": ["Data & Analytics", "Marketing", "Human Resources"],
       "values": [45.0, 14.9, 8.8],
-      "note": "From Indeed Hiring Lab’s Jan 22, 2026 U.S. Labor Market Update (shares of postings mentioning AI by occupational group)."
+      "note": "From Indeed Hiring Lab’s Jan 22, 2026 U.S. Labor Market Update. These percentages represent the share of postings within each listed job family that mention AI (not the share of all postings).",
+      "whyItMatters": "This supports an NKU strategy of ‘foundation + pathways’: everyone gets baseline readiness, while programs tailor depth based on how AI shows up in that discipline’s work."
     },
     "aiOutsideITShare": {
-      "title": "AI demand extends beyond IT/CS (job-posting analytics benchmark)",
+      "title": "AI demand extends beyond IT/CS (benchmark from job-posting analytics)",
       "labels": ["Outside IT/CS", "IT/CS"],
       "values": [51, 49],
-      "note": "This specific split is a commonly cited benchmark from Lightcast (private labor-market analytics). Keep as a placeholder unless you have access to the underlying Lightcast report/data. Government sources (BLS/O*NET) provide authoritative labor/occupation context but do not publish this exact IT-vs-non-IT posting split."
+      "note": "This split is widely cited from private job-posting analytics (Lightcast). Treat as a benchmark placeholder unless NKU has access to the underlying Lightcast report/data. Government sources (BLS/O*NET) provide authoritative occupation and skill taxonomies but do not publish this exact IT vs non-IT posting split.",
+      "whyItMatters": "Even as a benchmark, it reinforces a key executive message: AI-readiness is an institution-wide priority, not a single-department initiative."
     }
   },
   "jobFamilies": {
     "Non-technical": [
-      "AI-assisted workflow design (SOPs + QA checklists)",
-      "Tool evaluation (capabilities, cost, risk, governance)",
-      "Data-informed decision making and impact measurement",
-      "Change management and stakeholder communication"
+      "AI-assisted workflow design (SOPs + QA checklists) to standardize quality and reduce rework",
+      "Tool evaluation (capabilities, cost, risk, governance) to make informed adoption decisions",
+      "Data-informed decision making and impact measurement to track outcomes, not hype",
+      "Change management and stakeholder communication to implement AI responsibly and effectively"
     ],
     "Technical": [
-      "LLM integration patterns (RAG, tool use, evaluation)",
-      "Testing and evaluation (quality, bias, robustness)",
-      "Monitoring and lifecycle (drift, feedback, incident response)",
-      "Security and privacy engineering fundamentals"
+      "LLM integration patterns (RAG, tool use, evaluation) to build reliable AI-enabled systems",
+      "Testing and evaluation (quality, bias, robustness) to ensure performance and reduce risk",
+      "Monitoring and lifecycle (drift, feedback, incident response) to maintain trust over time",
+      "Security and privacy engineering fundamentals to protect sensitive data and comply with policy"
     ],
     "High-stakes": [
-      "Risk assessment + controls (auditability, oversight)",
-      "Documentation (decision logs, transparency)",
-      "Fairness/bias evaluation and mitigation",
-      "Escalation paths and human-in-the-loop review"
+      "Risk assessment + controls (auditability, oversight) aligned to compliance and policy needs",
+      "Documentation (decision logs, transparency) to support review, explainability, and accountability",
+      "Fairness/bias evaluation and mitigation to reduce harm and support equitable outcomes",
+      "Escalation paths and human-in-the-loop review to manage exceptions and high-impact decisions"
+    ]
+  },
+  "methodology": {
+    "whatThisDashboardIs": "A decision-support snapshot for NKU leaders that translates credible labor-market signals into clear curriculum and program implications.",
+    "howToReadTheSignals": [
+      "Indeed Hiring Lab job-posting analysis provides near-real-time employer language and trend direction (a leading indicator).",
+      "BLS adds authoritative workforce planning context and projection methodology used nationally for occupations and employment outlook.",
+      "O*NET (U.S. Department of Labor) provides standardized occupation and skill language that can be mapped to course outcomes and program competencies.",
+      "Private analytics (Lightcast) can add benchmarking depth when NKU has access to full reports; when not available, treat as illustrative context and label as such."
+    ],
+    "recommendedUse": [
+      "Use these signals to prioritize cross-college baseline outcomes for AI literacy and data literacy.",
+      "Use job-family differences to justify targeted electives, certificates, and applied project pathways.",
+      "Use O*NET language to align curriculum outcomes to nationally recognized skill and occupation terminology."
     ]
   },
   "sources": [
     {
-      "name": "Indeed Hiring Lab — January 2026 U.S. Labor Market Update (Indeed AI Tracker 4.2% in Dec 2025; ~45% Data & Analytics; 14.9% Marketing; 8.8% HR)",
+      "name": "Indeed Hiring Lab (High-credibility job-posting analysis) — January 22, 2026 U.S. Labor Market Update: AI tracker trend and job-family breakout (e.g., 4.2% in Dec 2025; Data & Analytics, Marketing, HR examples)",
       "url": "https://www.hiringlab.org/2026/01/22/january-labor-market-update-jobs-mentioning-ai-are-growing-amid-broader-hiring-weakness/"
     },
     {
-      "name": "U.S. Bureau of Labor Statistics (BLS) — Incorporating AI impacts in BLS employment projections (Monthly Labor Review, 2025)",
+      "name": "U.S. Bureau of Labor Statistics (BLS) — Monthly Labor Review (peer-reviewed BLS publication): Incorporating AI impacts in BLS employment projections (2025). Authoritative workforce planning context and methodology.",
       "url": "https://www.bls.gov/opub/mlr/2025/article/incorporating-ai-impacts-in-bls-employment-projections.htm"
     },
     {
-      "name": "U.S. Bureau of Labor Statistics (BLS) — AI impacts in BLS employment projections (TED: The Economics Daily, 2025)",
+      "name": "U.S. Bureau of Labor Statistics (BLS) — TED: The Economics Daily (official BLS publication): AI impacts in BLS employment projections (2025). Executive-friendly summary of BLS projection work.",
       "url": "https://www.bls.gov/opub/ted/2025/ai-impacts-in-bls-employment-projections.htm"
     },
     {
-      "name": "U.S. Department of Labor / O*NET Resource Center — O*NET updates + “Hot Technologies” and “In Demand” technology skills (December 2025 update)",
+      "name": "U.S. Department of Labor — O*NET Resource Center (official): ‘What’s New’ updates and standardized occupation/skill language, including Hot Technologies and in-demand technology skill signals (Dec 2025 update referenced).",
       "url": "https://www.onetcenter.org/whatsnew.html"
     },
     {
-      "name": "Lightcast — Beyond the Buzz / AI postings benchmark context (private labor-market analytics; use only if you can access the research report behind the numbers)",
+      "name": "Lightcast (private labor-market analytics) — Global AI skills outlook research landing page. Use for benchmarking only when NKU has access to the underlying report/data that supports specific numeric claims.",
       "url": "https://lightcast.io/resources/research/the-lightcast-global-ai-skills-outlook"
     }
   ]
