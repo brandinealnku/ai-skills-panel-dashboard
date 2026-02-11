@@ -6,33 +6,30 @@
   <meta name="description" content="Executive-ready AI skills dashboard for job-market readiness across NKU disciplines." />
   <title>NKU | AI Skills & Job-Market Readiness Dashboard</title>
 
-  <!-- Styles -->
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- Charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <!-- Optional: Sticky top bar (works with the CSS I gave you earlier) -->
+  <!-- Executive top bar -->
   <header class="topbar" role="banner">
     <div class="container topbar-inner">
       <div class="brandline">
-        <strong>NKU — AI Skills & Workforce Readiness Dashboard</strong>
+        <strong>NKU — AI Skills & Workforce Readiness</strong>
         <span>
           Updated: <time id="last-updated-top" datetime=""></time>
           <span aria-hidden="true">•</span>
-          Audience: Deans / Associate Deans / Chairs / Directors
+          Executive briefing
         </span>
       </div>
 
-      <div style="display:flex; gap:0.6rem; align-items:center;">
+      <nav class="topbar-actions" aria-label="Dashboard shortcuts">
+        <a class="ghost-button" href="#pulse">Market Pulse</a>
         <a class="ghost-button" href="#sources">Sources</a>
-        <a class="ghost-button" href="data.json" download aria-label="Download source data JSON file">Download data.json</a>
-        <a class="download-button" href="#" onclick="window.print(); return false;" aria-label="Print or save as PDF">Print / PDF</a>
-      </div>
+        <a class="download-button" href="#" onclick="window.print(); return false;">Print / PDF</a>
+      </nav>
     </div>
   </header>
 
@@ -45,16 +42,11 @@
         <p id="hero-takeaway-1" class="takeaway"></p>
         <p id="hero-takeaway-2" class="takeaway"></p>
 
-        <p class="meta">
-          Last updated:
-          <time id="last-updated" datetime=""></time>
-        </p>
-
-        <!-- KPI strip (exec-friendly) -->
+        <!-- KPI strip -->
         <div class="kpi-grid" aria-label="Executive summary metrics">
           <div class="kpi">
             <div class="kpi-top">
-              <p class="kpi-label">Top Skill Family</p>
+              <p class="kpi-label">Top Signal Area</p>
               <span class="kpi-badge">Now</span>
             </div>
             <p class="kpi-value" id="kpiTopFamily">—</p>
@@ -63,8 +55,8 @@
 
           <div class="kpi">
             <div class="kpi-top">
-              <p class="kpi-label">Fastest Growing</p>
-              <span class="kpi-badge">Trend</span>
+              <p class="kpi-label">Trend Direction</p>
+              <span class="kpi-badge">Momentum</span>
             </div>
             <p class="kpi-value" id="kpiFastestGrowing">—</p>
             <p class="kpi-sub" id="kpiFastestGrowingSub">—</p>
@@ -72,8 +64,8 @@
 
           <div class="kpi">
             <div class="kpi-top">
-              <p class="kpi-label">Largest Coverage Gap</p>
-              <span class="kpi-badge">NKU</span>
+              <p class="kpi-label">Institutional Focus</p>
+              <span class="kpi-badge">Readiness</span>
             </div>
             <p class="kpi-value" id="kpiCoverageGap">—</p>
             <p class="kpi-sub" id="kpiCoverageGapSub">—</p>
@@ -81,10 +73,10 @@
 
           <div class="kpi">
             <div class="kpi-top">
-              <p class="kpi-label">Recommended Next Move</p>
-              <span class="kpi-badge">Next</span>
+              <p class="kpi-label">Recommended Next Step</p>
+              <span class="kpi-badge">Action</span>
             </div>
-            <p class="kpi-value" id="kpiNextMove" style="font-size:1.35rem;">—</p>
+            <p class="kpi-value" id="kpiNextMove">—</p>
             <p class="kpi-sub" id="kpiNextMoveSub">—</p>
           </div>
         </div>
@@ -95,186 +87,127 @@
   <main id="main-content" class="container" role="main">
     <!-- Core skills -->
     <section class="section" aria-labelledby="core-skills-heading">
-      <h2 id="core-skills-heading">Core Skills for All NKU Students</h2>
-      <p class="meta" style="margin-top:-0.25rem;">
-        These skills show up across job families and help students contribute effectively in AI-enabled workplaces.
+      <h2 id="core-skills-heading">Baseline Skills for All NKU Students</h2>
+      <p class="meta">
+        These skills are broadly transferable and consistently valuable across disciplines and job families.
       </p>
-      <div id="core-skills-grid" class="skills-grid" role="list" aria-label="Core skills list"></div>
+      <div id="core-skills-grid" class="skills-grid" role="list"></div>
     </section>
 
     <!-- Trend chart -->
     <section class="section" aria-labelledby="chart-1-heading">
-      <h2 id="chart-1-heading">AI mentions in job postings are rising</h2>
+      <h2 id="chart-1-heading">AI mentions in job postings (trend)</h2>
       <div class="chart-wrap" role="group" aria-labelledby="chart-1-heading">
         <div class="chart-wrap-header">
           <div>
-            <p class="chart-title">Trend Over Time</p>
-            <p class="chart-subtitle"><strong>So what:</strong> AI is increasingly a baseline expectation, not a niche specialty.</p>
+            <p class="chart-title">Leading Indicator</p>
+            <p class="chart-subtitle">AI is increasingly a baseline expectation across roles.</p>
           </div>
-          <span class="kpi-badge" id="trend-window">Rolling window</span>
+          <span class="kpi-badge" id="trend-window">Auto window</span>
         </div>
-        <canvas id="aiMentionsTrendChart" aria-label="Line chart showing AI mentions in job postings over time" role="img"></canvas>
+        <canvas id="aiMentionsTrendChart" role="img" aria-label="AI mentions in job postings over time"></canvas>
       </div>
     </section>
 
     <!-- By family chart -->
     <section class="section" aria-labelledby="chart-2-heading">
-      <h2 id="chart-2-heading">AI mentions by job family</h2>
+      <h2 id="chart-2-heading">AI mentions by job family (snapshot)</h2>
       <div class="chart-wrap" role="group" aria-labelledby="chart-2-heading">
         <div class="chart-wrap-header">
           <div>
             <p class="chart-title">Where AI Shows Up Most</p>
-            <p class="chart-subtitle"><strong>So what:</strong> prioritize curriculum touchpoints for the top families while building electives for depth.</p>
+            <p class="chart-subtitle">Use this to prioritize high-impact curriculum touchpoints.</p>
           </div>
-          <span class="kpi-badge">By family</span>
+          <span class="kpi-badge">Snapshot</span>
         </div>
-        <canvas id="aiMentionsByFamilyChart" aria-label="Bar chart showing AI mentions by job family" role="img"></canvas>
+        <canvas id="aiMentionsByFamilyChart" role="img" aria-label="AI mentions by job family"></canvas>
       </div>
     </section>
 
     <!-- Outside IT share chart -->
     <section class="section" aria-labelledby="chart-3-heading">
-      <h2 id="chart-3-heading">AI demand extends beyond IT/CS</h2>
+      <h2 id="chart-3-heading">Share of AI demand outside IT/CS</h2>
       <div class="chart-wrap chart-wrap--small" role="group" aria-labelledby="chart-3-heading">
         <div class="chart-wrap-header">
           <div>
-            <p class="chart-title">Share Outside IT / CS</p>
-            <p class="chart-subtitle"><strong>So what:</strong> every college needs an AI-ready pathway (baseline + applied use cases).</p>
+            <p class="chart-title">Cross-College Relevance</p>
+            <p class="chart-subtitle">AI readiness is an institution-wide priority.</p>
           </div>
           <span class="kpi-badge">Share</span>
         </div>
-        <canvas id="aiOutsideITShareChart" aria-label="Donut chart showing share of AI demand outside IT and CS" role="img"></canvas>
+        <canvas id="aiOutsideITShareChart" role="img" aria-label="Share of AI demand outside IT/CS"></canvas>
       </div>
     </section>
 
-    <!-- Explorer -->
-    <section class="section" aria-labelledby="explorer-heading">
-      <h2 id="explorer-heading">Job Family Explorer</h2>
-      <p class="meta" style="margin-top:-0.25rem;">
-        Select a job family to see the skills most frequently requested and what students should practice in coursework.
+    <!-- Market Pulse (executive compact) -->
+    <section class="section" aria-labelledby="pulse-heading" id="pulse">
+      <h2 id="pulse-heading">Market Pulse</h2>
+      <p class="meta">
+        Three complementary lenses: government postings, broader market sample, and standardized skills taxonomy.
       </p>
 
-      <div id="job-family-buttons"
-           class="button-group"
-           role="tablist"
-           aria-label="Choose a job family"></div>
+      <div class="pulse-grid" role="list" aria-label="Market pulse panels">
+        <article class="skill-card" role="listitem">
+          <h3>Government postings</h3>
+          <p class="meta">USAJOBS Historic JOA (public)</p>
+          <ul class="tight-list">
+            <li>Trend backbone for AI-related employer language</li>
+            <li>Stable, defensible public dataset</li>
+          </ul>
+        </article>
 
-      <div class="explorer-panel" aria-live="polite" aria-atomic="true">
-        <h3 id="selected-family-title" style="margin-bottom:0.6rem;"></h3>
-        <ul id="selected-family-skills" aria-label="Skills for selected job family"></ul>
+        <article class="skill-card" role="listitem">
+          <h3>Broader market sample</h3>
+          <p class="meta">Adzuna (rolling snapshot)</p>
+
+          <div class="pulse-kpi">
+            <p class="kpi-label">AI share in recent sample</p>
+            <p class="kpi-value" id="pulseAdzunaShare">—</p>
+            <p class="kpi-sub" id="pulseAdzunaMeta">—</p>
+          </div>
+
+          <div class="pulse-lists">
+            <div>
+              <p class="kpi-label">Top categories</p>
+              <ul id="pulseAdzunaCategories" class="tight-list"></ul>
+            </div>
+            <div>
+              <p class="kpi-label">Top AI terms</p>
+              <ul id="pulseAdzunaTerms" class="tight-list"></ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="skill-card" role="listitem">
+          <h3>Skills taxonomy</h3>
+          <p class="meta">O*NET Hot Technologies (occupation-linked)</p>
+          <div id="pulseOnetBlock" class="explorer-panel">
+            <p class="meta">Loading O*NET highlights…</p>
+          </div>
+        </article>
       </div>
     </section>
-    <!-- Market Pulse -->
-<section class="section" aria-labelledby="pulse-heading" id="pulse">
-  <h2 id="pulse-heading">Market Pulse</h2>
-
-  <p class="meta" style="margin-top:-0.25rem;">
-    A live view of AI demand signals from <strong>public U.S. government job postings</strong>, a <strong>broader commercial snapshot</strong>,
-    and a <strong>standardized skills taxonomy</strong> used nationally for workforce planning.
-  </p>
-
-  <div class="skills-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
-    <!-- Pulse: USAJOBS -->
-    <article class="skill-card" role="listitem">
-      <h3 style="margin-bottom:0.35rem;">Government Signal (USAJOBS)</h3>
-      <p class="meta" style="margin:0 0 0.35rem;">Public U.S. government postings • Trend backbone</p>
-      <p style="margin:0; color: var(--muted);">
-        This dashboard’s trend line is computed from the <strong>USAJOBS Historic Job Opportunity Announcements (JOA)</strong> dataset.
-        It measures how frequently AI-related terms appear in job-posting titles over time—an executive-friendly leading indicator.
-      </p>
-
-      <ul style="margin-top:0.75rem;">
-        <li><strong>What we measure:</strong> % of postings mentioning AI terms (monthly)</li>
-        <li><strong>Why it matters:</strong> employer language shifts before curricula and workforce outcomes</li>
-        <li><strong>Source type:</strong> U.S. government dataset (public API)</li>
-      </ul>
-    </article>
-
-    <!-- Pulse: Adzuna -->
-    <article class="skill-card" role="listitem">
-      <h3 style="margin-bottom:0.35rem;">Broader Market Snapshot (Adzuna)</h3>
-      <p class="meta" style="margin:0 0 0.35rem;">Commercial job-posting sample • Market pulse</p>
-
-      <p style="margin:0; color: var(--muted);">
-        A rolling snapshot of recent U.S. job postings to complement the government trend line. Useful for directional context
-        like <strong>top categories</strong> and <strong>emerging AI terms</strong>.
-      </p>
-
-      <div style="margin-top:0.85rem;">
-        <p class="kpi-label" style="margin:0;">AI share in recent sample</p>
-        <p class="kpi-value" id="pulseAdzunaShare" style="margin:0.2rem 0 0.1rem;">—</p>
-        <p class="kpi-sub" id="pulseAdzunaMeta" style="margin:0;">—</p>
-      </div>
-
-      <div style="margin-top:0.75rem;">
-        <p class="kpi-label" style="margin:0 0 0.35rem;">Top categories in sample</p>
-        <ul id="pulseAdzunaCategories" style="margin:0; padding-left:1.15rem;"></ul>
-      </div>
-
-      <div style="margin-top:0.75rem;">
-        <p class="kpi-label" style="margin:0 0 0.35rem;">Top AI terms appearing in titles</p>
-        <ul id="pulseAdzunaTerms" style="margin:0; padding-left:1.15rem;"></ul>
-      </div>
-    </article>
-
-    <!-- Pulse: O*NET -->
-    <article class="skill-card" role="listitem">
-      <h3 style="margin-bottom:0.35rem;">Skills Language (O*NET)</h3>
-      <p class="meta" style="margin:0 0 0.35rem;">U.S. Department of Labor-backed taxonomy • Curriculum mapping</p>
-
-      <p style="margin:0; color: var(--muted);">
-        O*NET provides standardized occupation language used nationally. We pull <strong>Hot Technologies</strong> (occupation-linked technology signals)
-        to help NKU translate labor-market signals into <strong>clear, defensible curriculum outcomes</strong>.
-      </p>
-
-      <div style="margin-top:0.85rem;">
-        <p class="kpi-label" style="margin:0 0 0.35rem;">Hot technologies by occupation (top examples)</p>
-        <div id="pulseOnetBlock" class="explorer-panel" style="padding:0.85rem;">
-          <p class="meta" style="margin:0;">Loading O*NET highlights…</p>
-        </div>
-      </div>
-    </article>
-  </div>
-</section>
-
 
     <!-- Sources -->
     <section class="section" aria-labelledby="sources-heading" id="sources">
       <h2 id="sources-heading">Sources</h2>
-      <p class="meta" style="margin-top:-0.25rem;">
-        Sources used to compile the dataset and define skill categories. (Links populated from <code>data.json</code>.)
+      <p class="meta">Links are populated from <code>data.json</code>.</p>
+      <ul id="sources-list" class="sources-list"></ul>
+
+      <p class="meta" style="margin-top:0.75rem;">
+        <a href="data.json" download>Download the underlying data.json</a>
       </p>
-      <ul id="sources-list" class="sources-list" aria-label="Source list"></ul>
     </section>
   </main>
 
   <footer class="section footer" role="contentinfo">
     <div class="container">
       <p style="margin:0;">
-        Leadership dashboard • Built with high-performance vanilla HTML/CSS/JS, curiosity, and coffee by Brandi Neal.
- 💛🖤        <span aria-hidden="true">•</span>
-        Tip: Use <strong>Print / PDF</strong> for an exec-friendly one-pager.
+        Prepared for NKU academic leadership • Print/PDF ready
       </p>
     </div>
   </footer>
 
   <script src="app.js"></script>
-
-  <!-- Small helper: keep the topbar "Updated" time in sync with your existing #last-updated -->
-  <script>
-    (function syncUpdatedTime() {
-      const a = document.getElementById("last-updated");
-      const b = document.getElementById("last-updated-top");
-      if (!a || !b) return;
-
-      const observer = new MutationObserver(() => {
-        b.textContent = a.textContent || "";
-        const dt = a.getAttribute("datetime") || "";
-        if (dt) b.setAttribute("datetime", dt);
-      });
-
-      observer.observe(a, { childList: true, subtree: true, characterData: true, attributes: true });
-    })();
-  </script>
 </body>
 </html>
