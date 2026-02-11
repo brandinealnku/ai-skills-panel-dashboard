@@ -1,103 +1,68 @@
 {
   "lastUpdated": "2026-02-11",
-  "hero": {
-    "title": "AI Skills for Job-Market Readiness",
-    "takeaway": [
-      "Employers increasingly expect graduates to use AI tools for research, analysis, communication, and workflow automation.",
-      "The strongest preparation combines shared foundational AI literacy with discipline-specific practice tailored to job family needs."
-    ]
+  "takeaway": {
+    "headline": "Teach baseline AI literacy for all students, then add role-based depth.",
+    "subhead": "Job postings show AI skills spreading beyond tech roles, and the most valuable skills differ by job family (power-user vs builder vs high-stakes governance)."
   },
   "coreSkills": [
-    {
-      "title": "AI Literacy and Model Awareness",
-      "description": "Understand what modern AI can and cannot do, including common failure modes, bias risks, and confidence calibration."
-    },
-    {
-      "title": "Prompting and Task Framing",
-      "description": "Translate ambiguous goals into clear prompts, constraints, and evaluation criteria to produce useful outputs consistently."
-    },
-    {
-      "title": "Verification and Critical Evaluation",
-      "description": "Fact-check AI outputs against trusted sources, evaluate reasoning quality, and identify hallucinations before reuse."
-    },
-    {
-      "title": "Data and Workflow Fluency",
-      "description": "Use spreadsheets, lightweight automation, and AI-assisted analysis to accelerate repetitive tasks and decision cycles."
-    },
-    {
-      "title": "Ethics, Policy, and Responsible Use",
-      "description": "Apply privacy, copyright, security, and fairness principles when using AI in academic and professional contexts."
-    }
+    { "title": "AI literacy & judgment", "desc": "Limits, failure modes, verification habits, and when not to use AI." },
+    { "title": "Prompting + iteration", "desc": "Clear constraints, examples, critique loops, and evaluation criteria." },
+    { "title": "Data literacy", "desc": "Data quality, privacy basics, measurement, and experimentation mindset." },
+    { "title": "Responsible AI", "desc": "Bias, privacy/security, transparency, and human oversight." },
+    { "title": "Human skills amplified by AI", "desc": "Problem framing, communication, domain context, ethical reasoning." }
   ],
   "charts": {
     "aiMentionsTrend": {
-      "labels": ["2019", "2020", "2021", "2022", "2023", "2024", "2025"],
-      "values": [4, 5, 7, 11, 16, 23, 31],
-      "yAxisLabel": "Share of postings mentioning AI (%)"
+      "title": "AI mentions in job postings are rising (Indeed AI Tracker)",
+      "labels": ["2020", "2021", "2022", "2023", "2024", "Dec 2025"],
+      "values": [1.0, 1.6, 1.2, 2.0, 3.0, 4.2],
+      "note": "Keep these as placeholders until you replace them with exact points from the Indeed AI Tracker chart. The anchor point is 4.2% in Dec 2025."
     },
     "aiMentionsByFamily": {
-      "labels": [
-        "Software & Data",
-        "Marketing & Sales",
-        "Finance & Operations",
-        "Healthcare",
-        "Education",
-        "Human Resources"
-      ],
-      "values": [58, 34, 29, 23, 21, 19],
-      "xAxisLabel": "Job family",
-      "yAxisLabel": "Postings mentioning AI (%)"
+      "title": "AI mentions differ by job family (Dec 2025)",
+      "labels": ["Data & Analytics", "Marketing", "Human Resources"],
+      "values": [45.0, 14.9, 8.8],
+      "note": "From Indeed Hiring Lab’s Jan 22, 2026 labor market update."
     },
     "aiOutsideITShare": {
+      "title": "AI demand extends beyond IT/CS (2024)",
       "labels": ["Outside IT/CS", "IT/CS"],
-      "values": [62, 38]
+      "values": [51, 49],
+      "note": "From Lightcast reporting: share of postings requiring AI skills outside IT/CS (as of 2024)."
     }
   },
   "jobFamilies": {
-    "nonTechnical": {
-      "label": "Non-technical",
-      "skills": [
-        "AI-assisted writing, summarization, and stakeholder communication",
-        "Customer and market insight extraction from qualitative data",
-        "Responsible use of AI for documentation, planning, and reporting",
-        "Human-in-the-loop review for tone, compliance, and brand safety"
-      ]
-    },
-    "technical": {
-      "label": "Technical",
-      "skills": [
-        "AI coding copilots for prototyping, testing, and refactoring",
-        "Data pipeline literacy and model performance monitoring",
-        "API-based automation and tool integration",
-        "Security, privacy, and governance practices for AI-enabled systems"
-      ]
-    },
-    "highStakes": {
-      "label": "High-stakes",
-      "skills": [
-        "Evidence-based verification for decisions affecting people or safety",
-        "Bias detection and mitigation in sensitive workflows",
-        "Documentation for auditability and accountability",
-        "Escalation protocols when AI output uncertainty is high"
-      ]
-    }
+    "Non-technical": [
+      "AI-assisted workflow design (SOPs + QA checklists)",
+      "Tool evaluation (capabilities, cost, risk, governance)",
+      "Data-informed decision making and impact measurement",
+      "Change management and stakeholder communication"
+    ],
+    "Technical": [
+      "LLM integration patterns (RAG, tool use, evaluation)",
+      "Testing and evaluation (quality, bias, robustness)",
+      "Monitoring and lifecycle (drift, feedback, incident response)",
+      "Security and privacy engineering fundamentals"
+    ],
+    "High-stakes": [
+      "Risk assessment + controls (auditability, oversight)",
+      "Documentation (decision logs, transparency)",
+      "Fairness/bias evaluation and mitigation",
+      "Escalation paths and human-in-the-loop review"
+    ]
   },
   "sources": [
     {
-      "title": "Lightcast: Generative AI and the Labor Market",
-      "url": "https://lightcast.io/resources/research/generative-ai-and-the-labor-market"
+      "name": "Indeed Hiring Lab — Jan 2026 Labor Market Update (AI Tracker 4.2% in Dec 2025; 45% data & analytics; ~15% marketing; ~9% HR)",
+      "url": "https://www.hiringlab.org/2026/01/22/january-labor-market-update-jobs-mentioning-ai-are-growing-amid-broader-hiring-weakness/"
     },
     {
-      "title": "OECD: AI and the Future of Skills",
-      "url": "https://www.oecd.org/en/topics/artificial-intelligence.html"
+      "name": "Indeed Career Advice — AI in job postings (context + trend discussion, updated Jan 2026)",
+      "url": "https://www.indeed.com/career-advice/news/ai-in-job-postings"
     },
     {
-      "title": "World Economic Forum: Future of Jobs Report",
-      "url": "https://www.weforum.org/reports/the-future-of-jobs-report-2025/"
-    },
-    {
-      "title": "LinkedIn Economic Graph: Jobs on the Rise and AI Skills",
-      "url": "https://economicgraph.linkedin.com/"
+      "name": "Lightcast — AI skills outside IT/CS (press release summary)",
+      "url": "https://lightcast.io/resources/blog/beyond-the-buzz-press-release-2025-07-23"
     }
   ]
 }
