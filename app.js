@@ -1,37 +1,37 @@
 let dashboardData;
 
 async function loadData() {
-  const response = await fetch('data.json');
-  if (!response.ok) {
-    throw new Error(`Failed to load data.json (${response.status})`);
-  }
+  const response = await fetch("./data.json", { cache: "no-store" });
+  if (!response.ok) throw new Error(`Failed to load data.json (${response.status})`);
   return response.json();
 }
 
 function setHero(data) {
-  document.getElementById('hero-title').textContent = data.hero.title;
-  document.getElementById('hero-takeaway-1').textContent = data.hero.takeaway[0];
-  document.getElementById('hero-takeaway-2').textContent = data.hero.takeaway[1];
+  // Your JSON: data.takeaway.headline + data.takeaway.subhead
+  document.getElementById("hero-title").textContent = "AI Skills for Job-Market Readiness";
+  document.getElementById("hero-takeaway-1").textContent = data.takeaway?.headline ?? "";
+  document.getElementById("hero-takeaway-2").textContent = data.takeaway?.subhead ?? "";
 
-  const lastUpdatedEl = document.getElementById('last-updated');
-  lastUpdatedEl.textContent = data.lastUpdated;
-  lastUpdatedEl.dateTime = data.lastUpdated;
+  const lastUpdatedEl = document.getElementById("last-updated");
+  lastUpdatedEl.textContent = data.lastUpdated ?? "";
+  lastUpdatedEl.dateTime = data.lastUpdated ?? "";
 }
 
 function renderCoreSkills(data) {
-  const grid = document.getElementById('core-skills-grid');
-  grid.innerHTML = '';
+  const grid = document.getElementById("core-skills-grid");
+  grid.innerHTML = "";
 
-  data.coreSkills.forEach((skill) => {
-    const card = document.createElement('article');
-    card.className = 'skill-card';
-    card.setAttribute('role', 'listitem');
+  (data.coreSkills ?? []).forEach((skill) => {
+    const card = document.createElement("article");
+    card.className = "skill-card";
+    card.setAttribute("role", "listitem");
 
-    const title = document.createElement('h3');
-    title.textContent = skill.title;
+    const title = document.createElement("h3");
+    title.textContent = skill.title ?? "";
 
-    const description = document.createElement('p');
-    description.textContent = skill.description;
+    const description = document.createElement("p");
+    // Your JSON uses "desc"
+    description.textContent = skill.desc ?? "";
 
     card.append(title, description);
     grid.append(card);
@@ -39,34 +39,34 @@ function renderCoreSkills(data) {
 }
 
 function createLineChart(data) {
-  const { labels, values, yAxisLabel } = data.charts.aiMentionsTrend;
-  new Chart(document.getElementById('aiMentionsTrendChart'), {
-    type: 'line',
+  const trend = data.charts?.aiMentionsTrend;
+  if (!trend) return;
+
+  const labels = trend.labels ?? [];
+  const values = trend.values ?? [];
+
+  new Chart(document.getElementById("aiMentionsTrendChart"), {
+    type: "line",
     data: {
       labels,
-      datasets: [{
-        label: yAxisLabel,
-        data: values,
-        borderColor: '#2563eb',
-        backgroundColor: 'rgba(37, 99, 235, 0.18)',
-        fill: true,
-        tension: 0.24,
-        pointRadius: 3
-      }]
+      datasets: [
+        {
+          label: "Share of job postings mentioning AI (%)",
+          data: values,
+          fill: true,
+          tension: 0.24,
+          pointRadius: 3
+        }
+      ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false }
-      },
+      plugins: { legend: { display: false } },
       scales: {
         y: {
           beginAtZero: true,
-          title: {
-            display: true,
-            text: yAxisLabel
-          }
+          title: { display: true, text: "Percent of postings (%)" }
         }
       }
     }
@@ -74,36 +74,32 @@ function createLineChart(data) {
 }
 
 function createBarChart(data) {
-  const { labels, values, xAxisLabel, yAxisLabel } = data.charts.aiMentionsByFamily;
-  new Chart(document.getElementById('aiMentionsByFamilyChart'), {
-    type: 'bar',
+  const byFamily = data.charts?.aiMentionsByFamily;
+  if (!byFamily) return;
+
+  const labels = byFamily.labels ?? [];
+  const values = byFamily.values ?? [];
+
+  new Chart(document.getElementById("aiMentionsByFamilyChart"), {
+    type: "bar",
     data: {
       labels,
-      datasets: [{
-        label: yAxisLabel,
-        data: values,
-        backgroundColor: ['#3b82f6', '#2563eb', '#1d4ed8', '#1e40af', '#172554', '#60a5fa']
-      }]
+      datasets: [
+        {
+          label: "Percent of postings (%)",
+          data: values
+        }
+      ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false }
-      },
+      plugins: { legend: { display: false } },
       scales: {
-        x: {
-          title: {
-            display: true,
-            text: xAxisLabel
-          }
-        },
+        x: { title: { display: true, text: "Job family" } },
         y: {
           beginAtZero: true,
-          title: {
-            display: true,
-            text: yAxisLabel
-          }
+          title: { display: true, text: "Percent of postings (%)" }
         }
       }
     }
@@ -111,65 +107,69 @@ function createBarChart(data) {
 }
 
 function createDonutChart(data) {
-  const { labels, values } = data.charts.aiOutsideITShare;
-  new Chart(document.getElementById('aiOutsideITShareChart'), {
-    type: 'doughnut',
+  const share = data.charts?.aiOutsideITShare;
+  if (!share) return;
+
+  const labels = share.labels ?? [];
+  const values = share.values ?? [];
+
+  new Chart(document.getElementById("aiOutsideITShareChart"), {
+    type: "doughnut",
     data: {
       labels,
-      datasets: [{
-        data: values,
-        backgroundColor: ['#2563eb', '#93c5fd']
-      }]
+      datasets: [{ data: values }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: {
-          position: 'bottom'
-        }
+        legend: { position: "bottom" }
       }
     }
   });
 }
 
 function renderJobFamilyExplorer(data) {
-  const buttonGroup = document.getElementById('job-family-buttons');
-  const title = document.getElementById('selected-family-title');
-  const list = document.getElementById('selected-family-skills');
+  const buttonGroup = document.getElementById("job-family-buttons");
+  const title = document.getElementById("selected-family-title");
+  const list = document.getElementById("selected-family-skills");
 
-  const families = Object.keys(data.jobFamilies);
+  buttonGroup.innerHTML = "";
+  title.textContent = "";
+  list.innerHTML = "";
+
+  const families = Object.keys(data.jobFamilies ?? {});
+  if (families.length === 0) return;
 
   function showFamily(familyName) {
-    const family = data.jobFamilies[familyName];
-    title.textContent = family.label;
-    list.innerHTML = '';
-    family.skills.forEach((skill) => {
-      const item = document.createElement('li');
+    title.textContent = familyName;
+
+    const skillsArray = data.jobFamilies[familyName] ?? [];
+    list.innerHTML = "";
+    skillsArray.forEach((skill) => {
+      const item = document.createElement("li");
       item.textContent = skill;
       list.append(item);
     });
 
-    [...buttonGroup.querySelectorAll('button')].forEach((btn) => {
+    [...buttonGroup.querySelectorAll("button")].forEach((btn) => {
       const isSelected = btn.dataset.family === familyName;
-      btn.setAttribute('aria-selected', String(isSelected));
+      btn.setAttribute("aria-selected", String(isSelected));
       btn.tabIndex = isSelected ? 0 : -1;
     });
   }
 
   families.forEach((familyName, index) => {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'family-btn';
-    button.id = `tab-${familyName}`;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "family-btn";
     button.dataset.family = familyName;
-    button.setAttribute('role', 'tab');
-    button.setAttribute('aria-controls', 'selected-family-skills');
-    button.setAttribute('aria-selected', index === 0 ? 'true' : 'false');
-    button.textContent = data.jobFamilies[familyName].label;
+    button.setAttribute("role", "tab");
+    button.setAttribute("aria-controls", "selected-family-skills");
+    button.setAttribute("aria-selected", index === 0 ? "true" : "false");
+    button.textContent = familyName;
 
-    button.addEventListener('click', () => showFamily(familyName));
-
+    button.addEventListener("click", () => showFamily(familyName));
     buttonGroup.append(button);
   });
 
@@ -177,16 +177,17 @@ function renderJobFamilyExplorer(data) {
 }
 
 function renderSources(data) {
-  const list = document.getElementById('sources-list');
-  list.innerHTML = '';
+  const list = document.getElementById("sources-list");
+  list.innerHTML = "";
 
-  data.sources.forEach((source) => {
-    const item = document.createElement('li');
-    const link = document.createElement('a');
-    link.href = source.url;
-    link.textContent = source.title;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
+  (data.sources ?? []).forEach((source) => {
+    const item = document.createElement("li");
+    const link = document.createElement("a");
+    link.href = source.url ?? "#";
+    // Your JSON uses "name"
+    link.textContent = source.name ?? source.url ?? "Source";
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
 
     item.append(link);
     list.append(item);
@@ -209,9 +210,10 @@ loadData()
     init(dashboardData);
   })
   .catch((error) => {
-    const container = document.querySelector('.hero .container');
-    const problem = document.createElement('p');
+    console.error(error);
+    const container = document.querySelector(".hero .container");
+    const problem = document.createElement("p");
     problem.textContent = `Could not load dashboard data: ${error.message}`;
-    problem.style.color = '#b91c1c';
+    problem.style.color = "#b91c1c";
     container.append(problem);
   });
