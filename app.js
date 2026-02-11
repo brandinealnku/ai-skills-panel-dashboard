@@ -378,6 +378,143 @@ function renderSources(data) {
     list.append(li);
   });
 }
+/* ---------------------------
+   Market Pulse (Adzuna + O*NET)
+   Populates:
+   - pulseAdzunaShare, pulseAdzunaMeta
+   - pulseAdzunaCategories, pulseAdzunaTerms
+   - pulseOnetBlock
+---------------------------- */
+function renderMarketPulse(data) {
+  const adzuna = data.marketLenses?.adzunaUSSnapshot;
+  const onet = data.marketLenses?.onetHotTechnologies;
+
+  // --- Adzuna ---
+  const shareEl = document.getElementById("pulseAdzunaShare");
+  const metaEl = document.getElementById("pulseAdzunaMeta");
+  const catsEl = document.getElementById("pulseAdzunaCategories");
+  const termsEl = document.getElementById("pulseAdzunaTerms");
+
+  if (shareEl && metaEl && catsEl && termsEl) {
+    catsEl.innerHTML = "";
+    termsEl.innerHTML = "";
+
+    // If Adzuna block not present in data.json, show a clear status
+    if (!adzuna) {
+      shareEl.textContent = "—";
+      metaEl.textContent = "Not available (marketLenses.adzunaUSSnapshot missing from data.json).";
+      catsEl.innerHTML = "<li>—</li>";
+      termsEl.innerHTML = "<li>—</li>";
+    }
+    // If present but disabled (likely missing API keys), show status
+    else if (!adzuna.enabled) {
+      shareEl.textContent = "Not connected";
+      metaEl.textContent = adzuna.note ?? "Add API credentials to enable this commercial snapshot.";
+      catsEl.innerHTML = "<li>—</li>";
+      termsEl.innerHTML = "<li>—</li>";
+    }
+    // If enabled but no results, show actionable message
+    else if (!adzuna.sampledResults || adzuna.sampledResults === 0) {
+      shareEl.textContent = "0.00%";
+      metaEl.textContent =
+        adzuna.error ??
+        "No postings returned. Check Adzuna query (what=...) and the time window.";
+      catsEl.innerHTML = "<li>—</li>";
+      termsEl.innerHTML = "<li>—</li>";
+    }
+    // Normal happy path
+    else {
+      const pct = Number(adzuna.aiShareInSamplePct ?? 0);
+      shareEl.textContent = `${pct.toFixed(2)}%`;
+
+      metaEl.textContent = `Last ${adzuna.windowDays ?? "—"} days • Sampled ${
+        adzuna.sampledResults ?? "—"
+      } postings • AI-flagged ${adzuna.aiFlaggedResults ?? "—"}`;
+
+      (adzuna.topCategories ?? []).forEach((c) => {
+        const li = document.createElement("li");
+        li.textContent = `${c.name} (${c.count})`;
+        catsEl.appendChild(li);
+      });
+      if (!catsEl.childElementCount) catsEl.innerHTML = "<li>—</li>";
+
+      (adzuna.topAITermsInTitles ?? []).forEach((t) => {
+        const li = document.createElement("li");
+        li.textContent = `${t.term} (${t.count})`;
+        termsEl.appendChild(li);
+      });
+      if (!termsEl.childElementCount) termsEl.innerHTML = "<li>—</li>";
+    }
+  }
+
+  // --- O*NET ---
+  const onetBlock = document.getElementById("pulseOnetBlock");
+  if (onetBlock) {
+    if (!onet) {
+      onetBlock.innerHTML = `<p class="meta" style="margin:0;">Not available (marketLenses.onetHotTechnologies missing from data.json).</p>`;
+      return;
+    }
+
+    if (!onet.enabled) {
+      onetBlock.innerHTML = `<p class="meta" style="margin:0;">${
+        onet.note ?? "Not connected. Add O*NET configuration to enable this panel."
+      }</p>`;
+      return;
+    }
+
+    const occs = onet.occupations ?? [];
+    if (!occs.length) {
+      onetBlock.innerHTML = `<p class="meta" style="margin:0;">No O*NET results returned.</p>`;
+      return;
+    }
+
+    const html = occs
+      .map((o) => {
+        if (o.error) {
+          return `
+            <div style="margin-bottom:0.75rem;">
+              <strong>${o.occupation ?? o.onetSoc ?? "Occupation"}</strong>
+              <p class="meta" style="margin:0.2rem 0 0;">Could not load: ${o.error}</p>
+            </div>
+          `;
+        }
+
+        const tops = (o.hotTechnologies ?? []).slice(0, 6);
+        const items = tops
+          .map((t) => {
+            const pct = t.percentage != null ? `${t.percentage}%` : "—";
+            const flags = [
+              t.inDemand ? "In Demand" : null,
+              t.hotTechnology ? "Hot Tech" : null
+            ].filter(Boolean);
+
+            return `
+              <li style="margin:0.15rem 0;">
+                <span style="font-weight:650;">${t.title ?? "Technology"}</span>
+                <span class="meta" style="margin-left:0.35rem;">(${pct}${
+                  flags.length ? " • " + flags.join(", ") : ""
+                })</span>
+              </li>
+            `;
+          })
+          .join("");
+
+        return `
+          <div style="margin-bottom:0.85rem;">
+            <strong>${o.occupation ?? o.onetSoc ?? "Occupation"}</strong>
+            <ul style="margin:0.35rem 0 0; padding-left:1.1rem;">
+              ${items || "<li>—</li>"}
+            </ul>
+          </div>
+        `;
+      })
+      .join("");
+
+    onetBlock.innerHTML =
+      html +
+      `<p class="meta" style="margin:0.25rem 0 0;">Source: O*NET Web Services • Hot Technologies are occupation-linked signals.</p>`;
+  }
+}
 
 /* ---------------------------
    Friendly fatal error panel
@@ -419,6 +556,7 @@ function renderDashboard(data) {
   renderOutsideITChart(data);
 
   renderJobFamilyExplorer(data);
+  renderMarketPulse(data);
   renderSources(data);
 }
 
