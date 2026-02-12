@@ -1,0 +1,1764 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NKU - AI Skillsets for Hiring (Executive Dashboard)</title>
+
+  <!-- Optional: Chart.js (remove if your environment blocks CDNs) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#f8fafc;
+      --surface:#ffffff;
+      --text:#0f172a;
+      --muted:#475569;
+      --muted-2:#64748b;
+      --border:#dbe3ef;
+      --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+      --accent:#2563eb;
+      --accent-2:#1d4ed8;
+
+      --ok:#16a34a;
+      --warn:#f59e0b;
+      --bad:#ef4444;
+
+      --radius:18px;
+      --radius-sm:14px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.5;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .skip-link{
+      position:absolute; left:-999px; top:auto; width:1px; height:1px; overflow:hidden;
+    }
+    .skip-link:focus{
+      left:1rem; top:1rem; width:auto; height:auto;
+      padding:.6rem .9rem; background:var(--surface); border:1px solid var(--border);
+      border-radius:12px; box-shadow:var(--shadow); z-index:9999;
+    }
+    .sources-btn{
+      border:1px solid var(--border);
+      background:var(--surface);
+      border-radius:999px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:13px;
+      color:var(--muted);
+    }
+    header{
+      position:sticky; top:0; z-index:50;
+      background: rgba(248,250,252,.78);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid rgba(219,227,239,.7);
+    }
+    .wrap{max-width:1200px; margin:0 auto; padding:18px 18px}
+    .topbar{
+      display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+    }
+    .brand{
+      display:flex; gap:10px; align-items:flex-start;
+    }
+    .badge{
+      font-size:12px; color:#0b1220;
+      background: rgba(37,99,235,.10);
+      border:1px solid rgba(37,99,235,.18);
+      padding:6px 10px; border-radius:999px;
+      display:inline-flex; gap:8px; align-items:center;
+    }
+    .badge strong{font-weight:650}
+    .title{
+      margin:0;
+      font-size:18px;
+      letter-spacing:-.02em;
+    }
+    .subtitle{
+      margin:2px 0 0;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .toolbar{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+    }
+    .pillset{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:999px;
+      padding:6px;
+      display:flex; gap:6px; align-items:center;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+    }
+    .pillset button{
+      border:0; background:transparent; cursor:pointer;
+      padding:8px 10px; border-radius:999px;
+      color:var(--muted);
+      font-weight:600;
+      font-size:13px;
+      transition: background .15s ease, color .15s ease;
+    }
+    .pillset button[aria-pressed="true"]{
+      background: rgba(37,99,235,.12);
+      color: var(--accent-2);
+    }
+    .meta{
+      font-size:12px; color:var(--muted-2);
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+    }
+    .dot{width:6px; height:6px; border-radius:999px; background:var(--accent); display:inline-block}
+
+    main{padding:20px 0 34px}
+    .grid{display:grid; gap:14px;}
+    .grid.kpis{grid-template-columns: repeat(12, 1fr)}
+    .card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:14px 16px 10px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      border-bottom:1px solid rgba(219,227,239,.65);
+    }
+    .card .hd h2{margin:0; font-size:14px; letter-spacing:-.01em;}
+    .card .hd p{margin:4px 0 0; font-size:12px; color:var(--muted);}
+    .card .bd{padding:14px 16px}
+
+    /* KPI cards */
+    .kpi{
+      padding:14px 14px 12px;
+      display:flex; flex-direction:column; gap:8px;
+      min-height:120px;
+    }
+    .kpi-top{display:flex; align-items:flex-start; justify-content:space-between; gap:10px;}
+    .kpi-label{font-size:12px; color:var(--muted); font-weight:650;}
+    .kpi-value{font-size:26px; letter-spacing:-.03em; font-weight:750; margin-top:2px;}
+    .kpi-delta{
+      font-size:12px; font-weight:700;
+      display:inline-flex; gap:6px; align-items:center;
+      padding:4px 8px; border-radius:999px;
+      border:1px solid rgba(219,227,239,.9);
+      background: rgba(2,6,23,.02);
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .kpi-delta.up{color: #0f6b2a; background: rgba(22,163,74,.10); border-color: rgba(22,163,74,.20)}
+    .kpi-delta.down{color:#7c2d12; background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.22)}
+    .spark{
+      width:100%; height:36px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(37,99,235,.10), rgba(37,99,235,.02));
+      border:1px solid rgba(37,99,235,.18);
+      overflow:hidden;
+    }
+    .spark svg{display:block; width:100%; height:100%}
+
+    /* Layout */
+    .kpi.span-3{grid-column: span 3}
+    .span-6{grid-column: span 6}
+    .span-7{grid-column: span 7}
+    .span-5{grid-column: span 5}
+    .span-12{grid-column: span 12}
+
+    @media (max-width: 980px){
+      .kpi.span-3{grid-column: span 6}
+      .span-7, .span-5, .span-6{grid-column: span 12}
+    }
+    @media (max-width: 520px){
+      .kpi.span-3{grid-column: span 12}
+    }
+
+    /* Ranked lists */
+    .lists{display:grid; grid-template-columns: 1fr 1fr; gap:12px;}
+    @media (max-width: 980px){ .lists{grid-template-columns:1fr} }
+    .rank{border:1px solid rgba(219,227,239,.75); border-radius: var(--radius-sm); overflow:hidden;}
+    .rank .rh{
+      padding:12px 12px 10px;
+      background: rgba(2,6,23,.02);
+      border-bottom:1px solid rgba(219,227,239,.75);
+    }
+    .rank .rh strong{font-size:13px}
+    .rank .rh div{margin-top:4px; font-size:12px; color:var(--muted)}
+    .rank ul{margin:0; padding:0; list-style:none;}
+    .rank li{
+      display:flex; gap:10px; align-items:flex-start; justify-content:space-between;
+      padding:10px 12px;
+      border-bottom:1px solid rgba(219,227,239,.55);
+    }
+    .rank li:last-child{border-bottom:0}
+    .rank .left{display:flex; gap:10px; align-items:flex-start; min-width:0;}
+    .rank .num{
+      width:24px; height:24px; border-radius:8px;
+      display:grid; place-items:center;
+      background: rgba(37,99,235,.10);
+      border:1px solid rgba(37,99,235,.18);
+      color: var(--accent-2);
+      font-weight:800; font-size:12px;
+      flex: 0 0 auto;
+    }
+    .rank .skill{
+      font-weight:750; font-size:13px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      max-width: 360px;
+    }
+    .rank .fam{font-size:12px; color:var(--muted); margin-top:2px}
+    .rank .right{text-align:right; flex: 0 0 auto;}
+    .rank .metric{font-weight:800; font-size:13px;}
+    .rank .note{font-size:12px; color:var(--muted); margin-top:2px}
+
+    /* Heatmap */
+    .heat-wrap{overflow:auto}
+    table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      min-width: 920px;
+    }
+    th, td{
+      padding:10px 10px;
+      border-bottom:1px solid rgba(219,227,239,.7);
+      font-size:12px;
+      vertical-align:middle;
+      background:var(--surface);
+    }
+    th{
+      position:sticky; top:0;
+      z-index:2;
+      background: #f9fbff;
+      color:#0b1220;
+      font-size:12px;
+      font-weight:800;
+      border-bottom:1px solid rgba(219,227,239,.95);
+      text-align:left;
+      white-space:nowrap;
+    }
+    td:first-child, th:first-child{
+      position:sticky; left:0;
+      z-index:1;
+      background: #ffffff;
+    }
+    .chip{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:5px 9px;
+      border-radius:999px;
+      border:1px solid rgba(219,227,239,.9);
+      background: rgba(2,6,23,.02);
+      font-weight:700;
+      white-space:nowrap;
+    }
+    .cell{
+      cursor:pointer;
+      border-radius:12px;
+      border:1px solid rgba(219,227,239,.85);
+      padding:8px 10px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      transition: transform .08s ease, border-color .12s ease;
+      user-select:none;
+      min-width: 140px;
+    }
+    .cell:hover{transform: translateY(-1px); border-color: rgba(37,99,235,.35);}
+    .lvl{font-weight:850; font-size:12px;}
+    .lvl0{background: rgba(239,68,68,.10); border-color: rgba(239,68,68,.22)}
+    .lvl1{background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.24)}
+    .lvl2{background: rgba(37,99,235,.10); border-color: rgba(37,99,235,.22)}
+    .lvl3{background: rgba(22,163,74,.12); border-color: rgba(22,163,74,.22)}
+    .muted{color:var(--muted)}
+
+    /* Side panel */
+    .drawer{
+      position:fixed;
+      right:14px;
+      top:82px;
+      width:min(420px, calc(100vw - 28px));
+      max-height: calc(100vh - 96px);
+      overflow:auto;
+      border-radius: 18px;
+      border:1px solid rgba(219,227,239,.95);
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      display:none;
+      z-index: 100;
+    }
+    .drawer.open{display:block}
+    .drawer .dh{
+      padding:14px 14px 10px;
+      border-bottom:1px solid rgba(219,227,239,.75);
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    }
+    .drawer h3{margin:0; font-size:14px; letter-spacing:-.01em;}
+    .drawer .close{
+      border:1px solid rgba(219,227,239,.95);
+      background:#fff;
+      border-radius:12px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-weight:800;
+      color:var(--muted);
+    }
+    .drawer .db{padding:12px 14px 14px}
+    .drawer .section{margin:0 0 12px}
+    .drawer .section strong{font-size:12px}
+    .drawer .section p, .drawer .section ul{margin:6px 0 0; font-size:12px; color:var(--muted);}
+    .drawer ul{padding-left:18px}
+
+    /* Action board */
+    .actions{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px;}
+    @media (max-width: 980px){ .actions{grid-template-columns:1fr} }
+    .action{
+      border:1px solid rgba(219,227,239,.75);
+      border-radius: var(--radius-sm);
+      padding:12px;
+      background: rgba(2,6,23,.015);
+    }
+    .action .tag{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:4px 8px; border-radius:999px;
+      border:1px solid rgba(219,227,239,.85);
+      background:#fff;
+      font-size:12px; font-weight:800;
+      color: var(--muted);
+      margin-bottom:8px;
+    }
+    .action h4{margin:0 0 6px; font-size:13px}
+    .action p{margin:0; font-size:12px; color:var(--muted)}
+
+    /* Chart box */
+    .chart-box{height:260px}
+
+    /* Status bar */
+    .status{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      padding:10px 12px;
+      border:1px solid rgba(219,227,239,.9);
+      border-radius: 14px;
+      background: rgba(2,6,23,.02);
+      margin: 10px 0 0;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .status strong{color:#0b1220}
+    .status .ok{color:#0f6b2a; font-weight:800}
+    .status .bad{color:#7c2d12; font-weight:800}
+    .status .btn{
+      margin-left:auto;
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:999px;
+      padding:6px 10px;
+      cursor:pointer;
+      font-weight:800;
+      font-size:12px;
+      color:var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to dashboard</a>
+
+  <header>
+    <div class="wrap">
+      <div class="topbar">
+        <div class="brand">
+          <div>
+            <div class="badge" title="Executive, one-page view with drilldowns">
+              <span class="dot" aria-hidden="true"></span>
+              <strong>Executive Dashboard - Presented at AI Panel Discussion </strong> · AI Skillsets for Hiring Now
+            </div>
+            <h1 class="title">NKU — AI Skillset Needs for Graduates Getting Hired Today</h1>
+            <p class="subtitle">Top skills now · fastest-rising skills · NKU coverage gaps · opportunities board</p>
+            <button type="button" class="sources-btn" id="openSources">Data sources</button>
+          </div>
+        </div>
+
+        <div class="toolbar" aria-label="Dashboard filters">
+          <div class="pillset" role="group" aria-label="Audience / Population Toggle" id="audienceToggle">
+            <button type="button" data-audience="all" aria-pressed="true">All NKU Grads</button>
+            <button type="button" data-audience="business" aria-pressed="false">Business</button>
+            <button type="button" data-audience="informatics" aria-pressed="false">Informatics</button>
+            <button type="button" data-audience="health" aria-pressed="false">Health</button>
+          </div>
+
+          <div class="meta">
+            <span><span class="dot" aria-hidden="true"></span> Last refresh: <strong id="lastRefresh">—</strong></span>
+            <span title="Public APIs + keyword extraction (demo-grade)"><strong>Sources:</strong> USAJOBS + Adzuna/Jooble</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="status" id="statusBar" aria-live="polite">
+        <span>Data: <strong id="statusText">Loading…</strong></span>
+        <span>USAJOBS: <strong id="statusUsa">—</strong></span>
+        <span>Private sector: <strong id="statusPriv">—</strong></span>
+        <button class="btn" id="btnRefresh" type="button">Refresh now</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+
+      <!-- KPI STRIP -->
+      <section class="grid kpis" aria-label="Key performance indicators">
+        <div class="card kpi span-3" role="region" aria-label="AI-skill job share">
+          <div class="kpi-top">
+            <div>
+              <div class="kpi-label">AI-skill job share</div>
+              <div class="kpi-value" id="kpi-aiShare">—</div>
+            </div>
+            <div class="kpi-delta up" id="kpi-aiShareDelta">▲ —</div>
+          </div>
+          <div class="muted" style="font-size:12px">Share of baseline postings mentioning AI terms</div>
+          <div class="spark" aria-hidden="true">
+            <svg viewBox="0 0 120 36" preserveAspectRatio="none">
+              <polyline id="spark-aiShare" fill="none" stroke="rgba(37,99,235,.8)" stroke-width="2" points=""></polyline>
+            </svg>
+          </div>
+        </div>
+
+        <div class="card kpi span-3" role="region" aria-label="Fastest-growing skill family">
+          <div class="kpi-top">
+            <div>
+              <div class="kpi-label">Fastest-growing skill family</div>
+              <div class="kpi-value" id="kpi-fastFamily">—</div>
+            </div>
+            <div class="kpi-delta up" id="kpi-fastFamilyDelta">▲ —</div>
+          </div>
+          <div class="muted" style="font-size:12px">90d vs prior 90d (keyword mentions)</div>
+          <div class="spark" aria-hidden="true">
+            <svg viewBox="0 0 120 36" preserveAspectRatio="none">
+              <polyline id="spark-fastFamily" fill="none" stroke="rgba(37,99,235,.8)" stroke-width="2" points=""></polyline>
+            </svg>
+          </div>
+        </div>
+
+        <div class="card kpi span-3" role="region" aria-label="Non-CS share of AI demand">
+          <div class="kpi-top">
+            <div>
+              <div class="kpi-label">Non-CS share of AI demand</div>
+              <div class="kpi-value" id="kpi-noncsShare">—</div>
+            </div>
+            <div class="kpi-delta up" id="kpi-noncsDelta">▲ —</div>
+          </div>
+          <div class="muted" style="font-size:12px">Non-software role titles in AI postings</div>
+          <div class="spark" aria-hidden="true">
+            <svg viewBox="0 0 120 36" preserveAspectRatio="none">
+              <polyline id="spark-noncs" fill="none" stroke="rgba(37,99,235,.8)" stroke-width="2" points=""></polyline>
+            </svg>
+          </div>
+        </div>
+
+        <div class="card kpi span-3" role="region" aria-label="Estimated wage premium">
+          <div class="kpi-top">
+            <div>
+              <div class="kpi-label">Estimated wage premium</div>
+              <div class="kpi-value" id="kpi-wagePremium">—</div>
+            </div>
+            <div class="kpi-delta up" id="kpi-wageDelta">▲ —</div>
+          </div>
+          <div class="muted" style="font-size:12px">Not available in these free endpoints</div>
+          <div class="spark" aria-hidden="true">
+            <svg viewBox="0 0 120 36" preserveAspectRatio="none">
+              <polyline id="spark-wage" fill="none" stroke="rgba(37,99,235,.8)" stroke-width="2" points=""></polyline>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- TOP SKILLS + TRENDING -->
+      <section class="grid" style="margin-top:14px">
+        <div class="card span-12" role="region" aria-label="Top skills now and trending">
+          <div class="hd">
+            <div>
+              <h2>Top Skills Now vs. Fastest Rising</h2>
+              <p>Derived from keyword mentions in job titles + descriptions (blend: USAJOBS + private-sector API).</p>
+            </div>
+            <div class="meta">
+              <span class="chip" title="Scope of skills shown">
+                Window: <strong id="windowNow">Last 90 days</strong> · Rising: <strong id="windowRising">90d vs prior 90d</strong>
+              </span>
+            </div>
+          </div>
+          <div class="bd">
+            <div class="lists">
+              <div class="rank" aria-label="Top skills now">
+                <div class="rh">
+                  <strong>Top AI Skills in Postings</strong>
+                  <div>Ranked by mention count (90 days)</div>
+                </div>
+                <ul id="listNow"></ul>
+              </div>
+
+              <div class="rank" aria-label="Fastest rising skills">
+                <div class="rh">
+                  <strong>Fastest Rising Skills</strong>
+                  <div>Ranked by growth rate (vs prior 90 days)</div>
+                </div>
+                <ul id="listRising"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COVERAGE GAP MATRIX + SEGMENTATION -->
+      <section class="grid" style="margin-top:14px">
+        <div class="card span-7" role="region" aria-label="NKU coverage gap matrix">
+          <div class="hd">
+            <div>
+              <h2>NKU Coverage Gap Matrix</h2>
+              <p>Rows = skill families · Columns = programs/courses · Cells = coverage level (0–3).</p>
+            </div>
+            <div class="meta">
+              <span class="chip" title="Coverage scale">0 None · 1 Mentioned · 2 Practiced · 3 Assessed</span>
+              <span class="chip" title="Market demand proxy">Rightmost = Demand Index (from API mentions)</span>
+            </div>
+          </div>
+
+          <div class="bd heat-wrap">
+            <table aria-label="Coverage heatmap table" id="heatTable"></table>
+          </div>
+        </div>
+
+        <div class="card span-5" role="region" aria-label="Where the jobs are">
+          <div class="hd">
+            <div>
+              <h2>Where the Jobs Are</h2>
+              <p>Segmented by employer/agency (top 8) using blended postings.</p>
+            </div>
+            <div class="meta">
+              <span class="chip" id="segLabel">Top employers/organizations</span>
+            </div>
+          </div>
+          <div class="bd">
+            <div class="chart-box" aria-label="Segmentation chart">
+              <canvas id="segChart" aria-label="Segmentation chart" role="img"></canvas>
+            </div>
+            <p class="muted" style="margin:10px 0 0; font-size:12px" id="segSourceNote">
+              Sources: USAJOBS (federal) + private-sector API (Adzuna or Jooble). Counts are sample-based.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESPONSIBLE AI + ACTIONS -->
+      <section class="grid" style="margin-top:14px">
+        <div class="card span-6" role="region" aria-label="Trust and governance skills">
+          <div class="hd">
+            <div>
+              <h2>Trust & Governance Skills (Credibility Boost)</h2>
+              <p>Signals NKU builds employable + trustworthy AI capability (not just tools).</p>
+            </div>
+            <div class="meta">
+              <span class="chip">Responsible AI · Risk · Privacy · Security</span>
+            </div>
+          </div>
+          <div class="bd">
+            <ul class="muted" style="margin:0; padding-left:18px; font-size:12px">
+              <li><strong>Responsible AI</strong>: fairness, transparency, human oversight</li>
+              <li><strong>AI risk management</strong>: evaluation, monitoring, documentation</li>
+              <li><strong>Security & privacy</strong>: data handling, access control, policy</li>
+              <li><strong>Governance</strong>: acceptable use, model selection, vendor risk</li>
+            </ul>
+            <p class="muted" style="margin:10px 0 0; font-size:12px">
+              Tip: add a short “trust checklist” rubric to any AI-enabled assignment.
+            </p>
+          </div>
+        </div>
+
+        <div class="card span-6" role="region" aria-label="Action board">
+          <div class="hd">
+            <div>
+              <h2>Opportunities Board</h2>
+              <p>Turn insight into decisions (owners + timelines).</p>
+            </div>
+            <div class="meta">
+              <span class="chip">Quick wins</span>
+            </div>
+          </div>
+          <div class="bd">
+            <div class="actions" id="actions"></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Drilldown Drawer -->
+  <aside class="drawer" id="drawer" aria-label="Skill drilldown panel" role="dialog" aria-modal="false">
+    <div class="dh">
+      <div>
+        <h3 id="drawerTitle">Skill Drilldown</h3>
+        <div class="muted" style="font-size:12px" id="drawerSubtitle">Click a heatmap cell to populate details.</div>
+      </div>
+      <button class="close" type="button" id="drawerClose" aria-label="Close drilldown">Close</button>
+    </div>
+    <div class="db" id="drawerBody"></div>
+  </aside>
+
+  <script>
+    /*****************************************************************
+     * IMPORTANT REALITY CHECK (CLIENT-SIDE LIMITATIONS)
+     * ---------------------------------------------------------------
+     * USAJOBS "Search" requires headers including User-Agent and Authorization-Key.
+     * Browsers block setting User-Agent (and some environments block required headers),
+     * so you typically MUST use a tiny proxy for USAJOBS.
+     *
+     * ✅ Recommended setup:
+     * - Host this dashboard from a local server (NOT file://)
+     * - Provide a proxy endpoint for USAJOBS that injects required headers
+     * - Use Adzuna directly (query params) OR proxy it too (to hide keys)
+     *
+     * This HTML supports BOTH:
+     * - USAJOBS via proxy: CONFIG.USAJOBS_PROXY_URL
+     * - Private-sector via Adzuna direct OR proxy: CONFIG.ADZUNA_DIRECT or CONFIG.ADZUNA_PROXY_URL
+     *****************************************************************/
+
+    /************************************************************
+     * 0) CONFIG (EDIT THESE)
+     ************************************************************/
+    const CONFIG = {
+      // -------- USAJOBS (primary "trusted anchor") --------
+      // Put your proxy URL here. Example: "/api/usajobs"
+      // Your proxy should call: https://data.usajobs.gov/api/search?... and add headers:
+      //   Host: data.usajobs.gov
+      //   User-Agent: <your email>
+      //   Authorization-Key: <your usajobs api key>
+      USAJOBS_PROXY_URL: "/api/usajobs",
+
+      // -------- PRIVATE-SECTOR (Adzuna OR Jooble) --------
+      // Choose ONE:
+      PRIVATE_PROVIDER: "adzuna", // "adzuna" or "jooble"
+
+      // Adzuna (recommended for pure browser calls, but keys become visible in HTML)
+      ADZUNA: {
+        COUNTRY: "us",
+        APP_ID: "",   // <-- set if using direct Adzuna calls
+        APP_KEY: "",  // <-- set if using direct Adzuna calls
+        RESULTS_PER_PAGE: 50
+      },
+      // Optional Adzuna proxy to hide keys: "/api/adzuna?what=...&page=1"
+      ADZUNA_PROXY_URL: "",
+
+      // Jooble (usually needs POST with key; safest via proxy)
+      // Optional Jooble proxy: "/api/jooble" expects JSON body { keywords, location, page }
+      JOOBLE_PROXY_URL: "",
+
+      // -------- QUERY WINDOWS --------
+      AI_QUERY: "AI OR artificial intelligence OR machine learning OR LLM OR GenAI OR ChatGPT OR Copilot",
+      BASELINE_QUERY: "analyst OR engineer OR developer OR manager OR specialist",
+
+      // Sample sizes (keep modest to avoid rate limits)
+      MAX_AI_RESULTS_PER_SOURCE: 200,
+      MAX_BASELINE_RESULTS_PER_SOURCE: 200,
+
+      // Caching to reduce throttling
+      CACHE_TTL_MINUTES: 60,
+
+      // If everything fails, use demo data so dashboard isn't empty
+      ALLOW_DEMO_FALLBACK: true
+    };
+
+    /************************************************************
+     * 1) STATIC "NKU COVERAGE" (you can keep this as-is)
+     ************************************************************/
+    const coverageStatic = {
+      columns: ["INF 125 (AI Literacy)", "INF 120 (Python)", "INF 286 (Web)", "IS/BA Analytics", "Gen-Ed / Core"],
+      rows: [
+        {
+          family:"GenAI tools & workflows",
+          cells: [2,1,1,2,2],
+          drill: {
+            roles:["Business Analyst","Marketing Analyst","Operations Specialist","Junior Developer"],
+            keywords:["prompting","workflow automation","copilot","chatgpt","ai assistant"],
+            quickWins:[
+              "Add a 1-week lab: ‘Design a repeatable AI workflow’ (inputs → prompts → checks → outputs).",
+              "Require a citation + verification checklist for AI-assisted work.",
+              "Assess with a rubric (clarity, safety, iteration, documentation)."
+            ]
+          }
+        },
+        {
+          family:"Data foundations (SQL / BI)",
+          cells: [1,2,1,3,1],
+          drill: {
+            roles:["Data Analyst","Operations Analyst","Finance Analyst"],
+            keywords:["sql","dashboard","power bi","tableau","data literacy"],
+            quickWins:[
+              "Embed a ‘data-to-decision’ mini-project in a gateway course.",
+              "Add a ‘dashboard critique’ assignment (executive storytelling)."
+            ]
+          }
+        },
+        {
+          family:"Automation (Python / scripting)",
+          cells: [1,3,1,2,0],
+          drill: {
+            roles:["Junior Developer","Automation Analyst","Systems Analyst"],
+            keywords:["python","automation","scripting","api","etl"],
+            quickWins:[
+              "Add ‘small automation’ labs tied to real business tasks (CSV → cleaned output).",
+              "Introduce ‘build once, reuse’ packaging mindset."
+            ]
+          }
+        },
+        {
+          family:"Governance (evaluation, policy, ethics)",
+          cells: [3,1,0,1,2],
+          drill: {
+            roles:["Compliance Analyst","Risk Analyst","Project Manager"],
+            keywords:["responsible ai","evaluation","risk","policy","governance"],
+            quickWins:[
+              "Add a 30-min ‘AI risk’ module + reflection + rubric.",
+              "Require documentation: model/tool used, data sensitivity, limitations."
+            ]
+          }
+        },
+        {
+          family:"Human skills (communication, change mgmt)",
+          cells: [2,1,1,2,3],
+          drill: {
+            roles:["Project Coordinator","Business Analyst","Customer Success"],
+            keywords:["stakeholder","communication","change management","presentation"],
+            quickWins:[
+              "Require ‘exec-ready 1-pager’ deliverables for projects.",
+              "Add a ‘communicate uncertainty’ micro-lesson."
+            ]
+          }
+        }
+      ]
+    };
+
+    /************************************************************
+     * 2) STATE
+     ************************************************************/
+    let currentAudience = "all";
+    let segChart = null;
+
+    // This object gets filled from live API computation:
+    const dashboardData = {
+      lastRefresh: "—",
+      audiences: ["all","business","informatics","health"],
+      kpis: {
+        all: {
+          aiShare: { value:"—", delta:"—", trend:[1,1,1,1,1,1,1,1,1,1,1,1] },
+          fastFamily: { value:"—", delta:"—", trend:[1,1,1,1,1,1,1,1,1,1,1,1] },
+          noncsShare: { value:"—", delta:"—", trend:[1,1,1,1,1,1,1,1,1,1,1,1] },
+          wagePremium: { value:"N/A", delta:"N/A", trend:[1,1,1,1,1,1,1,1,1,1,1,1] }
+        }
+      },
+      topNow: { all: [] },
+      rising: { all: [] },
+      coverage: { columns: coverageStatic.columns, rows: [] }, // demandIndex injected at runtime
+      segmentation: { all: { label:"Top employers/organizations", labels: [], values: [] } },
+      actionBoard: [
+        { tag:"Quick win (30–60 days)", title:"Embed AI workflow labs + rubric", desc:"Add a repeatable AI workflow assignment (inputs → prompts → checks → outputs) in 2–3 gateway courses." },
+        { tag:"Quick win (30–60 days)", title:"Standardize AI usage policy language", desc:"Simple guidance: what’s allowed, what must be cited, and what must be verified." },
+        { tag:"1 semester", title:"Launch micro-badges by skill family", desc:"GenAI workflows, Data literacy, Automation, Governance—each with 1 project + assessment." },
+        { tag:"1 semester", title:"Partner project pilots", desc:"Align 3 employer projects to the top 3 coverage gaps (deliverables: exec dashboard + demo)." },
+        { tag:"12 months", title:"Program-level mapping & reporting", desc:"Create a living coverage map of AI skills across programs and measure improvements each term." },
+        { tag:"12 months", title:"Assessment + outcomes story", desc:"Report: skills coverage, student artifacts, placement data, and employer feedback." }
+      ],
+      sources: {
+        primary: [
+          { name:"USAJOBS Search API", use:"Federal job postings (trusted anchor)", notes:"Often requires a small server/proxy to add required headers." },
+          { name:"Adzuna API / Jooble API", use:"Broader private-sector job posting coverage", notes:"Sample-based counts; coverage varies by provider." }
+        ],
+        definitions: [
+          { term:"AI-skill job share", definition:"Share of baseline postings that mention AI terms (sample-based)." },
+          { term:"Top skills", definition:"Most frequent keyword mentions in titles/descriptions in the last 90 days." },
+          { term:"Fastest rising", definition:"Largest growth in keyword mentions in last 90 days vs prior 90 days." }
+        ],
+        refreshCadence: `On load + manual refresh. Cached for ${CONFIG.CACHE_TTL_MINUTES} minutes to reduce rate limits.`
+      }
+    };
+
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+    function setText(sel, txt){ const el = $(sel); if(el) el.textContent = txt; }
+
+    function escapeHtml(s){
+      return String(s ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function sparkPoints(values){
+      const max = Math.max(...values);
+      const min = Math.min(...values);
+      const range = (max - min) || 1;
+      return values.map((v,i)=>{
+        const x = (i/(values.length-1)) * 120;
+        const y = 34 - ((v - min)/range)*30;
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      }).join(" ");
+    }
+
+    function coverageClass(level){ return ["lvl0","lvl1","lvl2","lvl3"][level] || "lvl0"; }
+    function coverageLabel(level){ return ["None","Mentioned","Practiced","Assessed"][level] || "None"; }
+
+    /************************************************************
+     * 3) SKILL DICTIONARY (simple keyword extraction)
+     ************************************************************/
+    const SKILLS = [
+      // GenAI tools & workflows
+      { skill:"Prompting & workflow design", family:"GenAI tools & workflows", patterns:[/prompt/ig,/prompting/ig,/workflow/ig,/agentic/ig,/agent\b/ig,/rag\b/ig] },
+      { skill:"AI tool proficiency (Copilot/ChatGPT)", family:"GenAI tools & workflows", patterns:[/chatgpt/ig,/copilot/ig,/claude/ig,/gemini/ig,/llama/ig] },
+      { skill:"LLM application development", family:"GenAI tools & workflows", patterns:[/\bllm\b/ig,/langchain/ig,/llamaindex/ig,/openai api/ig,/function calling/ig] },
+
+      // Data foundations
+      { skill:"SQL / data querying", family:"Data foundations (SQL / BI)", patterns:[/\bsql\b/ig,/postgres/ig,/mysql/ig,/snowflake/ig,/bigquery/ig] },
+      { skill:"Dashboards (Power BI/Tableau)", family:"Data foundations (SQL / BI)", patterns:[/power bi/ig,/tableau/ig,/looker/ig,/dashboard/ig] },
+      { skill:"Data literacy & analytics", family:"Data foundations (SQL / BI)", patterns:[/analytics/ig,/data literacy/ig,/kpi/ig,/insight/ig] },
+
+      // Automation
+      { skill:"Python automation", family:"Automation (Python / scripting)", patterns:[/\bpython\b/ig,/pandas/ig,/automation/ig,/scripting/ig,/etl/ig,/api integration/ig] },
+      { skill:"Cloud & APIs", family:"Automation (Python / scripting)", patterns:[/\bapi\b/ig,/rest\b/ig,/aws/ig,/azure/ig,/gcp/ig] },
+
+      // Governance
+      { skill:"Model evaluation & testing", family:"Governance (evaluation, policy, ethics)", patterns:[/evaluation/ig,/red team/ig,/red-team/ig,/testing/ig,/benchmark/ig] },
+      { skill:"AI governance & policy", family:"Governance (evaluation, policy, ethics)", patterns:[/governance/ig,/policy/ig,/compliance/ig,/risk/ig,/nist/ig] },
+      { skill:"Responsible AI & ethics", family:"Governance (evaluation, policy, ethics)", patterns:[/responsible ai/ig,/ethic/ig,/fairness/ig,/bias/ig,/transparen/ig] },
+
+      // Human skills
+      { skill:"Stakeholder communication", family:"Human skills (communication, change mgmt)", patterns:[/stakeholder/ig,/communication/ig,/presentation/ig,/storytelling/ig] },
+      { skill:"Change management", family:"Human skills (communication, change mgmt)", patterns:[/change management/ig,/adoption/ig,/training/ig] }
+    ];
+
+    const FAMILY_ORDER = [
+      "GenAI tools & workflows",
+      "Data foundations (SQL / BI)",
+      "Automation (Python / scripting)",
+      "Governance (evaluation, policy, ethics)",
+      "Human skills (communication, change mgmt)"
+    ];
+
+    const AI_TERMS = [/artificial intelligence/ig,/\bai\b/ig,/\bml\b/ig,/machine learning/ig,/\bllm\b/ig,/genai/ig,/chatgpt/ig,/copilot/ig];
+
+    /************************************************************
+     * 4) API FETCHERS
+     ************************************************************/
+
+    // --- USAJOBS via proxy ---
+    // Expected proxy contract: GET {USAJOBS_PROXY_URL}?Keyword=...&ResultsPerPage=...&Page=...
+    // Proxy should call https://data.usajobs.gov/api/search with required headers.
+    async function fetchUsaJobs({ keyword, resultsPerPage=50, page=1 }){
+      if(!CONFIG.USAJOBS_PROXY_URL){
+        throw new Error("USAJOBS_PROXY_URL not set. Add a proxy endpoint (recommended).");
+      }
+      const url = new URL(CONFIG.USAJOBS_PROXY_URL, location.origin);
+      url.searchParams.set("Keyword", keyword);
+      url.searchParams.set("ResultsPerPage", String(resultsPerPage));
+      url.searchParams.set("Page", String(page));
+      // Optional filters (uncomment if you want):
+      // url.searchParams.set("LocationName","United States");
+
+      const res = await fetch(url.toString(), { cache:"no-store" });
+      if(!res.ok) throw new Error(`USAJOBS proxy failed (${res.status})`);
+      const data = await res.json();
+
+      // Normalize USAJOBS response (SearchResult -> SearchResultItems)
+      const items = data?.SearchResult?.SearchResultItems || [];
+      const jobs = items.map(it => {
+        const m = it?.MatchedObjectDescriptor || {};
+        const pos = (m?.PositionLocation || [])[0] || {};
+        return {
+          source: "USAJOBS",
+          title: m.PositionTitle || "",
+          company: m.OrganizationName || "U.S. Government",
+          location: pos.LocationName || m.PositionLocationDisplay || "United States",
+          created: m.PublicationStartDate || m.ApplicationStartDate || m.PositionStartDate || "",
+          description: (m?.UserArea?.Details?.JobSummary || m?.QualificationSummary || "").toString(),
+          url: m.PositionURI || m.ApplyURI?.[0] || ""
+        };
+      });
+      return { raw:data, jobs };
+    }
+
+    // --- ADZUNA (direct OR proxy) ---
+    // Direct: https://api.adzuna.com/v1/api/jobs/{country}/search/{page}?app_id=...&app_key=...&what=...&results_per_page=...
+    async function fetchAdzuna({ what, resultsPerPage=50, page=1 }){
+      // If you provided a proxy, use it (best practice)
+      if (CONFIG.ADZUNA_PROXY_URL){
+        const u = new URL(CONFIG.ADZUNA_PROXY_URL, location.origin);
+        u.searchParams.set("what", what);
+        u.searchParams.set("page", String(page));
+        u.searchParams.set("results_per_page", String(resultsPerPage));
+        const res = await fetch(u.toString(), { cache:"no-store" });
+        if(!res.ok) throw new Error(`Adzuna proxy failed (${res.status})`);
+        const data = await res.json();
+        return normalizeAdzuna(data);
+      }
+
+      // Direct (keys visible in client)
+      const { APP_ID, APP_KEY, COUNTRY } = CONFIG.ADZUNA;
+      if(!APP_ID || !APP_KEY) throw new Error("Adzuna APP_ID/APP_KEY missing (or set ADZUNA_PROXY_URL).");
+
+      const url = new URL(`https://api.adzuna.com/v1/api/jobs/${encodeURIComponent(COUNTRY)}/search/${encodeURIComponent(page)}`);
+      url.searchParams.set("app_id", APP_ID);
+      url.searchParams.set("app_key", APP_KEY);
+      url.searchParams.set("what", what);
+      url.searchParams.set("results_per_page", String(resultsPerPage));
+      url.searchParams.set("content-type","application/json");
+
+      const res = await fetch(url.toString(), { cache:"no-store" });
+      if(!res.ok) throw new Error(`Adzuna failed (${res.status})`);
+      const data = await res.json();
+      return normalizeAdzuna(data);
+    }
+
+    function normalizeAdzuna(data){
+      const results = data?.results || [];
+      const jobs = results.map(r => ({
+        source: "Adzuna",
+        title: r.title || "",
+        company: r.company?.display_name || "Unknown",
+        location: r.location?.display_name || "",
+        created: r.created || "",
+        description: (r.description || "").toString(),
+        url: r.redirect_url || r.adref || ""
+      }));
+      return { raw:data, jobs };
+    }
+
+    // --- JOOBLE (recommended via proxy) ---
+    // Expected proxy contract: POST {JOOBLE_PROXY_URL} with JSON { keywords, location, page, ... }
+    async function fetchJooble({ keywords, location="", page=1 }){
+      if(!CONFIG.JOOBLE_PROXY_URL) throw new Error("JOOBLE_PROXY_URL not set. Use a proxy to keep your key private.");
+      const res = await fetch(CONFIG.JOOBLE_PROXY_URL, {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ keywords, location, page })
+      });
+      if(!res.ok) throw new Error(`Jooble proxy failed (${res.status})`);
+      const data = await res.json();
+      // Jooble commonly returns { jobs:[...] } (proxy may map from provider response)
+      const results = data?.jobs || data?.data?.jobs || [];
+      const jobs = results.map(r => ({
+        source: "Jooble",
+        title: r.title || "",
+        company: r.company || r.companyname || "Unknown",
+        location: r.location || r.locationname || "",
+        created: r.updated || r.created || "",
+        description: (r.snippet || r.description || "").toString(),
+        url: r.link || r.url || ""
+      }));
+      return { raw:data, jobs };
+    }
+
+    /************************************************************
+     * 5) CACHE WRAPPER
+     ************************************************************/
+    const cacheKey = (k) => `nku_dashboard_cache_v1:${k}`;
+    function getCache(k){
+      try{
+        const v = localStorage.getItem(cacheKey(k));
+        if(!v) return null;
+        const parsed = JSON.parse(v);
+        if(!parsed?.ts) return null;
+        const ageMin = (Date.now() - parsed.ts) / 60000;
+        if(ageMin > CONFIG.CACHE_TTL_MINUTES) return null;
+        return parsed.value;
+      }catch{return null;}
+    }
+    function setCache(k, value){
+      try{
+        localStorage.setItem(cacheKey(k), JSON.stringify({ ts: Date.now(), value }));
+      }catch{}
+    }
+
+    /************************************************************
+     * 6) METRICS + TRANSFORMS
+     ************************************************************/
+    function parseDateSafe(s){
+      const d = new Date(s);
+      return isNaN(d.getTime()) ? null : d;
+    }
+    function daysAgo(n){
+      const d = new Date();
+      d.setDate(d.getDate() - n);
+      return d;
+    }
+    function withinDays(job, n){
+      const d = parseDateSafe(job.created);
+      if(!d) return false;
+      return d >= daysAgo(n);
+    }
+
+    function countMatches(text, regexList){
+      if(!text) return 0;
+      let c = 0;
+      for(const rx of regexList){
+        const m = text.match(rx);
+        if(m) c += m.length;
+      }
+      return c;
+    }
+
+    function jobText(job){
+      return `${job.title||""} ${job.company||""} ${job.location||""} ${job.description||""}`.toLowerCase();
+    }
+
+    // Basic heuristic: "non-CS" if title doesn't look like software/dev/data-engineering heavy.
+    const CS_TITLE_HINTS = [/software/ig,/developer/ig,/engineer/ig,/\bdata scientist\b/ig,/\bml engineer\b/ig,/\bai engineer\b/ig,/\bdevops\b/ig,/\bcloud\b/ig];
+    function isNonCS(job){
+      const t = (job.title||"");
+      return !CS_TITLE_HINTS.some(rx => rx.test(t));
+    }
+
+    function monthKey(d){
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,"0");
+      return `${y}-${m}`;
+    }
+
+    function lastNMonthsKeys(n=12){
+      const keys = [];
+      const now = new Date();
+      for(let i=n-1;i>=0;i--){
+        const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+        keys.push(monthKey(d));
+      }
+      return keys;
+    }
+
+    function buildMonthlyTrend(jobs, predicate){
+      const keys = lastNMonthsKeys(12);
+      const map = new Map(keys.map(k=>[k,0]));
+      for(const j of jobs){
+        const d = parseDateSafe(j.created);
+        if(!d) continue;
+        const k = monthKey(d);
+        if(!map.has(k)) continue;
+        if(predicate(j)) map.set(k, map.get(k)+1);
+      }
+      return keys.map(k=>map.get(k));
+    }
+
+    function computeSkillCounts(jobs){
+      // returns { skill -> {count90, countPrev90, family} }
+      const out = {};
+      for(const s of SKILLS){
+        out[s.skill] = { family:s.family, count90:0, countPrev90:0 };
+      }
+
+      for(const j of jobs){
+        const txt = jobText(j);
+        const in90 = withinDays(j, 90);
+        const inPrev90 = (!in90) && withinDays(j, 180); // 90-180 window
+        for(const s of SKILLS){
+          const hits = countMatches(txt, s.patterns);
+          if(!hits) continue;
+          if(in90) out[s.skill].count90 += hits;
+          else if(inPrev90) out[s.skill].countPrev90 += hits;
+        }
+      }
+      return out;
+    }
+
+    function topSkillsFromCounts(counts, topN=8){
+      const rows = Object.entries(counts).map(([skill,v]) => ({
+        skill,
+        family: v.family,
+        count90: v.count90,
+        countPrev90: v.countPrev90
+      }));
+
+      const topNow = rows
+        .sort((a,b)=> b.count90 - a.count90)
+        .slice(0, topN)
+        .map(r => ({ skill:r.skill, family:r.family, metric:String(r.count90), note:"mentions (90d)" }));
+
+      const rising = rows
+        .filter(r => r.count90 > 0)
+        .map(r => {
+          const prev = r.countPrev90;
+          const growth = prev <= 0 ? (r.count90 >= 3 ? 999 : 200) : ((r.count90 - prev)/prev)*100;
+          return { ...r, growth };
+        })
+        .sort((a,b)=> b.growth - a.growth)
+        .slice(0, topN)
+        .map(r => ({
+          skill:r.skill,
+          family:r.family,
+          metric: (r.growth >= 999 ? "New" : `${Math.round(r.growth)}%`),
+          note:"vs prior 90d"
+        }));
+
+      return { topNow, rising };
+    }
+
+    function computeFastestFamily(counts){
+      // Aggregate by family for 90d vs prev90
+      const fam = {};
+      for(const [skill,v] of Object.entries(counts)){
+        fam[v.family] = fam[v.family] || { count90:0, countPrev90:0 };
+        fam[v.family].count90 += v.count90;
+        fam[v.family].countPrev90 += v.countPrev90;
+      }
+      let best = { family:"—", growth:-Infinity, count90:0, countPrev90:0 };
+      for(const [family, v] of Object.entries(fam)){
+        const prev = v.countPrev90;
+        const growth = prev <= 0 ? (v.count90 >= 5 ? 999 : 200) : ((v.count90 - prev)/prev)*100;
+        if(growth > best.growth){
+          best = { family, growth, count90: v.count90, countPrev90: v.countPrev90 };
+        }
+      }
+      return best;
+    }
+
+    function computeDemandIndexByFamily(aiJobs){
+      // Demand index (0-100-ish) based on share of mentions across families in 90d.
+      const counts = {};
+      for(const fam of FAMILY_ORDER) counts[fam] = 0;
+
+      for(const j of aiJobs){
+        if(!withinDays(j,90)) continue;
+        const txt = jobText(j);
+        for(const s of SKILLS){
+          const hits = countMatches(txt, s.patterns);
+          if(hits) counts[s.family] = (counts[s.family]||0) + hits;
+        }
+      }
+      const values = Object.values(counts);
+      const max = Math.max(1, ...values);
+      const idx = {};
+      for(const fam of Object.keys(counts)){
+        idx[fam] = Math.round((counts[fam]/max)*100);
+      }
+      return idx;
+    }
+
+    function computeSegmentationTopEmployers(aiJobs, topN=8){
+      const map = new Map();
+      for(const j of aiJobs){
+        if(!withinDays(j, 180)) continue;
+        const k = (j.company || "Unknown").trim() || "Unknown";
+        map.set(k, (map.get(k)||0) + 1);
+      }
+      const arr = Array.from(map.entries()).sort((a,b)=>b[1]-a[1]).slice(0, topN);
+      return {
+        label: "Top employers/organizations",
+        labels: arr.map(x=>x[0].length>26 ? x[0].slice(0,26)+"…" : x[0]),
+        values: arr.map(x=>x[1])
+      };
+    }
+
+    /************************************************************
+     * 7) LOAD + BUILD DASHBOARD
+     ************************************************************/
+    async function loadBlendedData({ force=false } = {}){
+      setText("#statusText", "Loading…");
+      setText("#statusUsa", "—");
+      setText("#statusPriv", "—");
+
+      const cache = !force ? getCache("blend_v1") : null;
+      if(cache){
+        setText("#statusText", "Using cached data");
+        applyComputedDashboard(cache);
+        return;
+      }
+
+      // 1) Fetch baseline + AI from both sources (sample based)
+      const aiKey = CONFIG.AI_QUERY;
+      const baseKey = CONFIG.BASELINE_QUERY;
+
+      const aiJobs = [];
+      const baseJobs = [];
+      let usaOk = false;
+      let privOk = false;
+
+      // --- USAJOBS ---
+      try{
+        const usaAi = await fetchPagedUsaJobs(aiKey, CONFIG.MAX_AI_RESULTS_PER_SOURCE);
+        const usaBase = await fetchPagedUsaJobs(baseKey, CONFIG.MAX_BASELINE_RESULTS_PER_SOURCE);
+        aiJobs.push(...usaAi);
+        baseJobs.push(...usaBase);
+        usaOk = true;
+        setText("#statusUsa", `OK (${usaAi.length} AI / ${usaBase.length} baseline)`);
+      }catch(err){
+        console.warn(err);
+        setText("#statusUsa", `Failed`);
+      }
+
+      // --- Private provider ---
+      try{
+        if(CONFIG.PRIVATE_PROVIDER === "adzuna"){
+          const pAi = await fetchPagedAdzuna(aiKey, CONFIG.MAX_AI_RESULTS_PER_SOURCE);
+          const pBase = await fetchPagedAdzuna(baseKey, CONFIG.MAX_BASELINE_RESULTS_PER_SOURCE);
+          aiJobs.push(...pAi);
+          baseJobs.push(...pBase);
+          privOk = true;
+          setText("#statusPriv", `Adzuna OK (${pAi.length} AI / ${pBase.length} baseline)`);
+        }else{
+          const pAi = await fetchPagedJooble(aiKey, CONFIG.MAX_AI_RESULTS_PER_SOURCE);
+          const pBase = await fetchPagedJooble(baseKey, CONFIG.MAX_BASELINE_RESULTS_PER_SOURCE);
+          aiJobs.push(...pAi);
+          baseJobs.push(...pBase);
+          privOk = true;
+          setText("#statusPriv", `Jooble OK (${pAi.length} AI / ${pBase.length} baseline)`);
+        }
+      }catch(err){
+        console.warn(err);
+        setText("#statusPriv", `Failed`);
+      }
+
+      // If both failed, fallback to demo if allowed
+      if(!usaOk && !privOk){
+        if(CONFIG.ALLOW_DEMO_FALLBACK){
+          setText("#statusText", "Both sources failed → using demo data");
+          const demo = buildDemoComputed();
+          setCache("blend_v1", demo);
+          applyComputedDashboard(demo);
+          return;
+        }
+        throw new Error("Both sources failed and demo fallback disabled.");
+      }
+
+      setText("#statusText", "Computed metrics");
+      const computed = computeDashboardFromJobs({ aiJobs, baseJobs, usaOk, privOk });
+      setCache("blend_v1", computed);
+      applyComputedDashboard(computed);
+    }
+
+    async function fetchPagedUsaJobs(keyword, maxTotal){
+      const perPage = 50;
+      const pages = Math.max(1, Math.ceil(maxTotal / perPage));
+      const out = [];
+      for(let p=1;p<=pages;p++){
+        const { jobs } = await fetchUsaJobs({ keyword, resultsPerPage: perPage, page: p });
+        out.push(...jobs);
+        if(jobs.length < perPage) break;
+      }
+      return out.slice(0, maxTotal);
+    }
+
+    async function fetchPagedAdzuna(what, maxTotal){
+      const perPage = Math.min(CONFIG.ADZUNA.RESULTS_PER_PAGE || 50, 50);
+      const pages = Math.max(1, Math.ceil(maxTotal / perPage));
+      const out = [];
+      for(let p=1;p<=pages;p++){
+        const { jobs } = await fetchAdzuna({ what, resultsPerPage: perPage, page: p });
+        out.push(...jobs);
+        if(jobs.length < perPage) break;
+      }
+      return out.slice(0, maxTotal);
+    }
+
+    async function fetchPagedJooble(keywords, maxTotal){
+      // Jooble paging varies; we call a few pages and stop if short.
+      const pageSizeGuess = 20;
+      const pages = Math.max(1, Math.ceil(maxTotal / pageSizeGuess));
+      const out = [];
+      for(let p=1;p<=pages;p++){
+        const { jobs } = await fetchJooble({ keywords, page: p });
+        out.push(...jobs);
+        if(jobs.length < pageSizeGuess) break;
+      }
+      return out.slice(0, maxTotal);
+    }
+
+    function computeDashboardFromJobs({ aiJobs, baseJobs, usaOk, privOk }){
+      // KPI 1: AI share of baseline postings that mention AI terms
+      const baselineMentions = baseJobs.filter(j => countMatches(jobText(j), AI_TERMS) > 0);
+      const aiShare = baseJobs.length ? (baselineMentions.length / baseJobs.length) * 100 : 0;
+
+      // Monthly trend for baseline AI mentions (12 months)
+      const aiShareTrendRaw = buildMonthlyTrend(baseJobs, (j)=> countMatches(jobText(j), AI_TERMS)>0);
+      const baseTrendRaw = buildMonthlyTrend(baseJobs, ()=>true);
+      const aiShareTrend = aiShareTrendRaw.map((v,i)=>{
+        const denom = baseTrendRaw[i] || 1;
+        return Math.round((v/denom)*100);
+      });
+
+      // KPI 3: Non-CS share in AI postings (based on title heuristic)
+      const noncs = aiJobs.filter(isNonCS);
+      const noncsShare = aiJobs.length ? (noncs.length/aiJobs.length)*100 : 0;
+      const noncsTrend = buildMonthlyTrend(aiJobs, (j)=> isNonCS(j));
+
+      // Skills
+      const counts = computeSkillCounts(aiJobs);
+      const { topNow, rising } = topSkillsFromCounts(counts, 8);
+
+      // KPI 2: fastest-growing family
+      const bestFam = computeFastestFamily(counts);
+      const famTrend = buildFamilyTrend(aiJobs, bestFam.family);
+
+      // Demand index injected into coverage rows
+      const demandIdx = computeDemandIndexByFamily(aiJobs);
+      const coverageRows = coverageStatic.rows.map(r => ({
+        ...r,
+        demandIndex: demandIdx[r.family] ?? 0
+      }));
+
+      // Segmentation
+      const seg = computeSegmentationTopEmployers(aiJobs, 8);
+
+      // Simple wage premium not available
+      const wageTrend = aiShareTrend.map(v=>v); // placeholder spark
+
+      const stamp = new Date();
+      const lastRefresh = stamp.toLocaleString(undefined, { year:"numeric", month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+
+      return {
+        lastRefresh,
+        kpis: {
+          all: {
+            aiShare: {
+              value: `${aiShare.toFixed(1)}%`,
+              delta: `${deltaFromTrend(aiShareTrend)} pts`,
+              trend: aiShareTrend
+            },
+            fastFamily: {
+              value: bestFam.family,
+              delta: (bestFam.growth >= 999 ? "New surge" : `+${Math.round(bestFam.growth)}%`),
+              trend: famTrend
+            },
+            noncsShare: {
+              value: `${noncsShare.toFixed(0)}%`,
+              delta: `${deltaFromTrend(noncsTrend)} jobs`,
+              trend: normalizeTrend(noncsTrend)
+            },
+            wagePremium: {
+              value: "N/A",
+              delta: "N/A",
+              trend: wageTrend
+            }
+          }
+        },
+        topNow: { all: topNow },
+        rising: { all: rising },
+        coverage: { columns: coverageStatic.columns, rows: coverageRows },
+        segmentation: { all: seg },
+        sourcesNote: buildSourcesNote({ usaOk, privOk }),
+        usaOk, privOk,
+        aiCount: aiJobs.length,
+        baseCount: baseJobs.length
+      };
+    }
+
+    function buildFamilyTrend(aiJobs, family){
+      // trend is monthly "mentions" for that family, normalized
+      const keys = lastNMonthsKeys(12);
+      const map = new Map(keys.map(k=>[k,0]));
+      for(const j of aiJobs){
+        const d = parseDateSafe(j.created);
+        if(!d) continue;
+        const k = monthKey(d);
+        if(!map.has(k)) continue;
+
+        const txt = jobText(j);
+        let hits = 0;
+        for(const s of SKILLS){
+          if(s.family !== family) continue;
+          hits += countMatches(txt, s.patterns);
+        }
+        map.set(k, map.get(k) + hits);
+      }
+      const raw = keys.map(k=>map.get(k));
+      return normalizeTrend(raw);
+    }
+
+    function normalizeTrend(raw){
+      const max = Math.max(1, ...raw);
+      return raw.map(v=> Math.round((v/max)*100));
+    }
+
+    function deltaFromTrend(tr){
+      if(!tr || tr.length < 2) return 0;
+      const a = tr[tr.length-2] ?? 0;
+      const b = tr[tr.length-1] ?? 0;
+      return (b - a).toFixed(0);
+    }
+
+    function buildSourcesNote({ usaOk, privOk }){
+      const parts = [];
+      parts.push(usaOk ? "USAJOBS: OK" : "USAJOBS: not connected");
+      parts.push(privOk ? `${CONFIG.PRIVATE_PROVIDER.toUpperCase()}: OK` : `${CONFIG.PRIVATE_PROVIDER.toUpperCase()}: not connected`);
+      return parts.join(" · ");
+    }
+
+    function buildDemoComputed(){
+      // Minimal demo to keep UI alive (if APIs fail)
+      const now = new Date();
+      const lastRefresh = now.toLocaleString(undefined, { year:"numeric", month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+
+      return {
+        lastRefresh,
+        kpis:{
+          all:{
+            aiShare:{ value:"17.9%", delta:"+1 pts", trend:[8,9,9,10,11,12,13,14,15,16,17,18] },
+            fastFamily:{ value:"GenAI tools & workflows", delta:"+34%", trend:[15,16,18,20,24,28,30,34,40,45,52,60] },
+            noncsShare:{ value:"61%", delta:"+2", trend:[45,46,48,49,50,52,54,55,57,58,60,61] },
+            wagePremium:{ value:"N/A", delta:"N/A", trend:[10,10,10,10,10,10,10,10,10,10,10,10] }
+          }
+        },
+        topNow:{ all:[
+          { skill:"Prompting & workflow design", family:"GenAI tools & workflows", metric:"62", note:"mentions (90d)" },
+          { skill:"AI tool proficiency (Copilot/ChatGPT)", family:"GenAI tools & workflows", metric:"57", note:"mentions (90d)" },
+          { skill:"SQL / data querying", family:"Data foundations (SQL / BI)", metric:"45", note:"mentions (90d)" },
+          { skill:"Dashboards (Power BI/Tableau)", family:"Data foundations (SQL / BI)", metric:"38", note:"mentions (90d)" },
+          { skill:"Python automation", family:"Automation (Python / scripting)", metric:"34", note:"mentions (90d)" },
+          { skill:"AI governance & policy", family:"Governance (evaluation, policy, ethics)", metric:"22", note:"mentions (90d)" },
+          { skill:"Model evaluation & testing", family:"Governance (evaluation, policy, ethics)", metric:"18", note:"mentions (90d)" },
+          { skill:"Stakeholder communication", family:"Human skills (communication, change mgmt)", metric:"16", note:"mentions (90d)" }
+        ]},
+        rising:{ all:[
+          { skill:"LLM application development", family:"GenAI tools & workflows", metric:"New", note:"vs prior 90d" },
+          { skill:"Model evaluation & testing", family:"Governance (evaluation, policy, ethics)", metric:"58%", note:"vs prior 90d" },
+          { skill:"AI governance & policy", family:"Governance (evaluation, policy, ethics)", metric:"44%", note:"vs prior 90d" },
+          { skill:"Python automation", family:"Automation (Python / scripting)", metric:"31%", note:"vs prior 90d" }
+        ]},
+        coverage:{
+          columns: coverageStatic.columns,
+          rows: coverageStatic.rows.map((r,i)=>({ ...r, demandIndex:[92,86,74,68,63][i] }))
+        },
+        segmentation:{
+          all:{
+            label:"Top employers/organizations",
+            labels:["U.S. Gov (sample)","Big Tech","Healthcare","Finance","Consulting","Retail","Manufacturing","Other"],
+            values:[18,16,12,10,9,8,7,6]
+          }
+        },
+        sourcesNote:"Demo data (API not connected)",
+        usaOk:false, privOk:false,
+        aiCount:0, baseCount:0
+      };
+    }
+
+    /************************************************************
+     * 8) RENDERERS (UI)
+     ************************************************************/
+    function renderHeader(){
+      setText("#lastRefresh", dashboardData.lastRefresh);
+    }
+
+    function renderKpis(){
+      const k = dashboardData.kpis[currentAudience];
+
+      setText("#kpi-aiShare", k.aiShare.value);
+      setText("#kpi-aiShareDelta", `▲ ${k.aiShare.delta}`);
+      $("#spark-aiShare").setAttribute("points", sparkPoints(k.aiShare.trend));
+
+      setText("#kpi-fastFamily", k.fastFamily.value);
+      setText("#kpi-fastFamilyDelta", `▲ ${k.fastFamily.delta}`);
+      $("#spark-fastFamily").setAttribute("points", sparkPoints(k.fastFamily.trend));
+
+      setText("#kpi-noncsShare", k.noncsShare.value);
+      setText("#kpi-noncsDelta", `▲ ${k.noncsShare.delta}`);
+      $("#spark-noncs").setAttribute("points", sparkPoints(k.noncsShare.trend));
+
+      setText("#kpi-wagePremium", k.wagePremium.value);
+      setText("#kpi-wageDelta", `▲ ${k.wagePremium.delta}`);
+      $("#spark-wage").setAttribute("points", sparkPoints(k.wagePremium.trend));
+    }
+
+    function renderRankLists(){
+      const now = dashboardData.topNow[currentAudience] || [];
+      const rising = dashboardData.rising[currentAudience] || [];
+
+      const liTemplate = (item, idx) => `
+        <li>
+          <div class="left">
+            <div class="num" aria-hidden="true">${idx+1}</div>
+            <div style="min-width:0">
+              <div class="skill" title="${escapeHtml(item.skill)}">${escapeHtml(item.skill)}</div>
+              <div class="fam">${escapeHtml(item.family)}</div>
+            </div>
+          </div>
+          <div class="right">
+            <div class="metric">${escapeHtml(item.metric)}</div>
+            <div class="note">${escapeHtml(item.note)}</div>
+          </div>
+        </li>
+      `;
+
+      $("#listNow").innerHTML = now.length ? now.map(liTemplate).join("") : `<li><div class="muted" style="padding:10px 12px">No data yet.</div></li>`;
+      $("#listRising").innerHTML = rising.length ? rising.map(liTemplate).join("") : `<li><div class="muted" style="padding:10px 12px">No data yet.</div></li>`;
+    }
+
+    function renderHeatmap(){
+      const cols = dashboardData.coverage.columns;
+      const rows = dashboardData.coverage.rows;
+
+      const thead = `
+        <thead>
+          <tr>
+            <th>Skill Family</th>
+            ${cols.map(c=>`<th>${escapeHtml(c)}</th>`).join("")}
+            <th>Market Demand Index</th>
+          </tr>
+        </thead>
+      `;
+
+      const tbodyRows = rows.map((r, rIdx) => {
+        const cells = r.cells.map((lvl, cIdx) => {
+          const cls = coverageClass(lvl);
+          const lbl = coverageLabel(lvl);
+          return `
+            <td>
+              <div class="cell ${cls}" role="button" tabindex="0"
+                   data-row="${rIdx}" data-col="${cIdx}"
+                   aria-label="${escapeHtml(r.family)} — ${escapeHtml(cols[cIdx])}: ${lbl}. Click for drilldown.">
+                <span class="lvl">${lbl}</span>
+                <span class="muted" style="font-size:12px">${lvl}</span>
+              </div>
+            </td>
+          `;
+        }).join("");
+
+        return `
+          <tr>
+            <td><span class="chip">${escapeHtml(r.family)}</span></td>
+            ${cells}
+            <td><span class="chip">${Number(r.demandIndex||0)}</span></td>
+          </tr>
+        `;
+      }).join("");
+
+      $("#heatTable").innerHTML = thead + `<tbody>${tbodyRows}</tbody>`;
+
+      $$(".cell", $("#heatTable")).forEach(el=>{
+        el.addEventListener("click", onHeatCellActivate);
+        el.addEventListener("keydown", (e)=>{
+          if(e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            onHeatCellActivate(e);
+          }
+        });
+      });
+    }
+
+    function renderSegmentation(){
+      const seg = dashboardData.segmentation[currentAudience];
+      setText("#segLabel", seg.label);
+
+      const ctx = $("#segChart");
+      if (!window.Chart) {
+        ctx.replaceWith(Object.assign(document.createElement("div"), {
+          className: "muted",
+          style: "font-size:12px",
+          textContent: "Chart.js not available. Replace this section with your preferred chart library or static image."
+        }));
+        return;
+      }
+      if (segChart) segChart.destroy();
+
+      segChart = new Chart(ctx, {
+        type: "bar",
+        data: { labels: seg.labels, datasets: [{ label: seg.label, data: seg.values }] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: true } },
+          scales: { y: { beginAtZero: true, ticks: { precision:0 } } }
+        }
+      });
+    }
+
+    function renderActions(){
+      const items = dashboardData.actionBoard;
+      $("#actions").innerHTML = items.map(it => `
+        <div class="action">
+          <div class="tag">${escapeHtml(it.tag)}</div>
+          <h4>${escapeHtml(it.title)}</h4>
+          <p>${escapeHtml(it.desc)}</p>
+        </div>
+      `).join("");
+    }
+
+    /************************************************************
+     * 9) DRILLDOWN DRAWER
+     ************************************************************/
+    function openDrawer(payload){
+      const drawer = $("#drawer");
+      $("#drawerTitle").textContent = payload.title;
+      $("#drawerSubtitle").textContent = payload.subtitle;
+
+      $("#drawerBody").innerHTML = `
+        <div class="section">
+          <strong>Target roles seeing this skill</strong>
+          <ul>${(payload.roles||[]).map(r=>`<li>${escapeHtml(r)}</li>`).join("") || `<li class="muted">—</li>`}</ul>
+        </div>
+
+        <div class="section">
+          <strong>Posting keywords (examples)</strong>
+          <p>${(payload.keywords||[]).map(k=>`<span class="chip" style="margin:3px 6px 0 0">${escapeHtml(k)}</span>`).join("") || `<span class="muted">—</span>`}</p>
+        </div>
+
+        <div class="section">
+          <strong>Curriculum “quick wins”</strong>
+          <ul>${(payload.quickWins||[]).map(w=>`<li>${escapeHtml(w)}</li>`).join("") || `<li class="muted">—</li>`}</ul>
+        </div>
+
+        <div class="section">
+          <strong>Suggested artifact (exec-ready)</strong>
+          <p>Create a one-page deliverable: <em>problem → approach → evidence → risks → recommendation</em>, plus a short demo.</p>
+        </div>
+      `;
+
+      drawer.classList.add("open");
+    }
+    function closeDrawer(){ $("#drawer").classList.remove("open"); }
+
+    function onHeatCellActivate(e){
+      const el = e.currentTarget;
+      const rowIdx = Number(el.getAttribute("data-row"));
+      const colIdx = Number(el.getAttribute("data-col"));
+
+      const row = dashboardData.coverage.rows[rowIdx];
+      const colName = dashboardData.coverage.columns[colIdx];
+      const lvl = row.cells[colIdx];
+
+      openDrawer({
+        title: `${row.family} — ${colName}`,
+        subtitle: `Coverage: ${coverageLabel(lvl)} (${lvl}) · Demand Index: ${row.demandIndex}`,
+        roles: row.drill.roles,
+        keywords: row.drill.keywords,
+        quickWins: row.drill.quickWins
+      });
+    }
+
+    $("#openSources").addEventListener("click", () => {
+      openDrawer({
+        title: "Data Sources & Definitions",
+        subtitle: `Last refresh: ${dashboardData.lastRefresh}`,
+        roles: [],
+        keywords: [],
+        quickWins: []
+      });
+
+      $("#drawerBody").innerHTML = `
+        <div class="section">
+          <strong>Primary sources</strong>
+          <ul>
+            ${dashboardData.sources.primary.map(s => `
+              <li>
+                <strong>${escapeHtml(s.name)}</strong> — ${escapeHtml(s.use)}<br/>
+                <span class="muted">${escapeHtml(s.notes || "")}</span>
+              </li>
+            `).join("")}
+          </ul>
+        </div>
+
+        <div class="section">
+          <strong>Definitions used in this dashboard</strong>
+          <ul>
+            ${dashboardData.sources.definitions.map(d => `
+              <li><strong>${escapeHtml(d.term)}:</strong> ${escapeHtml(d.definition)}</li>
+            `).join("")}
+          </ul>
+        </div>
+
+        <div class="section">
+          <strong>Refresh cadence</strong>
+          <p>${escapeHtml(dashboardData.sources.refreshCadence)}</p>
+          <p class="muted" style="margin-top:8px">${escapeHtml($("#segSourceNote")?.textContent || "")}</p>
+        </div>
+      `;
+    });
+
+    /************************************************************
+     * 10) AUDIENCE TOGGLE (kept for future segmentation)
+     ************************************************************/
+    function setAudience(aud){
+      currentAudience = aud;
+      $$("#audienceToggle button").forEach(btn=>{
+        const on = btn.dataset.audience === aud;
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+      renderKpis();
+      renderRankLists();
+      renderSegmentation();
+    }
+
+    /************************************************************
+     * 11) APPLY COMPUTED RESULTS TO dashboardData + RERENDER
+     ************************************************************/
+    function applyComputedDashboard(computed){
+      dashboardData.lastRefresh = computed.lastRefresh;
+      dashboardData.kpis = computed.kpis;
+      dashboardData.topNow = computed.topNow;
+      dashboardData.rising = computed.rising;
+      dashboardData.coverage = computed.coverage;
+      dashboardData.segmentation = computed.segmentation;
+
+      const srcNote = computed.sourcesNote || "";
+      $("#segSourceNote").textContent = `Sources: USAJOBS (federal) + ${CONFIG.PRIVATE_PROVIDER.toUpperCase()} (private sector). ${srcNote}. Counts are sample-based.`;
+
+      renderHeader();
+      renderKpis();
+      renderRankLists();
+      renderHeatmap();
+      renderSegmentation();
+      renderActions();
+
+      // status line
+      const ok = (computed.usaOk || computed.privOk);
+      setText("#statusText", ok ? "Live data loaded" : "Demo data");
+    }
+
+    /************************************************************
+     * 12) INIT
+     ************************************************************/
+    function init(){
+      // Baseline render for layout
+      dashboardData.coverage.rows = coverageStatic.rows.map(r=>({ ...r, demandIndex: 0 }));
+      renderHeader();
+      renderKpis();
+      renderRankLists();
+      renderHeatmap();
+      renderSegmentation();
+      renderActions();
+
+      // Toggle wiring
+      $$("#audienceToggle button").forEach(btn=>{
+        btn.addEventListener("click", ()=> setAudience(btn.dataset.audience));
+      });
+
+      // Drawer close
+      $("#drawerClose").addEventListener("click", closeDrawer);
+      document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeDrawer(); });
+
+      // Manual refresh
+      $("#btnRefresh").addEventListener("click", async ()=>{
+        try{
+          setText("#statusText","Refreshing…");
+          await loadBlendedData({ force:true });
+        }catch(err){
+          console.error(err);
+          setText("#statusText", "Refresh failed");
+        }
+      });
+
+      // Load data
+      loadBlendedData().catch(err=>{
+        console.error(err);
+        setText("#statusText", "Load failed");
+        if(CONFIG.ALLOW_DEMO_FALLBACK){
+          const demo = buildDemoComputed();
+          applyComputedDashboard(demo);
+        }
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>
