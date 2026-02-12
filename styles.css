@@ -1,9 +1,5 @@
 /* =========================
-   NKU Exec Dashboard — Executive Clean Theme (Complete CSS)
-   - Cleaner, calmer, more institutional
-   - Reduced visual noise (no glass blur, fewer gradients)
-   - Executive density + scan-friendly layouts
-   - Print/PDF optimized
+   NKU AI Skills Dashboard — Clean Theme (Complete CSS)
    ========================= */
 
 :root {
@@ -293,6 +289,20 @@ h2 {
 .chart-wrap--small canvas {
   max-width: 460px;
   margin-inline: auto;
+}
+
+/* Chart Box */
+.chart-box{
+  position: relative;
+  height: 260px;          /* locking height so it can’t grow the page */
+  width: 100%;
+}
+.chart-box canvas{
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important; /* Chart.js will respect this with maintainAspectRatio:false */
+  display: block;
 }
 
 /* Segment buttons */
