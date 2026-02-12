@@ -175,16 +175,13 @@
     .spark svg{display:block;width:100%;height:100%}
 
     .span-3{grid-column:span 3}
-    .span-4{grid-column:span 4}
     .span-5{grid-column:span 5}
-    .span-6{grid-column:span 6}
     .span-7{grid-column:span 7}
-    .span-8{grid-column:span 8}
     .span-12{grid-column:span 12}
 
     @media (max-width: 980px){
       .span-3{grid-column:span 6}
-      .span-4,.span-5,.span-6,.span-7,.span-8{grid-column:span 12}
+      .span-5,.span-7{grid-column:span 12}
     }
     @media (max-width: 520px){
       .span-3{grid-column:span 12}
@@ -226,30 +223,6 @@
     /* Charts */
     .chartBox{height:280px}
     .chartBoxTall{height:320px}
-
-    /* Exec actions */
-    .actions{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-    }
-    @media (max-width:980px){.actions{grid-template-columns:1fr}}
-    .action{
-      border:1px solid rgba(219,227,239,.75);
-      border-radius: var(--radiusSm);
-      padding:12px;
-      background: rgba(2,6,23,.015);
-    }
-    .tag{
-      display:inline-flex;align-items:center;gap:6px;
-      padding:4px 8px;border-radius:999px;
-      border:1px solid rgba(219,227,239,.85);
-      background:#fff;
-      font-size:12px;font-weight:900;color:var(--muted);
-      margin-bottom:8px;
-    }
-    .action h4{margin:0 0 6px;font-size:13px}
-    .action p{margin:0;font-size:12px;color:var(--muted)}
 
     /* Drawer */
     .drawer{
@@ -511,14 +484,11 @@
     /*****************************************************************
      * CONFIG
      *****************************************************************/
-    // Your Cloudflare Worker (you already have this working)
     const PROXY_BASE = "https://ai-skills-proxy.nealb3.workers.dev";
 
-    // Caching (client side)
     const CACHE_KEY = "uni_exec_ai_dashboard_cache_v1";
     const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 
-    // Terms: USAJOBS = full; Adzuna = reduced to avoid 429
     const AI_TERMS_US = [
       "artificial intelligence","machine learning","generative ai","genai","llm",
       "large language model","chatgpt","copilot"
@@ -528,8 +498,6 @@
     ];
     const BASELINE_TERMS = ["software","analyst","manager"];
 
-    // Audience filters: this is a LIGHT heuristic layer for exec storytelling.
-    // (You can customize as your campus defines these audiences.)
     const AUDIENCE_FILTERS = {
       all: () => true,
       business: (job) => /(analyst|finance|account|marketing|operations|product|strategy|business|supply|procurement)/i.test(job.title + " " + job.description),
@@ -537,7 +505,6 @@
       health: (job) => /(health|clinical|patient|hospital|medical|biostat|epidemi|informatics|care|nursing|pharma)/i.test(job.title + " " + job.description),
     };
 
-    // Skill map used to compute “Top skills” lists.
     const SKILLS = [
       { skill:"Prompting & workflow design", family:"GenAI workflows", keys:["prompt","prompting","workflow","automation","agent","agentic"] },
       { skill:"AI tool proficiency (Copilot/ChatGPT)", family:"GenAI tools", keys:["copilot","chatgpt","assistant"] },
@@ -547,15 +514,6 @@
       { skill:"Model evaluation & testing", family:"Governance", keys:["evaluation","red team","red-team","testing","benchmark","validation"] },
       { skill:"AI ethics & responsible use", family:"Governance", keys:["responsible ai","ethics","fairness","bias","governance","policy","compliance"] },
       { skill:"Security & privacy", family:"Trust", keys:["privacy","security","pii","risk","secure","infosec"] },
-    ];
-
-    const ACTIONS = [
-      { tag:"Quick win (30–60 days)", title:"Add 1 repeatable AI workflow lab in gateway courses", desc:"Inputs → prompt design → verification checklist → output artifact. Grade with a rubric." },
-      { tag:"Quick win (30–60 days)", title:"Publish a student-friendly AI policy + citation standard", desc:"One page: what’s allowed, what must be disclosed, how to verify, and how to cite." },
-      { tag:"1 semester", title:"Launch micro-badges aligned to the top 3 skill families", desc:"GenAI workflows · Governance · Data literacy. Each badge = one assessed artifact." },
-      { tag:"1 semester", title:"Run 3 employer ‘AI-ready’ partner projects", desc:"Target gaps: workflow design, evaluation, dashboards. Deliverable: exec-ready one-pager + demo." },
-      { tag:"12 months", title:"Create a living curriculum coverage map + term reporting", desc:"Map where each skill is introduced/practiced/assessed. Track improvements each term." },
-      { tag:"12 months", title:"Publish an outcomes story for leadership + donors", desc:"Artifacts, placements, employer feedback, and responsible AI guardrails in one narrative." },
     ];
 
     /*****************************************************************
@@ -570,7 +528,6 @@
         .replaceAll('"',"&quot;").replaceAll("'","&#039;");
     }
     function pct(x){ return (x*100).toFixed(1) + "%"; }
-
     function sparkPoints(values){
       if(!values || values.length < 2) return "";
       const max = Math.max(...values), min = Math.min(...values);
@@ -624,7 +581,6 @@
       return { url, json: await fetchJson(url), term };
     }
 
-    // IMPORTANT: Adzuna uses what= (no query=)
     async function fetchAdzuna(term, perPage=25, page=1){
       const t = encodeURIComponent(term);
       const url = `${PROXY_BASE}/adzuna?what=${t}&results_per_page=${perPage}&page=${page}&country=us`;
@@ -632,16 +588,21 @@
     }
 
     /*****************************************************************
-     * NORMALIZERS (extract a consistent job object)
+     * NORMALIZERS
      *****************************************************************/
+    function parseDateSafe(x){
+      if(!x) return null;
+      const d = new Date(x);
+      if(Number.isNaN(d.getTime())) return null;
+      return d.toISOString();
+    }
+
     function normalizeUSAJOBS(payload){
       const items = payload?.SearchResult?.SearchResultItems || [];
       return items.map(it=>{
         const d = it?.MatchedObjectDescriptor || {};
         const details = d?.UserArea?.Details || {};
         const cats = (d?.JobCategory || []).map(c=>c?.Name).filter(Boolean);
-
-        // Try multiple date fields that can appear in USAJOBS payloads
         const dateRaw = d?.PublicationStartDate || d?.PositionStartDate || d?.ApplicationCloseDate || null;
 
         return {
@@ -669,13 +630,6 @@
         url: it?.redirect_url || it?.adref || "",
         date: parseDateSafe(it?.created || it?.created_at || it?.publication_date || null)
       }));
-    }
-
-    function parseDateSafe(x){
-      if(!x) return null;
-      const d = new Date(x);
-      if(Number.isNaN(d.getTime())) return null;
-      return d.toISOString();
     }
 
     function dedupeJobs(jobs){
@@ -743,7 +697,6 @@
     }
 
     function risingList(jobs, limit=8){
-      // “recent vs older slice” (simple heuristic, exec-friendly)
       const sorted = [...jobs].sort((a,b)=>{
         const da = a.date ? new Date(a.date).getTime() : 0;
         const db = b.date ? new Date(b.date).getTime() : 0;
@@ -791,15 +744,12 @@
     }
 
     function trendByMonth(jobs, months=12){
-      // keep only jobs with dates
       const dated = jobs.filter(j => !!j.date).map(j => monthKey(j.date)).filter(Boolean);
       if(!dated.length){
-        // fallback: synthesize a flat trend based on sample count
         const labels = Array.from({length: Math.min(6, months)}, (_,i)=>`M-${Math.min(6, months)-i}`);
         const values = labels.map(()=>jobs.length ? Math.max(1, Math.round(jobs.length/labels.length)) : 0);
         return { labels, values, windowText: "Dates not exposed → using sample window" };
       }
-      // build last N months based on max month in data
       const max = dated.reduce((a,b)=> a>b ? a : b);
       const [Y,M] = max.split("-").map(Number);
       const labels = [];
@@ -812,9 +762,7 @@
         labels.push(key);
       }
       const values = labels.map(k => counts.get(k) || 0);
-
-      const windowText = `${labels[0]} → ${labels[labels.length-1]}`;
-      return { labels, values, windowText };
+      return { labels, values, windowText: `${labels[0]} → ${labels[labels.length-1]}` };
     }
 
     /*****************************************************************
@@ -876,16 +824,6 @@
       $("#listRising").innerHTML = rising.map(liTemplate).join("");
     }
 
-    function renderActions(){
-      $("#actions").innerHTML = ACTIONS.map(a => `
-        <div class="action">
-          <div class="tag">${escapeHtml(a.tag)}</div>
-          <h4>${escapeHtml(a.title)}</h4>
-          <p>${escapeHtml(a.desc)}</p>
-        </div>
-      `).join("");
-    }
-
     function openDrawer(payload){
       $("#drawerTitle").textContent = payload.title;
       $("#drawerSubtitle").textContent = payload.subtitle;
@@ -921,19 +859,6 @@
       return out;
     }
 
-    function readCache(){
-      try{
-        const raw = localStorage.getItem(CACHE_KEY);
-        if(!raw) return null;
-        const obj = JSON.parse(raw);
-        if(Date.now() - obj.time > CACHE_TTL_MS) return null;
-        return obj.data;
-      }catch{ return null; }
-    }
-    function writeCache(data){
-      try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ time: Date.now(), data })); }catch{}
-    }
-
     /*****************************************************************
      * AUDIENCE STATE
      *****************************************************************/
@@ -942,12 +867,9 @@
 
     function applyAudience(aud){
       currentAudience = aud;
-
-      // toggle buttons
       $$("#audienceToggle button").forEach(btn=>{
         btn.setAttribute("aria-pressed", btn.dataset.aud === aud ? "true" : "false");
       });
-
       if(!blended) return;
       renderFromData(blended);
     }
@@ -958,32 +880,26 @@
     function renderFromData(data){
       const audFn = AUDIENCE_FILTERS[currentAudience] || AUDIENCE_FILTERS.all;
 
-      // Audience-filtered view (still based on same fetched dataset)
       const aiJobs = data.aiJobs.filter(audFn);
       const baseJobs = data.baseJobs.filter(audFn);
 
-      // KPIs
       const share = aiJobs.length / Math.max(aiJobs.length + baseJobs.length, 1);
       const noncsShare = aiJobs.length ? (aiJobs.filter(classifyNonCS).length / aiJobs.length) : 0;
 
       setText("#kpiShare", pct(share));
       setText("#kpiAiCount", aiJobs.length.toLocaleString());
 
-      // mix (US vs Adzuna)
       const mixUS = aiJobs.filter(j => j.source === "USAJOBS").length;
       const mixAD = aiJobs.filter(j => j.source === "Adzuna").length;
       setText("#kpiAiMix", `${mixUS} US · ${mixAD} private`);
 
       setText("#kpiNonCs", pct(noncsShare));
 
-      // spark trends
-      // For executive polish: use month trend as spark input
       const t = trendByMonth(aiJobs, 12);
-      $("#sparkShare").setAttribute("points", sparkPoints(t.values.map(v => v))); // same shape style
-      $("#sparkAiCount").setAttribute("points", sparkPoints(t.values.map(v => v)));
-      $("#sparkNonCs").setAttribute("points", sparkPoints(t.values.map(v => v))); // visual continuity
+      $("#sparkShare").setAttribute("points", sparkPoints(t.values));
+      $("#sparkAiCount").setAttribute("points", sparkPoints(t.values));
+      $("#sparkNonCs").setAttribute("points", sparkPoints(t.values));
 
-      // Fastest family from rising list
       const rising = risingList(aiJobs, 8);
       const nowCounts = scoreSkills(aiJobs);
       const now = listFromCounts(nowCounts, aiJobs.length, 8);
@@ -991,24 +907,19 @@
       const fastFam = rising[0]?.family || now[0]?.family || "—";
       setText("#kpiFastFam", fastFam);
 
-      // spark for fast family: use the top rising metric values as a tiny spark
       const riseVals = rising.map(r => Number(r.metric));
       $("#sparkFastFam").setAttribute("points", sparkPoints(riseVals.length > 1 ? riseVals : [0,0]));
 
-      // Trend chart
       setText("#trendWindow", t.windowText);
       renderTrendChart(t.labels, t.values);
 
-      // Segmentation chart
       const seg = topCategories(aiJobs, 7);
       renderSegChart(seg.labels, seg.values);
       setText("#segNote", `Top categories from blended AI postings. Source mix: ${mixUS} USAJOBS + ${mixAD} Adzuna. Cached 1 hour.`);
 
-      // Lists
       setText("#sampleN", aiJobs.length.toLocaleString());
       renderLists(now, rising);
 
-      // Last refresh + status
       setText("#lastRefresh", new Date(data.fetchedAt).toLocaleString());
       const adOk = data.debug?.aiAD?.some(x => x.ok);
       const statusEl = $("#blendStatus");
@@ -1061,15 +972,6 @@
           <p class="muted">If Adzuna rate limits, the dashboard will still work with USAJOBS only. Use “Force refresh” to clear cache.</p>
           <pre>${escapeHtml(JSON.stringify(dbg, null, 2))}</pre>
         </div>
-
-        <div class="section">
-          <strong>Recommended next upgrade (optional)</strong>
-          <ul>
-            <li>Move blending + throttling into the Worker and expose a single <code>/blend</code> endpoint.</li>
-            <li>Add Lightcast or Burning Glass (if licensed) for deeper skill taxonomy + regional slices.</li>
-            <li>Add O*NET mapping to tie skills to occupations and program learning outcomes.</li>
-          </ul>
-        </div>
       `;
       openDrawer({
         title: "Data Sources & Definitions",
@@ -1082,8 +984,6 @@
      * BOOT
      *****************************************************************/
     async function init(){
-      renderActions();
-
       $("#drawerClose").addEventListener("click", closeDrawer);
       document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeDrawer(); });
       $("#openSources").addEventListener("click", showSources);
