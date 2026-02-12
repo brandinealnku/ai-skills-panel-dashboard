@@ -401,6 +401,56 @@ function renderJobFamilyExplorer(data) {
 /* ---------------------------
    Sources
 ---------------------------- */
+dashboardData.sources = {
+  inline: "Lightcast (job postings), LinkedIn (skills trends), WEF (skills outlook), NIST (AI RMF), O*NET (occupation taxonomy)",
+  refreshCadence: "Job postings: weekly. Skills trends: monthly. Governance frameworks: as published/updated.",
+  primary: [
+    {
+      name: "Lightcast / Emsi Burning Glass (Job Postings Analytics)",
+      use: "AI-skill job share, top skills now, fastest-rising skills, industry/occupation segmentation",
+      notes: "Filtered to target region + remote; skills grouped into families."
+    },
+    {
+      name: "LinkedIn (Workplace Learning / Skills Reports)",
+      use: "Skills on the rise validation + cross-check for emerging skill families",
+      notes: "Used as a directional trends signal (not a postings count)."
+    },
+    {
+      name: "World Economic Forum (Future of Jobs)",
+      use: "Skills change context (‘skills churn’) and executive framing",
+      notes: "Used for narrative framing and forward-looking alignment."
+    },
+    {
+      name: "NIST AI Risk Management Framework (AI RMF)",
+      use: "Trust & Governance skill family definitions and language",
+      notes: "Used to anchor responsible AI competencies."
+    },
+    {
+      name: "O*NET",
+      use: "Occupation taxonomy + mapping from roles to job families",
+      notes: "Used to standardize occupation groupings."
+    }
+  ],
+  definitions: [
+    {
+      term: "AI-skill job share",
+      definition: "% of job postings that mention AI/ML/LLM/GenAI-related skills (keyword/taxonomy-based)."
+    },
+    {
+      term: "Demand index",
+      definition: "Normalized 0–100 score based on frequency of skill mentions in postings for the selected window."
+    },
+    {
+      term: "Fastest rising",
+      definition: "Year-over-year growth in postings mentioning a skill (controlled for baseline volume)."
+    },
+    {
+      term: "Coverage level (0–3)",
+      definition: "0 None, 1 Mentioned, 2 Practiced, 3 Assessed (curriculum mapping rubric)."
+    }
+  ]
+};
+
 function renderSources(data) {
   const list = $("#sources-list");
   if (!list) return;
