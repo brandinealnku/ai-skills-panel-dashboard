@@ -771,6 +771,14 @@
     const PROXY_BASE = "https://ai-skills-proxy.nealb3.workers.dev";
     const CACHE_KEY = "nku_exec_ai_dashboard_v7_academic_kpis";
     const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
+    
+    // Pagination controls (bigger = more sample, but more API load)
+    const RESULTS_PER_PAGE = 50;     // USAJOBS supports up to 500, but keep sane
+    const PAGES_USAJOBS = 3;         // 1..N
+    const PAGES_ADZUNA = 3;          // 1..N
+
+    // Rate-limit safety (esp. Adzuna)
+    const PAGE_DELAY_MS = 250;       // small pause between page calls
 
     // AI keywords (transparent + editable)
     const AI_TERMS_US = [
@@ -883,6 +891,29 @@
     }
     function clearCache(){
       try{ localStorage.removeItem(CACHE_KEY); }catch{}
+    }
+
+    function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+    async function fanoutFetchPaged(terms, fetcher, normalizer, pages=1, perPage=25){
+      const all = [];
+      const debug = [];
+    
+      for(const term of terms){
+        for(let page=1; page<=pages; page++){
+          try{
+            const { url, json } = await fetcher(term, perPage, page);
+            debug.push({ term, page, ok:true, url });
+            all.push(...normalizer(json));
+          }catch(err){
+            debug.push({ term, page, ok:false, error:String(err).slice(0,200) });
+          }
+          if(PAGE_DELAY_MS) await sleep(PAGE_DELAY_MS);
+        }
+      }
+    
+      const deduped = dedupeJobs(all);
+      return { jobs: deduped, rawCount: all.length, debug };
     }
 
     /*****************************************************************
@@ -1017,18 +1048,57 @@
     async function fetchBlend(){
       const cached = readCache();
       if(cached) return cached;
-
-      const aiUS = await fanoutFetch(AI_TERMS_US, (t)=>fetchUSAJOBS(t, 25, 1), normalizeUSAJOBS);
-      const aiAD = await fanoutFetch(AI_TERMS_ADZUNA, (t)=>fetchAdzuna(t, 25, 1), normalizeAdzuna);
-      const aiRM = await fanoutFetch(["machine learning","generative ai","llm","copilot"], (t)=>fetchRemotive(t), normalizeRemotive);
-
-      const baseUS = await fanoutFetch(BASELINE_TERMS, (t)=>fetchUSAJOBS(t, 25, 1), normalizeUSAJOBS);
-      const baseAD = await fanoutFetch(BASELINE_TERMS, (t)=>fetchAdzuna(t, 25, 1), normalizeAdzuna);
-      const baseRM = await fanoutFetch(["engineer","analyst","manager"], (t)=>fetchRemotive(t), normalizeRemotive);
-
+    
+      // AI sets
+      const aiUS = await fanoutFetchPaged(
+        AI_TERMS_US,
+        (t, per, page)=>fetchUSAJOBS(t, per, page),
+        normalizeUSAJOBS,
+        PAGES_USAJOBS,
+        RESULTS_PER_PAGE
+      );
+    
+      const aiAD = await fanoutFetchPaged(
+        AI_TERMS_ADZUNA,
+        (t, per, page)=>fetchAdzuna(t, per, page),
+        normalizeAdzuna,
+        PAGES_ADZUNA,
+        RESULTS_PER_PAGE
+      );
+    
+      // Remotive: your route may not support paging; we just query more terms (already)
+      const aiRM = await fanoutFetch(
+        ["machine learning","generative ai","llm","copilot","prompt","rag","ai engineer"],
+        (t)=>fetchRemotive(t),
+        normalizeRemotive
+      );
+    
+      // Baseline sets
+      const baseUS = await fanoutFetchPaged(
+        BASELINE_TERMS,
+        (t, per, page)=>fetchUSAJOBS(t, per, page),
+        normalizeUSAJOBS,
+        Math.max(1, Math.ceil(PAGES_USAJOBS/2)),   // baseline can be smaller
+        RESULTS_PER_PAGE
+      );
+    
+      const baseAD = await fanoutFetchPaged(
+        BASELINE_TERMS,
+        (t, per, page)=>fetchAdzuna(t, per, page),
+        normalizeAdzuna,
+        Math.max(1, Math.ceil(PAGES_ADZUNA/2)),
+        RESULTS_PER_PAGE
+      );
+    
+      const baseRM = await fanoutFetch(
+        ["engineer","analyst","manager","developer","specialist"],
+        (t)=>fetchRemotive(t),
+        normalizeRemotive
+      );
+    
       const aiJobs = dedupeJobs([...aiUS.jobs, ...aiAD.jobs, ...aiRM.jobs]);
       const baseJobs = dedupeJobs([...baseUS.jobs, ...baseAD.jobs, ...baseRM.jobs]);
-
+    
       const out = {
         fetchedAt: new Date().toISOString(),
         aiJobs,
@@ -1042,7 +1112,7 @@
           baseUS: baseUS.debug, baseAD: baseAD.debug, baseRM: baseRM.debug
         }
       };
-
+    
       writeCache(out);
       return out;
     }
