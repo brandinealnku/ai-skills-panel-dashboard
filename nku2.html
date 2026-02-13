@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AI Skills Demand Dashboard</title>
+  <title>NKU Executive Dashboard — AI Skills Demand (Blended Live)</title>
 
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -22,7 +22,6 @@
       --good:#16a34a;
       --warn:#f59e0b;
       --bad:#ef4444;
-      --chip:#eef2ff;
       --chip2:#f1f5f9;
       --radius:16px;
       --radius2:20px;
@@ -69,7 +68,7 @@
       margin:0;
       color: var(--muted);
       font-size: 13.5px;
-      max-width: 820px;
+      max-width: 900px;
     }
 
     .badge{
@@ -77,7 +76,7 @@
       align-items:center;
       gap:10px;
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 900;
       letter-spacing: .02em;
       color: #0b1220;
       background: linear-gradient(180deg, #ffffff, #f7f9ff);
@@ -98,10 +97,9 @@
       flex-direction:column;
       gap:10px;
       align-items:flex-end;
-      min-width: 520px;
+      min-width: 560px;
     }
 
-    /* audience pills (top right) */
     .pillset{
       display:inline-flex;
       background: rgba(255,255,255,0.75);
@@ -117,7 +115,7 @@
       padding: 8px 12px;
       border-radius: 999px;
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 900;
       color: var(--muted);
       cursor:pointer;
       white-space:nowrap;
@@ -147,7 +145,7 @@
       background: rgba(255,255,255,0.7);
       color: var(--muted);
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       white-space:nowrap;
     }
     .chip strong{ color:#0b1220; }
@@ -168,11 +166,11 @@
       border: 1px solid var(--border);
       background: rgba(255,255,255,0.7);
       font-size: 12px;
-      font-weight: 900;
+      font-weight: 950;
       color:#0b1220;
     }
     #blendStatus{
-      font-weight: 900;
+      font-weight: 950;
       padding: 3px 8px;
       border-radius: 999px;
       border: 1px solid rgba(0,0,0,0.08);
@@ -189,7 +187,7 @@
       border-radius: 12px;
       padding: 10px 12px;
       font-size: 12px;
-      font-weight: 900;
+      font-weight: 950;
       cursor:pointer;
       color:#0b1220;
       box-shadow: 0 10px 24px rgba(15,23,42,0.06);
@@ -203,9 +201,6 @@
       background: linear-gradient(180deg, rgba(37,99,235,0.95), rgba(29,78,216,1));
       color: white;
       box-shadow: 0 16px 30px rgba(37,99,235,0.22);
-    }
-    .btn.primary:hover{
-      box-shadow: 0 18px 34px rgba(37,99,235,0.26);
     }
 
     main{ padding-top: 10px; }
@@ -221,7 +216,7 @@
     .span-3{ grid-column: span 3; }
 
     .card{
-      background: rgba(255,255,255,0.90);
+      background: rgba(255,255,255,0.92);
       border: 1px solid rgba(219,227,239,0.85);
       border-radius: var(--radius2);
       box-shadow: var(--shadow);
@@ -249,7 +244,7 @@
     }
     .bd{ padding: 14px 16px 16px; }
 
-    /* Header mini tabs (Market Pulse / Sources / Print) */
+    /* Header mini tabs */
     .headerTabs{
       display:flex;
       justify-content:flex-start;
@@ -263,7 +258,7 @@
       border-radius: 12px;
       padding: 10px 14px;
       font-size: 13px;
-      font-weight: 900;
+      font-weight: 950;
       cursor:pointer;
       color:#0b1220;
       box-shadow: 0 10px 24px rgba(15,23,42,0.06);
@@ -276,7 +271,7 @@
       box-shadow: 0 14px 30px rgba(15,23,42,0.09);
     }
 
-    /* Market Pulse KPIs */
+    /* KPI cards */
     .kpi{ padding: 14px 14px 12px; }
     .kpiTop{
       display:flex;
@@ -287,20 +282,38 @@
     }
     .kpiLabel{
       font-size: 12px;
-      font-weight: 900;
+      font-weight: 950;
       color: var(--muted);
       letter-spacing:.01em;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .hint{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(37,99,235,0.10);
+      border: 1px solid rgba(37,99,235,0.18);
+      color: rgba(29,78,216,0.95);
+      font-size: 12px;
+      font-weight: 950;
+      cursor:pointer;
+      user-select:none;
     }
     .kpiValue{
       margin-top: 6px;
       font-size: 28px;
-      font-weight: 950;
+      font-weight: 980;
       letter-spacing: -0.02em;
     }
     .kpiBig{
       margin-top: 4px;
-      font-size: 22px;
-      font-weight: 950;
+      font-size: 20px;
+      font-weight: 980;
       letter-spacing: -0.02em;
       line-height: 1.15;
     }
@@ -308,11 +321,11 @@
       margin-top: 6px;
       font-size: 12px;
       color: var(--muted2);
-      font-weight: 700;
+      font-weight: 750;
     }
     .kpiTag{
       font-size: 11px;
-      font-weight: 950;
+      font-weight: 980;
       padding: 6px 10px;
       border-radius: 999px;
       background: var(--chip2);
@@ -340,18 +353,43 @@
       border: 1px solid rgba(219,227,239,0.85);
       border-radius: var(--radius);
       overflow:hidden;
-      background: rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.92);
     }
-    .chartBoxMid{
-      height: 320px;
-      padding: 10px 10px 6px;
-    }
+    .chartBoxMid{ height: 320px; padding: 10px 10px 6px; }
+    .chartBoxTall{ height: 420px; padding: 10px 10px 6px; }
 
     .footerNote{
       margin-top: 10px;
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 850;
       color: var(--muted2);
+    }
+
+    /* Executive narrative */
+    .callout{
+      border: 1px solid rgba(219,227,239,0.9);
+      background: rgba(248,250,252,0.75);
+      border-radius: 16px;
+      padding: 12px 14px;
+    }
+    .callout .t{
+      font-size: 12px;
+      font-weight: 950;
+      color: var(--muted);
+      letter-spacing:.01em;
+    }
+    .callout .h{
+      margin-top:6px;
+      font-size: 14px;
+      font-weight: 980;
+      letter-spacing:-0.01em;
+    }
+    .callout .b{
+      margin-top:6px;
+      font-size: 12.5px;
+      font-weight: 750;
+      color: var(--muted2);
+      line-height:1.5;
     }
 
     /* Drawer */
@@ -359,7 +397,7 @@
       position: fixed;
       top: 14px;
       right: 14px;
-      width: min(560px, calc(100vw - 28px));
+      width: min(620px, calc(100vw - 28px));
       height: calc(100vh - 28px);
       background: rgba(255,255,255,0.92);
       border: 1px solid rgba(219,227,239,0.9);
@@ -384,11 +422,7 @@
       gap:12px;
       background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(248,250,252,0.7));
     }
-    .dh h3{
-      margin:0;
-      font-size: 16px;
-      letter-spacing:-0.01em;
-    }
+    .dh h3{ margin:0; font-size: 16px; letter-spacing:-0.01em; }
     .muted{ color: var(--muted); }
     .close{
       border: 1px solid rgba(219,227,239,0.95);
@@ -396,14 +430,11 @@
       border-radius: 12px;
       padding: 8px 10px;
       font-size: 12px;
-      font-weight: 900;
+      font-weight: 950;
       cursor:pointer;
       white-space: nowrap;
     }
-    .db{
-      padding: 12px 14px 16px;
-      overflow:auto;
-    }
+    .db{ padding: 12px 14px 16px; overflow:auto; }
     .section{ margin-bottom: 14px; }
     .section p{ margin: 6px 0 0; color: var(--muted); font-size: 13px; }
     .section ul{ margin: 8px 0 0 18px; color: var(--muted); font-size: 13px; }
@@ -417,8 +448,15 @@
       overflow:auto;
       color:#0b1220;
     }
+    code{
+      background: rgba(148,163,184,0.14);
+      border: 1px solid rgba(148,163,184,0.18);
+      padding: 0 6px;
+      border-radius: 8px;
+      font-weight: 850;
+    }
 
-    /* Loading shimmer */
+    /* shimmer */
     .skel{
       background: linear-gradient(90deg, rgba(148,163,184,.14), rgba(148,163,184,.06), rgba(148,163,184,.14));
       background-size: 200% 100%;
@@ -428,7 +466,6 @@
     }
     @keyframes shimmer{ 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
-    /* Responsiveness */
     @media (max-width: 1020px){
       .topbar{ flex-direction:column; align-items:stretch; }
       .toolbar{ align-items:flex-start; min-width:0; }
@@ -436,10 +473,12 @@
     }
     @media (max-width: 900px){
       .span-3{ grid-column: span 6; }
+      .span-6{ grid-column: span 12; }
     }
     @media (max-width: 680px){
       .span-3, .span-4, .span-6{ grid-column: span 12; }
       .chartBoxMid{ height: 360px; }
+      .chartBoxTall{ height: 460px; }
     }
 
     @media print{
@@ -457,19 +496,22 @@
     <div class="wrap">
       <div class="topbar">
         <div>
-          <div class="badge"><span class="dot"></span> NKU Executive Dashboard · AI Skills Demand (Live Blend)</div>
-          <h1>What Employers Are Asking For Now</h1>
-          <p class="subtitle">Built for NKU AI Panel Discussion · Uses USAJOBS (trusted anchor) + Adzuna (private-sector breadth) + Remotive (remote breadth)</p>
+          <div class="badge"><span class="dot"></span> NKU Executive Dashboard · Workforce Signals for AI (Blended Live)</div>
+          <h1>AI Skills Demand — What the Market Is Asking For</h1>
+          <p class="subtitle">
+            Designed for NKU chairs, directors, associate deans, and deans. This dashboard blends a trusted public anchor (USAJOBS),
+            private-sector breadth (Adzuna), and remote-first breadth (Remotive) to provide a current, evidence-based snapshot of AI-related demand.
+          </p>
 
           <div class="headerTabs" aria-label="Top actions">
-            <button class="tabBtn active" id="tabMarket" type="button">Market Pulse</button>
-            <button class="tabBtn" id="tabSources" type="button">Sources</button>
-            <button class="tabBtn primary" id="tabPrint" type="button" style="background:linear-gradient(180deg, rgba(37,99,235,0.95), rgba(29,78,216,1)); color:#fff; border-color:rgba(37,99,235,.35);">Print / PDF</button>
+            <button class="tabBtn active" id="tabOverview" type="button">Overview</button>
+            <button class="tabBtn" id="tabMethods" type="button">Methods & Sources</button>
+            <button class="tabBtn primary" id="tabPrint" type="button">Print / PDF</button>
           </div>
         </div>
 
         <div class="toolbar">
-          <div class="pillset" id="audienceToggle" role="group" aria-label="Program lens">
+          <div class="pillset" id="audienceToggle" role="group" aria-label="Academic lens">
             <button type="button" data-aud="all" aria-pressed="true">All programs</button>
             <button type="button" data-aud="business" aria-pressed="false">Business</button>
             <button type="button" data-aud="informatics" aria-pressed="false">Informatics</button>
@@ -478,8 +520,8 @@
 
           <div class="meta">
             <span class="chip">Last refresh: <strong id="lastRefresh">—</strong></span>
-            <span class="chip">Sources: <strong>USAJOBS + Adzuna + Remotive</strong> (via Worker)</span>
-            <button class="btn" id="openSources" type="button">Sources</button>
+            <span class="chip">Blended sources: <strong>USAJOBS + Adzuna + Remotive</strong> (via Worker)</span>
+            <button class="btn" id="openMethods" type="button">Data details</button>
           </div>
 
           <div class="status">
@@ -494,82 +536,240 @@
   <main>
     <div class="wrap">
 
-      <!-- Market Pulse (blended live) -->
-      <section class="grid" aria-label="Market pulse">
-        <div class="card kpi span-3" role="region" aria-label="AI-skill job share">
-          <div class="kpiTop">
-            <div class="kpiLabel">AI-skill job share</div>
-            <div class="kpiTag good" id="mpShareDelta">▲ — pts</div>
+      <!-- Executive narrative (upbeat, academic-friendly) -->
+      <section class="grid" aria-label="Executive narrative">
+        <div class="card span-12">
+          <div class="hd">
+            <div>
+              <h2>Academic-ready reading guide</h2>
+              <p>Use this as a quick, confident framing for conversations about curriculum alignment, employer partnerships, and student readiness.</p>
+            </div>
+            <button class="btn" id="openReadingGuide" type="button">How to use</button>
           </div>
-          <div class="kpiValue" id="mpShare">—</div>
-          <div class="kpiSub">Share of jobs matching AI keyword filter</div>
+          <div class="bd" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px;">
+            <div class="callout">
+              <div class="t">What this measures</div>
+              <div class="h">Employer language signals</div>
+              <div class="b">We scan posting titles + descriptions for transparent AI keywords and skill phrases. Results are directional signals, not an official labor taxonomy.</div>
+            </div>
+            <div class="callout">
+              <div class="t">Why it’s credible</div>
+              <div class="h">Blended + deduped</div>
+              <div class="b">We combine federal, private-sector, and remote-first sources and remove duplicates. We also report date coverage and sample sizes for interpretability.</div>
+            </div>
+            <div class="callout">
+              <div class="t">How to use it</div>
+              <div class="h">Curriculum + partnerships</div>
+              <div class="b">Use the Top Skills + Category Mix to prioritize modules, micro-credentials, and employer projects. Use Regional/Remote shares to guide outreach and internships.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- KPI strip: leadership-facing KPIs -->
+      <section class="grid" style="margin-top:14px" aria-label="Leadership KPIs">
+
+        <div class="card kpi span-3" role="region" aria-label="AI-signal share">
+          <div class="kpiTop">
+            <div class="kpiLabel">
+              AI-signal share
+              <span class="hint" data-hint="aiShare">?</span>
+            </div>
+            <div class="kpiTag good" id="kAiShareDelta">▲ — pts</div>
+          </div>
+          <div class="kpiValue" id="kAiShare">—</div>
+          <div class="kpiSub">Share of postings matching the AI keyword filter (within the selected lens)</div>
           <div class="spark" aria-hidden="true">
             <svg viewBox="0 0 120 44" preserveAspectRatio="none">
-              <polyline id="sparkMpShare" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
+              <polyline id="sparkAiShare" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
             </svg>
           </div>
         </div>
 
-        <div class="card kpi span-3" role="region" aria-label="Top AI category share">
+        <div class="card kpi span-3" role="region" aria-label="AI postings sample size">
           <div class="kpiTop">
-            <div class="kpiLabel">Top AI category (share)</div>
-            <div class="kpiTag good" id="mpTopCatShareTag">▲ — share</div>
+            <div class="kpiLabel">
+              AI postings (sample)
+              <span class="hint" data-hint="sampleSize">?</span>
+            </div>
+            <div class="kpiTag" id="kSourceMix">—</div>
           </div>
-          <div class="kpiBig" id="mpTopCat">—</div>
+          <div class="kpiValue" id="kAiCount">—</div>
+          <div class="kpiSub">Deduped across sources (higher = stronger signal)</div>
+          <div class="spark" aria-hidden="true">
+            <svg viewBox="0 0 120 44" preserveAspectRatio="none">
+              <polyline id="sparkAiCount" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
+            </svg>
+          </div>
+        </div>
+
+        <div class="card kpi span-3" role="region" aria-label="Regional relevance">
+          <div class="kpiTop">
+            <div class="kpiLabel">
+              Regional relevance (OH/KY)
+              <span class="hint" data-hint="region">?</span>
+            </div>
+            <div class="kpiTag good" id="kRegionDelta">▲ — pts</div>
+          </div>
+          <div class="kpiValue" id="kRegionShare">—</div>
+          <div class="kpiSub">Share of AI postings with OH/KY signals (Cincy/NKY + statewide)</div>
+          <div class="spark" aria-hidden="true">
+            <svg viewBox="0 0 120 44" preserveAspectRatio="none">
+              <polyline id="sparkRegion" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
+            </svg>
+          </div>
+        </div>
+
+        <div class="card kpi span-3" role="region" aria-label="Remote opportunity">
+          <div class="kpiTop">
+            <div class="kpiLabel">
+              Remote opportunity
+              <span class="hint" data-hint="remote">?</span>
+            </div>
+            <div class="kpiTag good" id="kRemoteDelta">▲ — pts</div>
+          </div>
+          <div class="kpiValue" id="kRemoteShare">—</div>
+          <div class="kpiSub">Share of AI postings marked remote/telework (strong for internships + pipelines)</div>
+          <div class="spark" aria-hidden="true">
+            <svg viewBox="0 0 120 44" preserveAspectRatio="none">
+              <polyline id="sparkRemote" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
+            </svg>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Second row: curriculum-relevant KPIs -->
+      <section class="grid" style="margin-top:14px" aria-label="Curriculum alignment KPIs">
+
+        <div class="card kpi span-3" role="region" aria-label="Top category">
+          <div class="kpiTop">
+            <div class="kpiLabel">
+              Top hiring category
+              <span class="hint" data-hint="topCat">?</span>
+            </div>
+            <div class="kpiTag good" id="kTopCatShare">▲ — share</div>
+          </div>
+          <div class="kpiBig" id="kTopCat">—</div>
           <div class="kpiSub">Most common category among AI-matched postings</div>
           <div class="spark" aria-hidden="true">
             <svg viewBox="0 0 120 44" preserveAspectRatio="none">
-              <polyline id="sparkMpTopCat" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
+              <polyline id="sparkTopCat" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
             </svg>
           </div>
         </div>
 
-        <div class="card kpi span-3" role="region" aria-label="Non-dev share">
+        <div class="card kpi span-3" role="region" aria-label="Non-development share">
           <div class="kpiTop">
-            <div class="kpiLabel">Non-dev share (proxy)</div>
-            <div class="kpiTag good" id="mpNonDevTag">▲ proxy</div>
+            <div class="kpiLabel">
+              Non-dev share (proxy)
+              <span class="hint" data-hint="nonDev">?</span>
+            </div>
+            <div class="kpiTag good" id="kNonDevDelta">▲ — pts</div>
           </div>
-          <div class="kpiValue" id="mpNonDev">—</div>
-          <div class="kpiSub">Share of AI-matched jobs not in software/data categories</div>
+          <div class="kpiValue" id="kNonDevShare">—</div>
+          <div class="kpiSub">AI postings not clustered in software/data categories (signals cross-disciplinary demand)</div>
           <div class="spark" aria-hidden="true">
             <svg viewBox="0 0 120 44" preserveAspectRatio="none">
-              <polyline id="sparkMpNonDev" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
+              <polyline id="sparkNonDev" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
             </svg>
           </div>
         </div>
 
         <div class="card kpi span-3" role="region" aria-label="New postings">
           <div class="kpiTop">
-            <div class="kpiLabel">New postings (14 days)</div>
-            <div class="kpiTag good" id="mpNewTag">▲ count</div>
+            <div class="kpiLabel">
+              New postings (14 days)
+              <span class="hint" data-hint="new14">?</span>
+            </div>
+            <div class="kpiTag good" id="kNewDelta">▲ count</div>
           </div>
-          <div class="kpiValue" id="mpNew14">—</div>
-          <div class="kpiSub">AI-matched postings published in last 14 days</div>
+          <div class="kpiValue" id="kNew14">—</div>
+          <div class="kpiSub">Fresh postings with AI signals (short-term market pulse)</div>
           <div class="spark" aria-hidden="true">
             <svg viewBox="0 0 120 44" preserveAspectRatio="none">
-              <polyline id="sparkMpNew14" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
+              <polyline id="sparkNew14" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
             </svg>
           </div>
         </div>
+
+        <div class="card kpi span-3" role="region" aria-label="Data quality">
+          <div class="kpiTop">
+            <div class="kpiLabel">
+              Data quality
+              <span class="hint" data-hint="quality">?</span>
+            </div>
+            <div class="kpiTag good" id="kQualityTag">high</div>
+          </div>
+          <div class="kpiBig" id="kQuality">—</div>
+          <div class="kpiSub">Combines date coverage + private-sector success + dedup strength</div>
+          <div class="spark" aria-hidden="true">
+            <svg viewBox="0 0 120 44" preserveAspectRatio="none">
+              <polyline id="sparkQuality" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
+            </svg>
+          </div>
+        </div>
+
       </section>
 
-      <!-- Where the Jobs Are (blended; prefers Remotive categories) -->
+      <!-- Charts row -->
+      <section class="grid" style="margin-top:14px" aria-label="Charts">
+
+        <div class="card span-6">
+          <div class="hd">
+            <div>
+              <h2>Trend over time (last 12 months)</h2>
+              <p>Monthly counts of AI-matched postings (within the selected lens). Helpful for “is demand rising?” conversations.</p>
+            </div>
+            <button class="btn" id="openTrendNotes" type="button">Trend notes</button>
+          </div>
+          <div class="bd">
+            <div class="chartWrap">
+              <div class="chartBoxMid">
+                <canvas id="trendChart" role="img" aria-label="Trend chart"></canvas>
+              </div>
+            </div>
+            <div class="footerNote">Note: Trend uses postings with usable dates; missing dates reduce trend precision (see Data quality).</div>
+          </div>
+        </div>
+
+        <div class="card span-6">
+          <div class="hd">
+            <div>
+              <h2>Top skill signals (from a transparent map)</h2>
+              <p>Counts of skill phrases found in posting titles/descriptions. Great for curriculum alignment and micro-credential design.</p>
+            </div>
+            <button class="btn" id="openSkillNotes" type="button">Skill map</button>
+          </div>
+          <div class="bd">
+            <div class="chartWrap">
+              <div class="chartBoxMid">
+                <canvas id="skillsChart" role="img" aria-label="Top skills chart"></canvas>
+              </div>
+            </div>
+            <div class="footerNote">Skills are measured as mentions (not endorsements). We publish the exact keyword map in Methods & Sources.</div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Where Jobs Are -->
       <section class="grid" style="margin-top:14px" aria-label="Where the jobs are">
         <div class="card span-12">
           <div class="hd">
             <div>
               <h2>Where the Jobs Are</h2>
-              <p>Live: category distribution from <strong>Remotive</strong> postings (inside current lens). Falls back to blended categories if no Remotive hits.</p>
+              <p>Category distribution for AI-matched postings. Prefers Remotive categories (remote-first) and falls back to blended categories when needed.</p>
             </div>
             <button class="btn" id="openJobCats" type="button">Job categories</button>
           </div>
           <div class="bd">
             <div class="chartWrap">
-              <div class="chartBoxMid">
+              <div class="chartBoxTall">
                 <canvas id="whereJobsChart" role="img" aria-label="Where the jobs are chart"></canvas>
               </div>
             </div>
-            <div class="footerNote">Source: Remotive Jobs API (live) · Client-side keyword filter</div>
+            <div class="footerNote">Source: Remotive Jobs API (live) when present · Otherwise blended category fields.</div>
           </div>
         </div>
       </section>
@@ -591,14 +791,13 @@
 
   <script>
     /*****************************************************************
-     * CONFIG
+     * CONFIG (Worker proxy avoids CORS on GitHub Pages)
      *****************************************************************/
     const PROXY_BASE = "https://ai-skills-proxy.nealb3.workers.dev";
-
-    // bump cache key so "bad-shaped" cached data won't keep crashing
-    const CACHE_KEY = "nku_exec_ai_dashboard_cache_v6_mp_sparks"; // ✅ bumped again
+    const CACHE_KEY = "nku_exec_ai_dashboard_v7_academic_kpis";
     const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 
+    // AI keywords (transparent + editable)
     const AI_TERMS_US = [
       "artificial intelligence","machine learning","generative ai","genai","llm",
       "large language model","chatgpt","copilot"
@@ -608,12 +807,32 @@
     ];
     const BASELINE_TERMS = ["software","analyst","manager"];
 
+    // NKU-friendly academic lenses (simple, explainable)
     const AUDIENCE_FILTERS = {
       all: () => true,
-      business: (job) => /(analyst|finance|account|marketing|operations|product|strategy|business|supply|procurement)/i.test(asText(job.title) + " " + asText(job.description)),
-      informatics: (job) => /(engineer|developer|software|data scientist|ml|ai|cloud|devops|security|cyber|architect|platform)/i.test(asText(job.title) + " " + asText(job.description)),
-      health: (job) => /(health|clinical|patient|hospital|medical|biostat|epidemi|informatics|care|nursing|pharma)/i.test(asText(job.title) + " " + asText(job.description)),
+      business: (job) => /(analyst|finance|account|marketing|operations|product|strategy|business|supply|procurement|risk|audit)/i
+        .test(asText(job.title) + " " + asText(job.description)),
+      informatics: (job) => /(engineer|developer|software|data scientist|ml|ai|cloud|devops|security|cyber|architect|platform|systems|network)/i
+        .test(asText(job.title) + " " + asText(job.description)),
+      health: (job) => /(health|clinical|patient|hospital|medical|biostat|epidemi|informatics|care|nursing|pharma|imaging)/i
+        .test(asText(job.title) + " " + asText(job.description)),
     };
+
+    // Transparent skill map (edit freely; aligns well with academic conversations)
+    const SKILLS = [
+      { skill:"AI tools (Copilot/ChatGPT)", family:"GenAI tools", keys:["copilot","chatgpt","assistant"] },
+      { skill:"Prompting & workflow design", family:"GenAI workflows", keys:["prompt","prompting","agent","agentic","workflow","orchestration"] },
+      { skill:"LLM app development (RAG)", family:"GenAI engineering", keys:["llm","rag","retrieval","vector","embedding","langchain","prompt engineering"] },
+      { skill:"Responsible AI / ethics", family:"Governance", keys:["responsible ai","ethics","fairness","bias","governance","policy","compliance"] },
+      { skill:"AI evaluation & testing", family:"Governance", keys:["evaluation","testing","red team","red-team","benchmark","validation","monitoring","model risk"] },
+      { skill:"Privacy", family:"Trust", keys:["privacy","pii","phi","gdpr","hipaa","data protection"] },
+      { skill:"Security", family:"Trust", keys:["security","secure","infosec","soc","zero trust","iam","identity","access","vulnerability","threat"] },
+      { skill:"SQL / BI dashboards", family:"Data foundations", keys:["sql","power bi","tableau","dashboard","analytics","reporting"] },
+      { skill:"Data engineering", family:"Data foundations", keys:["data engineer","pipeline","warehouse","lakehouse","spark","dbt"] },
+      { skill:"Python", family:"Automation", keys:["python","scripting","etl"] },
+      { skill:"Cloud platforms", family:"Engineering", keys:["aws","azure","gcp","cloud","kubernetes","docker"] },
+      { skill:"Process improvement / automation", family:"Automation", keys:["process improvement","automation","workflow","rpa","lean","six sigma","kaizen"] },
+    ];
 
     /*****************************************************************
      * DOM UTILS
@@ -628,7 +847,6 @@
         .replaceAll('"',"&quot;").replaceAll("'","&#039;");
     }
 
-    // ✅ Critical: coerce any value into safe string
     function asText(v){
       if(v == null) return "";
       if(Array.isArray(v)) return v.filter(Boolean).join(" ");
@@ -638,17 +856,6 @@
     }
 
     function pct(x){ return (x*100).toFixed(1) + "%"; }
-
-    function sparkPoints(values){
-      if(!values || values.length < 2) return "";
-      const max = Math.max(...values), min = Math.min(...values);
-      const range = (max - min) || 1;
-      return values.map((v,i)=>{
-        const x = (i/(values.length-1))*120;
-        const y = 42 - ((v-min)/range)*36; // match 44px viewBox
-        return `${x.toFixed(1)},${y.toFixed(1)}`;
-      }).join(" ");
-    }
 
     function animatePercent(el, targetPctText){
       if(!el) return;
@@ -665,6 +872,17 @@
         if(p < 1) requestAnimationFrame(tick);
       }
       requestAnimationFrame(tick);
+    }
+
+    function sparkPoints(values){
+      if(!values || values.length < 2) return "";
+      const max = Math.max(...values), min = Math.min(...values);
+      const range = (max - min) || 1;
+      return values.map((v,i)=>{
+        const x = (i/(values.length-1))*120;
+        const y = 42 - ((v-min)/range)*36;
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      }).join(" ");
     }
 
     /*****************************************************************
@@ -687,7 +905,7 @@
     }
 
     /*****************************************************************
-     * FETCHERS
+     * FETCHERS (via Worker)
      *****************************************************************/
     async function fetchJson(url){
       const res = await fetch(url, { cache:"no-store" });
@@ -805,7 +1023,7 @@
           const normalized = normalizer(json);
           all.push(...normalized);
         } else {
-          debug.push({ ok:false, error:String(r.reason).slice(0,180) });
+          debug.push({ ok:false, error:String(r.reason).slice(0,200) });
         }
       }
       const deduped = dedupeJobs(all);
@@ -849,14 +1067,45 @@
     }
 
     /*****************************************************************
-     * MARKET PULSE (BLENDED) + SPARKLINES FIX (DATE-BASED)
+     * CATEGORY + REGION NORMALIZATION
+     *****************************************************************/
+    function normalizeCategoryName(cat){
+      let c = asText(cat).trim();
+      if(!c) return "All others";
+      c = c.replace(/\s+/g," ").trim();
+      const lower = c.toLowerCase();
+      if(lower.includes("software")) return "Software Development";
+      if(lower.includes("devops") || lower.includes("sysadmin")) return "DevOps / Sysadmin";
+      if(lower.includes("machine learning") || lower.includes("ai")) return "AI / ML";
+      if(lower.includes("data")) return "Data / Analytics";
+      if(lower.includes("sales")) return "Sales / Business";
+      if(lower.includes("customer")) return "Customer Service";
+      if(lower.includes("marketing")) return "Marketing";
+      if(lower.includes("writing")) return "Writing";
+      return c;
+    }
+
+    function isRemote(job){
+      const loc = (asText(job.location) + " " + asText(job.category)).toLowerCase();
+      return /remote|telework|work from home|wfh/.test(loc);
+    }
+
+    function isOHKY(job){
+      const loc = (asText(job.location) + " " + asText(job.title)).toLowerCase();
+      const isOH = /\boh\b|ohio|cincinnati|dayton|columbus|cleveland|toledo/.test(loc);
+      const isKY = /\bky\b|kentucky|covington|newport|florence|lexington|louisville/.test(loc);
+      return isOH || isKY;
+    }
+
+    /*****************************************************************
+     * DATE-BASED SERIES (sparklines + trend)
      *****************************************************************/
     function dayKey(isoOrDate){
       const d = (isoOrDate instanceof Date) ? isoOrDate : new Date(isoOrDate);
       if(Number.isNaN(d.getTime())) return null;
       const dd = new Date(d);
       dd.setHours(0,0,0,0);
-      return dd.toISOString().slice(0,10); // YYYY-MM-DD
+      return dd.toISOString().slice(0,10);
     }
 
     function lastNDaysKeys(n=14){
@@ -871,26 +1120,7 @@
       return keys;
     }
 
-    function normalizeCategoryName(cat){
-      let c = asText(cat).trim();
-      if(!c) return "All others";
-      c = c.replace(/\s+/g," ").trim();
-
-      // unify common Remotive categories / slight normalizations
-      const lower = c.toLowerCase();
-      if(lower.includes("software")) return "Software Development";
-      if(lower.includes("devops")) return "DevOps / Sysadmin";
-      if(lower.includes("sysadmin")) return "DevOps / Sysadmin";
-      if(lower.includes("machine learning") || lower === "ai" || lower.includes("ai ")) return "AI / ML";
-      if(lower.includes("data")) return "Data / Analytics";
-      if(lower.includes("sales")) return "Sales / Business";
-      if(lower.includes("customer")) return "Customer Service";
-      if(lower.includes("marketing")) return "Marketing";
-      if(lower.includes("writing")) return "Writing";
-      return c;
-    }
-
-    function buildDailySeriesFromJobs(aiJobs, baseJobs, n=14){
+    function buildDailySeries(aiJobs, baseJobs, n=14){
       const keys = lastNDaysKeys(n);
 
       const aiByDay = new Map(keys.map(k=>[k, []]));
@@ -906,11 +1136,12 @@
       }
 
       const aiShare = [];
-      const newAi = [];
+      const aiCount = [];
+      const ohkyShare = [];
+      const remoteShare = [];
       const topCatShare = [];
       const nonDevShare = [];
 
-      // Proxy definition for "dev/data" categories
       const devCatRx = /(software development|data \/ analytics|ai \/ ml|devops \/ sysadmin|engineering|cloud|platform)/i;
 
       for(const k of keys){
@@ -919,8 +1150,14 @@
         const aN = a.length;
         const bN = b.length;
 
-        newAi.push(aN);
+        aiCount.push(aN);
         aiShare.push(aN / Math.max(aN + bN, 1));
+
+        const ohky = a.filter(isOHKY).length;
+        ohkyShare.push(ohky / Math.max(aN,1));
+
+        const rem = a.filter(isRemote).length;
+        remoteShare.push(rem / Math.max(aN,1));
 
         const catCounts = new Map();
         for(const j of a){
@@ -934,8 +1171,7 @@
         nonDevShare.push(1 - (devCount / Math.max(aN,1)));
       }
 
-      const labels = keys.map(k=>k.slice(5)); // MM-DD
-      return { labels, aiShare, newAi, topCatShare, nonDevShare };
+      return { aiShare, aiCount, ohkyShare, remoteShare, topCatShare, nonDevShare };
     }
 
     function sumNewInLastDays(aiJobs, days=14){
@@ -948,104 +1184,99 @@
       return n;
     }
 
-    function computeMarketPulse(blended, aud){
-      const audFn = AUDIENCE_FILTERS[aud] || AUDIENCE_FILTERS.all;
-      const ai = blended.aiJobs.filter(audFn);
-      const base = blended.baseJobs.filter(audFn);
+    function monthKey(iso){
+      const d = new Date(iso);
+      if(Number.isNaN(d.getTime())) return null;
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+    }
 
-      const share = ai.length / Math.max(ai.length + base.length, 1);
-
-      // category (from AI jobs)
-      const catCounts = new Map();
-      for(const j of ai){
-        const cat = normalizeCategoryName(j.category);
-        catCounts.set(cat, (catCounts.get(cat)||0) + 1);
+    function trendByMonth(jobs, months=12){
+      const dated = jobs.filter(j=>!!j.date);
+      const keys = dated.map(j=>monthKey(j.date)).filter(Boolean);
+      if(!keys.length){
+        // fallback: simple even distribution
+        const labels = Array.from({length: Math.min(6, months)}, (_,i)=>`M-${Math.min(6, months)-i}`);
+        const values = labels.map(()=>jobs.length ? Math.max(1, Math.round(jobs.length/labels.length)) : 0);
+        return { labels, values };
       }
-      const sortedCats = [...catCounts.entries()].sort((a,b)=>b[1]-a[1]);
-      const topCat = sortedCats[0]?.[0] || "All others";
-      const topCatShare = ai.length ? (sortedCats[0]?.[1] || 0) / ai.length : 0;
 
-      // non-dev share proxy based on categories
-      const devCatRx = /(software development|data \/ analytics|ai \/ ml|devops \/ sysadmin|engineering|cloud|platform)/i;
-      const devCount = ai.filter(j => devCatRx.test(normalizeCategoryName(j.category))).length;
-      const nonDevShare = ai.length ? 1 - (devCount / ai.length) : 0;
+      const max = keys.reduce((a,b)=> a>b ? a : b);
+      const [Y,M] = max.split("-").map(Number);
+      const counts = new Map();
+      for(const k of keys) counts.set(k, (counts.get(k)||0)+1);
 
-      // new in last 14 days
-      const new14 = sumNewInLastDays(ai, 14);
-
-      // ✅ date-based sparklines from blended data
-      const daily = buildDailySeriesFromJobs(ai, base, 14);
-
-      // small, exec-friendly deltas (last day vs first day)
-      const deltaPts = (arr) => {
-        if(!arr || arr.length < 2) return 0;
-        return (arr[arr.length-1] - arr[0]) * 100;
-      };
-      const deltaSharePts = deltaPts(daily.aiShare);
-      const deltaTopSharePts = deltaPts(daily.topCatShare);
-      const deltaNonDevPts = deltaPts(daily.nonDevShare);
-      const deltaNew = (daily.newAi?.length >= 2) ? (daily.newAi[daily.newAi.length-1] - daily.newAi[0]) : 0;
-
-      return {
-        share,
-        topCat,
-        topCatShare,
-        nonDevShare,
-        new14,
-        sparks: {
-          share: daily.aiShare,
-          topCatShare: daily.topCatShare,
-          nonDevShare: daily.nonDevShare,
-          newAi: daily.newAi
-        },
-        deltas: {
-          sharePts: deltaSharePts,
-          topCatSharePts: deltaTopSharePts,
-          nonDevPts: deltaNonDevPts,
-          newDelta: deltaNew
-        },
-        catTopForChart: sortedCats.slice(0, 8).map(([k,v])=>({ k, v }))
-      };
+      const labels = [];
+      for(let i=months-1;i>=0;i--){
+        const dd = new Date(Date.UTC(Y, M-1 - i, 1));
+        const key = `${dd.getUTCFullYear()}-${String(dd.getUTCMonth()+1).padStart(2,"0")}`;
+        labels.push(key);
+      }
+      const values = labels.map(k => counts.get(k) || 0);
+      return { labels, values };
     }
 
     /*****************************************************************
-     * WHERE JOBS ARE (BLENDED; prefers Remotive categories)
+     * SKILL COUNTS
      *****************************************************************/
-    let whereChart = null;
-
-    function getWhereJobsData(blended, aud){
-      const audFn = AUDIENCE_FILTERS[aud] || AUDIENCE_FILTERS.all;
-
-      const aiAud = blended.aiJobs.filter(audFn);
-
-      // Prefer Remotive only
-      const remotive = aiAud.filter(j => j.source === "Remotive");
-      const pool = remotive.length ? remotive : aiAud;
-
+    function skillCounts(jobs){
       const counts = new Map();
-      for(const j of pool){
-        const cat = normalizeCategoryName(j.category);
-        counts.set(cat, (counts.get(cat)||0) + 1);
+      for(const s of SKILLS) counts.set(s.skill, 0);
+
+      for(const j of jobs){
+        const text = (asText(j.title) + " " + asText(j.description)).toLowerCase();
+        for(const s of SKILLS){
+          if(s.keys.some(k => text.includes(String(k).toLowerCase()))) {
+            counts.set(s.skill, (counts.get(s.skill)||0) + 1);
+          }
+        }
+      }
+      return counts;
+    }
+
+    /*****************************************************************
+     * QUALITY / CONFIDENCE
+     *****************************************************************/
+    function computeQuality(blended, aiJobsLens){
+      const adOk = blended.debug?.aiAD?.some(x => x.ok);
+      const rmOk = blended.debug?.aiRM?.some(x => x.ok);
+      const anyPrivateOk = !!(adOk || rmOk);
+
+      const dateCoverage = aiJobsLens.length ? (aiJobsLens.filter(j=>!!j.date).length / aiJobsLens.length) : 0;
+      const dedupRate = blended.raw?.aiRaw ? (1 - (blended.aiJobs.length / Math.max(blended.raw.aiRaw, 1))) : 0;
+
+      let label = "Medium";
+      let tag = { text: "medium", cls: "warn" };
+
+      if(anyPrivateOk && dateCoverage >= 0.6) {
+        label = "High";
+        tag = { text: "high", cls: "good" };
+      }
+      if(!anyPrivateOk && dateCoverage < 0.4) {
+        label = "Low";
+        tag = { text: "low", cls: "bad" };
       }
 
-      // Top categories; merge remainder
-      let entries = [...counts.entries()].sort((a,b)=>b[1]-a[1]);
+      const series = [
+        anyPrivateOk ? 1 : 0.35,
+        dateCoverage,
+        dedupRate
+      ].map(v=>Math.max(0, Math.min(1, v)));
 
-      // keep top 8, rest -> "All others"
-      const top = entries.slice(0, 8);
-      const rest = entries.slice(8);
-      const restSum = rest.reduce((s, [,v])=>s+v, 0);
-      if(restSum > 0) top.push(["All others", restSum]);
-
-      const labels = top.map(([k])=>k);
-      const values = top.map(([,v])=>v);
-
-      return {
-        labels, values,
-        usedRemotive: !!remotive.length,
-        poolSize: pool.length
-      };
+      return { label, tag, dateCoverage, dedupRate, anyPrivateOk, series };
     }
+
+    /*****************************************************************
+     * STATE
+     *****************************************************************/
+    let blended = null;
+    let currentAudience = "all";
+
+    /*****************************************************************
+     * CHARTS
+     *****************************************************************/
+    let whereChart = null;
+    let trendChart = null;
+    let skillsChart = null;
 
     function renderWhereJobsChart(labels, values){
       const ctx = $("#whereJobsChart");
@@ -1065,14 +1296,7 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: (c) => `${c.parsed.y} postings`
-              }
-            }
-          },
+          plugins: { legend: { display: false } },
           scales: {
             y: { beginAtZero: true, ticks: { precision: 0 } },
             x: { ticks: { maxRotation: 30, minRotation: 30 } }
@@ -1081,23 +1305,162 @@
       });
     }
 
-    /*****************************************************************
-     * DRAWER
-     *****************************************************************/
-    function openDrawer(payload){
-      $("#drawerTitle").textContent = payload.title;
-      $("#drawerSubtitle").textContent = payload.subtitle;
-      $("#drawerBody").innerHTML = payload.html;
-      $("#drawer").classList.add("open");
+    function renderTrendChart(labels, values){
+      const ctx = $("#trendChart");
+      if(trendChart) trendChart.destroy();
+
+      trendChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [{
+            label: "AI postings (monthly)",
+            data: values,
+            borderWidth: 2,
+            pointRadius: 2,
+            tension: 0.25
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: (c)=> `${c.parsed.y} postings` } }
+          },
+          scales: {
+            y: { beginAtZero: true, ticks: { precision: 0 } }
+          }
+        }
+      });
     }
-    function closeDrawer(){ $("#drawer").classList.remove("open"); }
+
+    function renderSkillsChart(labels, values){
+      const ctx = $("#skillsChart");
+      if(skillsChart) skillsChart.destroy();
+
+      skillsChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [{
+            label: "Mentions",
+            data: values,
+            borderWidth: 1,
+            borderRadius: 10
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: "y",
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: (c)=> `${c.parsed.x} mentions` } }
+          },
+          scales: {
+            x: { beginAtZero: true, ticks: { precision: 0 } },
+            y: { ticks: { font: { weight: "800" } } }
+          }
+        }
+      });
+    }
 
     /*****************************************************************
-     * UI RENDER
+     * KPI COMPUTATION (leadership-aligned)
      *****************************************************************/
-    let blended = null;
-    let currentAudience = "all";
+    function computeLens(blended, aud){
+      const audFn = AUDIENCE_FILTERS[aud] || AUDIENCE_FILTERS.all;
+      const ai = blended.aiJobs.filter(audFn);
+      const base = blended.baseJobs.filter(audFn);
 
+      const share = ai.length / Math.max(ai.length + base.length, 1);
+      const new14 = sumNewInLastDays(ai, 14);
+
+      const ohky = ai.filter(isOHKY).length / Math.max(ai.length, 1);
+      const remote = ai.filter(isRemote).length / Math.max(ai.length, 1);
+
+      const catCounts = new Map();
+      for(const j of ai){
+        const cat = normalizeCategoryName(j.category);
+        catCounts.set(cat, (catCounts.get(cat)||0) + 1);
+      }
+      const sortedCats = [...catCounts.entries()].sort((a,b)=>b[1]-a[1]);
+      const topCat = sortedCats[0]?.[0] || "All others";
+      const topCatShare = ai.length ? (sortedCats[0]?.[1] || 0) / ai.length : 0;
+
+      const devCatRx = /(software development|data \/ analytics|ai \/ ml|devops \/ sysadmin|engineering|cloud|platform)/i;
+      const devCount = ai.filter(j => devCatRx.test(normalizeCategoryName(j.category))).length;
+      const nonDev = ai.length ? 1 - (devCount / ai.length) : 0;
+
+      const series14 = buildDailySeries(ai, base, 14);
+
+      // simple deltas (last day vs first day) for chips
+      const deltaPts = (arr) => (arr && arr.length>=2) ? (arr[arr.length-1] - arr[0]) * 100 : 0;
+      const deltaCount = (arr) => (arr && arr.length>=2) ? (arr[arr.length-1] - arr[0]) : 0;
+
+      const deltas = {
+        sharePts: deltaPts(series14.aiShare),
+        ohkyPts: deltaPts(series14.ohkyShare),
+        remotePts: deltaPts(series14.remoteShare),
+        topCatPts: deltaPts(series14.topCatShare),
+        nonDevPts: deltaPts(series14.nonDevShare),
+        newDelta: deltaCount(series14.aiCount)
+      };
+
+      const quality = computeQuality(blended, ai);
+
+      // Where Jobs Are (prefer Remotive)
+      const remotive = ai.filter(j => j.source === "Remotive");
+      const pool = remotive.length ? remotive : ai;
+
+      const whereCounts = new Map();
+      for(const j of pool){
+        const cat = normalizeCategoryName(j.category);
+        whereCounts.set(cat, (whereCounts.get(cat)||0) + 1);
+      }
+      let whereEntries = [...whereCounts.entries()].sort((a,b)=>b[1]-a[1]);
+      const top = whereEntries.slice(0, 8);
+      const rest = whereEntries.slice(8);
+      const restSum = rest.reduce((s, [,v])=>s+v, 0);
+      if(restSum > 0) top.push(["All others", restSum]);
+
+      // Skills
+      const sc = skillCounts(ai);
+      const skillEntries = [...sc.entries()].sort((a,b)=>b[1]-a[1]).slice(0, 10);
+
+      // Trend (12 months)
+      const t = trendByMonth(ai, 12);
+
+      // Source mix
+      const mixUS = ai.filter(j => j.source === "USAJOBS").length;
+      const mixAD = ai.filter(j => j.source === "Adzuna").length;
+      const mixRM = ai.filter(j => j.source === "Remotive").length;
+
+      return {
+        ai, base,
+        share, new14,
+        ohky, remote,
+        topCat, topCatShare,
+        nonDev,
+        series14, deltas,
+        quality,
+        where: { labels: top.map(x=>x[0]), values: top.map(x=>x[1]), usedRemotive: !!remotive.length, poolSize: pool.length },
+        trend: t,
+        skillsTop: { labels: skillEntries.map(x=>x[0]), values: skillEntries.map(x=>x[1]) },
+        mix: { mixUS, mixAD, mixRM }
+      };
+    }
+
+    function tagForDelta(deltaPts){
+      if(deltaPts > 1.5) return { cls: "good" };
+      if(deltaPts < -1.5) return { cls: "warn" };
+      return { cls: "good" };
+    }
+
+    /*****************************************************************
+     * RENDER
+     *****************************************************************/
     function renderHeaderStatus(data){
       const adOk = data.debug?.aiAD?.some(x => x.ok);
       const rmOk = data.debug?.aiRM?.some(x => x.ok);
@@ -1114,82 +1477,254 @@
       setText("#lastRefresh", new Date(data.fetchedAt).toLocaleString());
     }
 
-    function tagForDelta(deltaPts){
-      // very light heuristic for chip color
-      if(deltaPts > 1.5) return { cls: "good" };
-      if(deltaPts < -1.5) return { cls: "warn" };
-      return { cls: "good" };
+    function renderAll(){
+      if(!blended) return;
+      renderHeaderStatus(blended);
+
+      const lens = computeLens(blended, currentAudience);
+
+      // KPI values
+      animatePercent($("#kAiShare"), pct(lens.share));
+      setText("#kAiCount", lens.ai.length.toLocaleString());
+      animatePercent($("#kRegionShare"), pct(lens.ohky));
+      animatePercent($("#kRemoteShare"), pct(lens.remote));
+      setText("#kTopCat", lens.topCat);
+      animatePercent($("#kNonDevShare"), pct(lens.nonDev));
+      setText("#kNew14", String(lens.new14));
+
+      // source mix tag
+      setText("#kSourceMix", `${lens.mix.mixUS} US · ${lens.mix.mixAD} Adzuna · ${lens.mix.mixRM} remote`);
+
+      // KPI delta tags
+      const dShare = lens.deltas.sharePts;
+      const dOHKY = lens.deltas.ohkyPts;
+      const dRemote = lens.deltas.remotePts;
+      const dNonDev = lens.deltas.nonDevPts;
+
+      const t1 = $("#kAiShareDelta");
+      t1.textContent = `▲ ${dShare.toFixed(1)} pts`;
+      t1.className = "kpiTag " + tagForDelta(dShare).cls;
+
+      const t2 = $("#kRegionDelta");
+      t2.textContent = `▲ ${dOHKY.toFixed(1)} pts`;
+      t2.className = "kpiTag " + tagForDelta(dOHKY).cls;
+
+      const t3 = $("#kRemoteDelta");
+      t3.textContent = `▲ ${dRemote.toFixed(1)} pts`;
+      t3.className = "kpiTag " + tagForDelta(dRemote).cls;
+
+      const t4 = $("#kNonDevDelta");
+      t4.textContent = `▲ ${dNonDev.toFixed(1)} pts`;
+      t4.className = "kpiTag " + tagForDelta(dNonDev).cls;
+
+      // top category share tag
+      const tc = $("#kTopCatShare");
+      tc.textContent = `▲ ${(lens.topCatShare*100).toFixed(1)}% share`;
+      tc.className = "kpiTag good";
+
+      // new delta (daily change proxy)
+      const nd = $("#kNewDelta");
+      nd.textContent = `▲ ${lens.deltas.newDelta >= 0 ? "+" : ""}${lens.deltas.newDelta}`;
+      nd.className = "kpiTag good";
+
+      // Quality
+      setText("#kQuality", lens.quality.label);
+      const qTag = $("#kQualityTag");
+      qTag.textContent = lens.quality.tag.text;
+      qTag.className = "kpiTag " + lens.quality.tag.cls;
+
+      // Sparklines (date-based; works immediately)
+      $("#sparkAiShare").setAttribute("points", sparkPoints(lens.series14.aiShare));
+      $("#sparkAiCount").setAttribute("points", sparkPoints(lens.series14.aiCount));
+      $("#sparkRegion").setAttribute("points", sparkPoints(lens.series14.ohkyShare));
+      $("#sparkRemote").setAttribute("points", sparkPoints(lens.series14.remoteShare));
+      $("#sparkTopCat").setAttribute("points", sparkPoints(lens.series14.topCatShare));
+      $("#sparkNonDev").setAttribute("points", sparkPoints(lens.series14.nonDevShare));
+      $("#sparkNew14").setAttribute("points", sparkPoints(lens.series14.aiCount));
+      $("#sparkQuality").setAttribute("points", sparkPoints(lens.quality.series));
+
+      // Charts
+      renderWhereJobsChart(lens.where.labels, lens.where.values);
+      renderTrendChart(lens.trend.labels, lens.trend.values);
+      renderSkillsChart(lens.skillsTop.labels, lens.skillsTop.values);
     }
 
-    function renderMarketPulse(data){
-      const mp = computeMarketPulse(data, currentAudience);
-
-      animatePercent($("#mpShare"), pct(mp.share));
-      setText("#mpTopCat", mp.topCat);
-      animatePercent($("#mpNonDev"), pct(mp.nonDevShare));
-      setText("#mpNew14", String(mp.new14));
-
-      // deltas
-      const d1 = mp.deltas.sharePts;
-      const d2 = mp.deltas.topCatSharePts;
-      const d3 = mp.deltas.nonDevPts;
-      const d4 = mp.deltas.newDelta;
-
-      const shareTag = $("#mpShareDelta");
-      shareTag.textContent = `▲ ${d1.toFixed(1)} pts`;
-      shareTag.className = "kpiTag " + tagForDelta(d1).cls;
-
-      const topTag = $("#mpTopCatShareTag");
-      topTag.textContent = `▲ ${(d2).toFixed(1)} pts`;
-      topTag.className = "kpiTag " + tagForDelta(d2).cls;
-
-      const nonTag = $("#mpNonDevTag");
-      nonTag.textContent = `▲ ${(d3).toFixed(1)} pts`;
-      nonTag.className = "kpiTag " + tagForDelta(d3).cls;
-
-      const newTag = $("#mpNewTag");
-      newTag.textContent = `▲ ${d4 >= 0 ? "+" : ""}${d4}`;
-      newTag.className = "kpiTag good";
-
-      // ✅ date-based sparklines (always works)
-      $("#sparkMpShare").setAttribute("points", sparkPoints(mp.sparks.share));
-      $("#sparkMpTopCat").setAttribute("points", sparkPoints(mp.sparks.topCatShare));
-      $("#sparkMpNonDev").setAttribute("points", sparkPoints(mp.sparks.nonDevShare));
-      $("#sparkMpNew14").setAttribute("points", sparkPoints(mp.sparks.newAi));
-
-      // Where Jobs Are
-      const w = getWhereJobsData(data, currentAudience);
-      renderWhereJobsChart(w.labels, w.values);
+    /*****************************************************************
+     * DRAWER
+     *****************************************************************/
+    function openDrawer(payload){
+      $("#drawerTitle").textContent = payload.title;
+      $("#drawerSubtitle").textContent = payload.subtitle;
+      $("#drawerBody").innerHTML = payload.html;
+      $("#drawer").classList.add("open");
     }
+    function closeDrawer(){ $("#drawer").classList.remove("open"); }
 
-    function showSources(){
+    function showMethods(){
       const dbg = blended?.debug || {};
+      const audLabel = ({
+        all:"All programs",
+        business:"Business",
+        informatics:"Informatics",
+        health:"Health"
+      }[currentAudience] || "All programs");
+
+      const lens = blended ? computeLens(blended, currentAudience) : null;
+
+      const dateCoverage = lens ? (lens.quality.dateCoverage*100).toFixed(1) + "%" : "—";
+      const dedupRate = lens ? (lens.quality.dedupRate*100).toFixed(1) + "%" : "—";
+      const privateOk = lens ? (lens.quality.anyPrivateOk ? "Yes" : "No") : "—";
+
       openDrawer({
-        title: "Sources",
-        subtitle: `Worker: ${PROXY_BASE} · Cache: 1 hour · Program lens: ${currentAudience}`,
+        title: "Methods & Sources (Academic Detail)",
+        subtitle: `Lens: ${audLabel} · Worker: ${PROXY_BASE} · Cache: 1 hour`,
         html: `
           <div class="section">
-            <strong>Primary sources</strong>
-            <ul>
-              <li><strong>USAJOBS</strong> (trusted public anchor)</li>
-              <li><strong>Adzuna</strong> (private-sector breadth)</li>
-              <li><strong>Remotive</strong> (remote breadth)</li>
-            </ul>
-            <p>All results are fetched through your Worker to avoid CORS issues on GitHub Pages.</p>
+            <strong>What “blended live” means</strong>
+            <p>
+              This dashboard blends three perspectives into one view:
+              <ul>
+                <li><strong>USAJOBS</strong>: trusted public anchor and consistent metadata</li>
+                <li><strong>Adzuna</strong>: private-sector breadth (high volume; can rate limit)</li>
+                <li><strong>Remotive</strong>: remote-first postings and categories</li>
+              </ul>
+              Results are <strong>deduplicated</strong> by URL (or a stable fallback key) to avoid double-counting across sources.
+            </p>
           </div>
 
           <div class="section">
-            <strong>Market Pulse + Where Jobs Are = blended</strong>
-            <p>
-              The Market Pulse KPIs are computed from the <em>blended</em> AI and baseline job samples (USAJOBS + Adzuna + Remotive),
-              filtered by the current program lens. The sparklines are now computed from job <strong>dates</strong> in the dataset
-              (last 14 days), so they work immediately and do not depend on localStorage history.
+            <strong>How the KPIs are computed</strong>
+            <ul>
+              <li><strong>AI-signal share</strong>: <code>AI postings ÷ (AI postings + baseline postings)</code> within the selected lens.</li>
+              <li><strong>AI postings (sample)</strong>: count of deduped AI postings within the lens (bigger sample → stronger signal).</li>
+              <li><strong>Regional relevance (OH/KY)</strong>: title/location text heuristics (e.g., Cincinnati/Covington/Ohio/Kentucky).</li>
+              <li><strong>Remote opportunity</strong>: remote/telework signals in location/category text.</li>
+              <li><strong>Top hiring category</strong>: most frequent category value among AI postings.</li>
+              <li><strong>Non-dev share (proxy)</strong>: 1 − share of postings in common dev/data categories.</li>
+              <li><strong>New postings (14 days)</strong>: AI postings with publish dates in the last 14 days.</li>
+              <li><strong>Trend over time</strong>: monthly counts using postings with usable dates (missing dates reduce precision).</li>
+            </ul>
+          </div>
+
+          <div class="section">
+            <strong>Data quality diagnostics</strong>
+            <ul>
+              <li><strong>Private-sector sources available</strong>: ${escapeHtml(privateOk)}</li>
+              <li><strong>Date coverage in lens</strong>: ${escapeHtml(dateCoverage)} of AI postings include usable dates</li>
+              <li><strong>Dedup strength (AI)</strong>: ${escapeHtml(dedupRate)} (higher means more duplicates removed)</li>
+            </ul>
+            <p class="muted">
+              Interpretation: High-quality signals occur when private-sector sources load successfully and date coverage is strong.
+              Low date coverage can flatten trend lines and reduce sparkline variation.
             </p>
+          </div>
+
+          <div class="section">
+            <strong>AI keyword filter (transparent)</strong>
+            <p>USAJOBS terms:</p>
+            <pre>${escapeHtml(JSON.stringify(AI_TERMS_US, null, 2))}</pre>
+            <p>Adzuna terms:</p>
+            <pre>${escapeHtml(JSON.stringify(AI_TERMS_ADZUNA, null, 2))}</pre>
+            <p>Baseline terms (comparison group):</p>
+            <pre>${escapeHtml(JSON.stringify(BASELINE_TERMS, null, 2))}</pre>
+          </div>
+
+          <div class="section">
+            <strong>Skill map (transparent)</strong>
+            <p>We count skill mentions in titles + descriptions. This is intentionally explainable and editable by NKU.</p>
+            <pre>${escapeHtml(JSON.stringify(SKILLS, null, 2))}</pre>
+          </div>
+
+          <div class="section">
+            <strong>Operational notes (GitHub Pages)</strong>
+            <ul>
+              <li>All APIs are called through your Worker to avoid CORS errors.</li>
+              <li>If a tester sees missing data, it’s often rate limiting (Adzuna) or a missing Worker route (Remotive).</li>
+              <li>The dashboard caches results for 1 hour to reduce API load and keep leadership demos snappy.</li>
+            </ul>
           </div>
 
           <div class="section">
             <strong>Debug (last fetch)</strong>
             <pre>${escapeHtml(JSON.stringify(dbg, null, 2))}</pre>
+          </div>
+        `
+      });
+    }
+
+    function showReadingGuide(){
+      openDrawer({
+        title: "How to use this in a dean/chair/director conversation",
+        subtitle: "A quick, upbeat script + interpretation tips",
+        html: `
+          <div class="section">
+            <strong>Suggested 60-second walkthrough</strong>
+            <ul>
+              <li><strong>Start with AI-signal share</strong>: “AI language is showing up in a meaningful share of postings within this lens.”</li>
+              <li><strong>Confirm sample size</strong>: “This is based on a deduped sample blended across federal + private-sector + remote.”</li>
+              <li><strong>Connect to NKU</strong>: “Regional relevance + remote opportunity informs our partnership and internship strategy.”</li>
+              <li><strong>Move to curriculum</strong>: “Top skills and categories show where employer language is clustering.”</li>
+              <li><strong>Close with action</strong>: “We can align modules/micro-credentials and prioritize employer projects in these clusters.”</li>
+            </ul>
+          </div>
+
+          <div class="section">
+            <strong>Interpretation rules (healthy academic caution)</strong>
+            <ul>
+              <li>This is a <strong>signal dashboard</strong>, not a definitive labor market taxonomy.</li>
+              <li>Counts reflect <strong>posting language</strong>. A mention does not equal a requirement.</li>
+              <li>Use <strong>Data quality</strong> to gauge confidence before making strong claims.</li>
+              <li>Use <strong>trends</strong> to ask “where are we seeing acceleration?” rather than exact forecasting.</li>
+            </ul>
+          </div>
+        `
+      });
+    }
+
+    function showTrendNotes(){
+      openDrawer({
+        title: "Trend notes",
+        subtitle: "How the trend chart is built (and how to interpret it)",
+        html: `
+          <div class="section">
+            <strong>What you’re seeing</strong>
+            <p>
+              Monthly counts of AI-matched postings within the selected lens.
+              The chart uses postings that contain usable publish dates (some sources/records omit dates).
+            </p>
+          </div>
+          <div class="section">
+            <strong>How to interpret it for leadership</strong>
+            <ul>
+              <li>If the line rises over multiple months, it supports “growing demand” language.</li>
+              <li>If it’s flat, look at <strong>Data quality</strong> and sample size (a small sample can appear noisy).</li>
+              <li>This is not forecasting; it’s a “what’s showing up in postings” signal.</li>
+            </ul>
+          </div>
+        `
+      });
+    }
+
+    function showSkillNotes(){
+      openDrawer({
+        title: "Skill map notes",
+        subtitle: "Why the skill view is academically useful",
+        html: `
+          <div class="section">
+            <strong>Why a keyword map (instead of “black box AI”)</strong>
+            <p>
+              For academic settings, transparency matters. This skill view is explainable and editable:
+              NKU can expand it to include specific program outcomes, accreditation terms, or industry partner language.
+            </p>
+          </div>
+          <div class="section">
+            <strong>How to use it</strong>
+            <ul>
+              <li>Prioritize micro-credentials or modules where employer language clusters.</li>
+              <li>Use “Responsible AI / ethics” + “Privacy” + “Security” to frame responsible AI literacy outcomes.</li>
+              <li>Use “SQL / BI dashboards” + “Data engineering” to frame data-to-decision pathways.</li>
+              <li>Use “LLM app development (RAG)” to guide applied projects and capstones.</li>
+            </ul>
           </div>
         `
       });
@@ -1203,25 +1738,101 @@
           <div class="section">
             <strong>What this chart shows</strong>
             <p>
-              It counts job categories from <strong>Remotive</strong> postings inside the current program lens.
-              If there are no Remotive hits for the current lens, it falls back to categories from the full blended AI sample.
+              It counts job categories from <strong>Remotive</strong> postings inside the current academic lens.
+              If there are no Remotive hits for the selected lens, it falls back to category values from the full blended AI sample.
             </p>
           </div>
 
           <div class="section">
             <strong>Why categories can look “uneven”</strong>
             <ul>
-              <li>Remotive categories are platform-defined (not standardized across sources).</li>
+              <li>Categories are platform-defined (not standardized across all sources).</li>
               <li>Keyword filtering can over-represent “Software Development” for AI terms.</li>
               <li>Some sources have sparse or inconsistent category fields.</li>
             </ul>
           </div>
-
-          <div class="section">
-            <strong>Tip</strong>
-            <p class="muted">Use this chart as directional “where demand clusters” rather than a precise labor taxonomy.</p>
-          </div>
         `
+      });
+    }
+
+    function showHint(which){
+      const hints = {
+        aiShare: {
+          title: "AI-signal share",
+          body: `
+            <p>This answers: “How frequently is AI language appearing in job postings right now?”</p>
+            <p><strong>Definition:</strong> AI postings ÷ (AI postings + baseline postings), within the selected lens.</p>
+            <p class="muted">Why it’s leadership-friendly: it’s a simple ratio that avoids overreacting to raw counts.</p>
+          `
+        },
+        sampleSize: {
+          title: "AI postings (sample)",
+          body: `
+            <p>This answers: “How much evidence are we looking at?”</p>
+            <p>We dedupe postings across sources to reduce double-counting.</p>
+            <p class="muted">Interpretation: a larger deduped sample supports stronger claims in meetings.</p>
+          `
+        },
+        region: {
+          title: "Regional relevance (OH/KY)",
+          body: `
+            <p>This answers: “How much of this demand appears locally relevant?”</p>
+            <p>We use an explainable text heuristic on location strings and common OH/KY city/state tokens.</p>
+            <p class="muted">Interpretation: helps guide employer outreach, experiential learning, and internship pipelines.</p>
+          `
+        },
+        remote: {
+          title: "Remote opportunity",
+          body: `
+            <p>This answers: “How much of the AI opportunity space is remote?”</p>
+            <p>We flag remote/telework signals in location/category text.</p>
+            <p class="muted">Interpretation: remote postings can strengthen opportunities for students regardless of commute/geography.</p>
+          `
+        },
+        topCat: {
+          title: "Top hiring category",
+          body: `
+            <p>This answers: “Where is AI demand clustering by job category?”</p>
+            <p>We take the most frequent category value among AI postings in the current lens.</p>
+            <p class="muted">Use alongside Top Skills for curriculum alignment discussions.</p>
+          `
+        },
+        nonDev: {
+          title: "Non-dev share (proxy)",
+          body: `
+            <p>This answers: “Is AI demand spreading beyond traditional software/data roles?”</p>
+            <p>We compute 1 minus the share in common dev/data categories (an explainable proxy).</p>
+            <p class="muted">Interpretation: supports cross-disciplinary AI literacy goals.</p>
+          `
+        },
+        new14: {
+          title: "New postings (14 days)",
+          body: `
+            <p>This answers: “What’s fresh right now?”</p>
+            <p>We count AI postings whose publish dates fall within the last 14 days.</p>
+            <p class="muted">Interpretation: a helpful pulse metric for timely leadership conversations.</p>
+          `
+        },
+        quality: {
+          title: "Data quality",
+          body: `
+            <p>We combine three signals into a plain-language label:</p>
+            <ul>
+              <li><strong>Private-sector success:</strong> did Adzuna/Remotive load successfully?</li>
+              <li><strong>Date coverage:</strong> how many postings have usable dates?</li>
+              <li><strong>Dedup strength:</strong> how much duplication did we remove?</li>
+            </ul>
+            <p class="muted">Interpretation: use this before making strong claims about trends.</p>
+          `
+        }
+      };
+
+      const h = hints[which];
+      if(!h) return;
+      openDrawer({
+        title: h.title,
+        subtitle: "KPI definition and interpretation",
+        html: `<div class="section">${h.body}</div>`
       });
     }
 
@@ -1232,10 +1843,24 @@
       $("#drawerClose").addEventListener("click", closeDrawer);
       document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeDrawer(); });
 
-      $("#openSources").addEventListener("click", showSources);
-      $("#tabSources").addEventListener("click", showSources);
-      $("#openJobCats").addEventListener("click", showJobCategoriesHelp);
+      $("#openMethods").addEventListener("click", showMethods);
+      $("#tabMethods").addEventListener("click", showMethods);
+      $("#tabOverview").addEventListener("click", ()=>{
+        $("#tabOverview").classList.add("active");
+        $("#tabMethods").classList.remove("active");
+        closeDrawer();
+      });
       $("#tabPrint").addEventListener("click", ()=> window.print());
+
+      $("#openReadingGuide").addEventListener("click", showReadingGuide);
+      $("#openTrendNotes").addEventListener("click", showTrendNotes);
+      $("#openSkillNotes").addEventListener("click", showSkillNotes);
+      $("#openJobCats").addEventListener("click", showJobCategoriesHelp);
+
+      // KPI hint buttons
+      $$(".hint").forEach(h=>{
+        h.addEventListener("click", ()=> showHint(h.dataset.hint));
+      });
 
       $("#forceRefresh").addEventListener("click", ()=>{
         clearCache();
@@ -1246,33 +1871,24 @@
         btn.addEventListener("click", ()=>{
           currentAudience = btn.dataset.aud || "all";
           $$("#audienceToggle button").forEach(b=> b.setAttribute("aria-pressed", b.dataset.aud === currentAudience ? "true" : "false"));
-          if(blended){
-            renderHeaderStatus(blended);
-            renderMarketPulse(blended);
-          }
+          renderAll();
         });
       });
 
-      // small “active” state for Market tab
-      $("#tabMarket").addEventListener("click", ()=>{
-        $("#tabMarket").classList.add("active");
-        $("#tabSources").classList.remove("active");
-      });
-      $("#tabSources").addEventListener("click", ()=>{
-        $("#tabSources").classList.add("active");
-        $("#tabMarket").classList.remove("active");
-      });
-
-      // initial shimmer placeholders
-      $("#mpShare").innerHTML = `<span class="skel" style="width:90px;height:28px;"></span>`;
-      $("#mpTopCat").innerHTML = `<span class="skel" style="width:180px;height:24px;"></span>`;
-      $("#mpNonDev").innerHTML = `<span class="skel" style="width:90px;height:28px;"></span>`;
-      $("#mpNew14").innerHTML = `<span class="skel" style="width:60px;height:28px;"></span>`;
+      // Shimmer placeholders (so it looks lively on load)
+      const shimmer = (w,h)=>`<span class="skel" style="width:${w}px;height:${h}px;"></span>`;
+      $("#kAiShare").innerHTML = shimmer(90,28);
+      $("#kAiCount").innerHTML = shimmer(70,28);
+      $("#kRegionShare").innerHTML = shimmer(90,28);
+      $("#kRemoteShare").innerHTML = shimmer(90,28);
+      $("#kTopCat").innerHTML = shimmer(180,24);
+      $("#kNonDevShare").innerHTML = shimmer(90,28);
+      $("#kNew14").innerHTML = shimmer(60,28);
+      $("#kQuality").innerHTML = shimmer(70,22);
 
       try{
         blended = await fetchBlend();
-        renderHeaderStatus(blended);
-        renderMarketPulse(blended);
+        renderAll();
       }catch(err){
         console.error(err);
         const statusEl = $("#blendStatus");
@@ -1285,10 +1901,10 @@
             <div class="section">
               <strong>What to try</strong>
               <ul>
-                <li>Open the Worker in a new tab to verify it loads: <code>${escapeHtml(PROXY_BASE)}</code></li>
+                <li>Open the Worker to verify it loads: <code>${escapeHtml(PROXY_BASE)}</code></li>
                 <li>Click <strong>Force refresh</strong> to clear cache.</li>
                 <li>If Adzuna rate limits (429), reduce terms or add throttling in the Worker.</li>
-                <li>If the Remotive route is not implemented in the Worker, you’ll need to add it (or remove Remotive from blend).</li>
+                <li>If Remotive route is not implemented in the Worker, you’ll need to add it (or remove Remotive from the blend).</li>
               </ul>
               <pre>${escapeHtml(String(err))}</pre>
             </div>
