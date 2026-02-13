@@ -346,6 +346,7 @@
       overflow:hidden;
     }
     .spark svg{ width:100%; height:100%; display:block; }
+    .spark polyline{ stroke-linecap: round; stroke-linejoin: round; }
 
     /* Chart wrapper */
     .chartWrap{
@@ -559,7 +560,7 @@
             <div class="callout">
               <div class="t">How to use it</div>
               <div class="h">Curriculum + partnerships</div>
-              <div class="b">Use the Top Skills + Category Mix to prioritize modules, micro-credentials, and employer projects. Use Regional/Remote shares to guide outreach and internships.</div>
+              <div class="b">Use the Top Skills + Category Mix to prioritize modules, micro-credentials, and employer projects. Use KY/OH and Remote signals to guide outreach and internships.</div>
             </div>
           </div>
         </div>
@@ -570,7 +571,10 @@
 
         <div class="card kpi span-3" role="region" aria-label="AI-signal share">
           <div class="kpiTop">
-            <div class="kpiLabel">AI-signal share <span class="hint" data-hint="aiShare">?</span></div>
+            <div class="kpiLabel">
+              AI-signal share
+              <span class="hint" data-hint="aiShare">?</span>
+            </div>
             <div class="kpiTag good" id="kAiShareDelta">▲ — pts</div>
           </div>
           <div class="kpiValue" id="kAiShare">—</div>
@@ -584,7 +588,10 @@
 
         <div class="card kpi span-3" role="region" aria-label="AI postings sample size">
           <div class="kpiTop">
-            <div class="kpiLabel">AI postings (sample) <span class="hint" data-hint="sampleSize">?</span></div>
+            <div class="kpiLabel">
+              AI postings (sample)
+              <span class="hint" data-hint="sampleSize">?</span>
+            </div>
             <div class="kpiTag" id="kSourceMix">—</div>
           </div>
           <div class="kpiValue" id="kAiCount">—</div>
@@ -598,11 +605,14 @@
 
         <div class="card kpi span-3" role="region" aria-label="Regional relevance">
           <div class="kpiTop">
-            <div class="kpiLabel">Regional relevance (OH/KY) <span class="hint" data-hint="region">?</span></div>
+            <div class="kpiLabel">
+              KY/OH relevance
+              <span class="hint" data-hint="region">?</span>
+            </div>
             <div class="kpiTag good" id="kRegionDelta">▲ — pts</div>
           </div>
           <div class="kpiValue" id="kRegionShare">—</div>
-          <div class="kpiSub">Share of AI postings with OH/KY signals (Cincy/NKY + statewide)</div>
+          <div class="kpiSub">Share of AI postings with Kentucky/Ohio signals (from location/title text)</div>
           <div class="spark" aria-hidden="true">
             <svg viewBox="0 0 120 44" preserveAspectRatio="none">
               <polyline id="sparkRegion" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
@@ -612,11 +622,14 @@
 
         <div class="card kpi span-3" role="region" aria-label="Remote opportunity">
           <div class="kpiTop">
-            <div class="kpiLabel">Remote opportunity <span class="hint" data-hint="remote">?</span></div>
+            <div class="kpiLabel">
+              Remote opportunity
+              <span class="hint" data-hint="remote">?</span>
+            </div>
             <div class="kpiTag good" id="kRemoteDelta">▲ — pts</div>
           </div>
           <div class="kpiValue" id="kRemoteShare">—</div>
-          <div class="kpiSub">Share of AI postings marked remote/telework (strong for internships + pipelines)</div>
+          <div class="kpiSub">Share of AI postings marked remote/telework (useful for pipelines)</div>
           <div class="spark" aria-hidden="true">
             <svg viewBox="0 0 120 44" preserveAspectRatio="none">
               <polyline id="sparkRemote" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
@@ -626,12 +639,15 @@
 
       </section>
 
-      <!-- Second row KPIs -->
+      <!-- Second row -->
       <section class="grid" style="margin-top:14px" aria-label="Curriculum alignment KPIs">
 
         <div class="card kpi span-3" role="region" aria-label="Top category">
           <div class="kpiTop">
-            <div class="kpiLabel">Top hiring category <span class="hint" data-hint="topCat">?</span></div>
+            <div class="kpiLabel">
+              Top hiring category
+              <span class="hint" data-hint="topCat">?</span>
+            </div>
             <div class="kpiTag good" id="kTopCatShare">▲ — share</div>
           </div>
           <div class="kpiBig" id="kTopCat">—</div>
@@ -645,11 +661,14 @@
 
         <div class="card kpi span-3" role="region" aria-label="Non-development share">
           <div class="kpiTop">
-            <div class="kpiLabel">Non-dev share (proxy) <span class="hint" data-hint="nonDev">?</span></div>
+            <div class="kpiLabel">
+              Non-dev share (proxy)
+              <span class="hint" data-hint="nonDev">?</span>
+            </div>
             <div class="kpiTag good" id="kNonDevDelta">▲ — pts</div>
           </div>
           <div class="kpiValue" id="kNonDevShare">—</div>
-          <div class="kpiSub">AI postings not clustered in software/data categories (signals cross-disciplinary demand)</div>
+          <div class="kpiSub">AI postings not clustered in software/data categories (cross-disciplinary demand)</div>
           <div class="spark" aria-hidden="true">
             <svg viewBox="0 0 120 44" preserveAspectRatio="none">
               <polyline id="sparkNonDev" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
@@ -659,7 +678,10 @@
 
         <div class="card kpi span-3" role="region" aria-label="New postings">
           <div class="kpiTop">
-            <div class="kpiLabel">New postings (14 days) <span class="hint" data-hint="new14">?</span></div>
+            <div class="kpiLabel">
+              New postings (14 days)
+              <span class="hint" data-hint="new14">?</span>
+            </div>
             <div class="kpiTag good" id="kNewDelta">▲ count</div>
           </div>
           <div class="kpiValue" id="kNew14">—</div>
@@ -673,7 +695,10 @@
 
         <div class="card kpi span-3" role="region" aria-label="Data quality">
           <div class="kpiTop">
-            <div class="kpiLabel">Data quality <span class="hint" data-hint="quality">?</span></div>
+            <div class="kpiLabel">
+              Data quality
+              <span class="hint" data-hint="quality">?</span>
+            </div>
             <div class="kpiTag good" id="kQualityTag">high</div>
           </div>
           <div class="kpiBig" id="kQuality">—</div>
@@ -728,13 +753,52 @@
 
       </section>
 
+      <!-- KY/OH spotlight -->
+      <section class="grid" style="margin-top:14px" aria-label="KY/OH spotlight">
+        <div class="card span-6">
+          <div class="hd">
+            <div>
+              <h2>Top KY/OH employers posting for AI skills</h2>
+              <p>Employers (company field) among AI-matched postings that include KY/OH signals. Strong for partnership targeting.</p>
+            </div>
+            <button class="btn" id="openKyohNotes" type="button">KY/OH method</button>
+          </div>
+          <div class="bd">
+            <div class="chartWrap">
+              <div class="chartBoxMid">
+                <canvas id="kyohEmployersChart" role="img" aria-label="KY/OH employers chart"></canvas>
+              </div>
+            </div>
+            <div class="footerNote">Note: KY/OH classification is a transparent text heuristic on location/title strings (see Methods).</div>
+          </div>
+        </div>
+
+        <div class="card span-6">
+          <div class="hd">
+            <div>
+              <h2>Top skills in KY/OH postings</h2>
+              <p>Skill mentions within KY/OH-signaled AI postings. Helpful for “local market alignment” and advisory board conversations.</p>
+            </div>
+            <button class="btn" id="openKyohNotes2" type="button">KY/OH method</button>
+          </div>
+          <div class="bd">
+            <div class="chartWrap">
+              <div class="chartBoxMid">
+                <canvas id="kyohSkillsChart" role="img" aria-label="KY/OH skills chart"></canvas>
+              </div>
+            </div>
+            <div class="footerNote">Interpretation: mentions ≠ requirements; use as “what employers are saying out loud.”</div>
+          </div>
+        </div>
+      </section>
+
       <!-- Where Jobs Are -->
       <section class="grid" style="margin-top:14px" aria-label="Where the jobs are">
         <div class="card span-12">
           <div class="hd">
             <div>
               <h2>Where the Jobs Are</h2>
-              <p>Category distribution for AI-matched postings (blended across sources, mapped into an NKU-friendly taxonomy).</p>
+              <p>Category distribution for AI-matched postings using a stable NKU-friendly taxonomy (consistent across sources).</p>
             </div>
             <button class="btn" id="openJobCats" type="button">Job categories</button>
           </div>
@@ -744,7 +808,7 @@
                 <canvas id="whereJobsChart" role="img" aria-label="Where the jobs are chart"></canvas>
               </div>
             </div>
-            <div class="footerNote">Source: Blended (USAJOBS + Adzuna + Remotive) · Categories normalized for executive readability.</div>
+            <div class="footerNote">We categorize ALL blended AI postings into a stable taxonomy to avoid tiny Remotive-only samples.</div>
           </div>
         </div>
       </section>
@@ -769,16 +833,20 @@
      * CONFIG (Worker proxy avoids CORS on GitHub Pages)
      *****************************************************************/
     const PROXY_BASE = "https://ai-skills-proxy.nealb3.workers.dev";
-    const CACHE_KEY = "nku_exec_ai_dashboard_v7_academic_kpis";
+    const CACHE_KEY = "nku_exec_ai_dashboard_v8_paged_kyoh";
     const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
-    
-    // Pagination controls (bigger = more sample, but more API load)
-    const RESULTS_PER_PAGE = 50;     // USAJOBS supports up to 500, but keep sane
-    const PAGES_USAJOBS = 3;         // 1..N
-    const PAGES_ADZUNA = 3;          // 1..N
 
-    // Rate-limit safety (esp. Adzuna)
-    const PAGE_DELAY_MS = 250;       // small pause between page calls
+    // Pagination tuning (bigger sample size; be mindful of rate limits)
+    // USAJOBS supports ResultsPerPage + Page. (ResultsPerPage up to 500). :contentReference[oaicite:2]{index=2}
+    const USAJOBS_RESULTS_PER_PAGE = 100;
+    const USAJOBS_PAGES_PER_TERM = 2;    // bump to 3–5 if your Worker / keys can handle it
+
+    // Adzuna supports results_per_page + page. :contentReference[oaicite:3]{index=3}
+    const ADZUNA_RESULTS_PER_PAGE = 50;
+    const ADZUNA_PAGES_PER_TERM = 2;     // bump carefully; Adzuna can rate limit
+
+    // Remotive: many queries return large sets already; keep simple to avoid overfetch.
+    const REMOTIVE_QUERIES = ["machine learning","generative ai","llm","copilot"];
 
     // AI keywords (transparent + editable)
     const AI_TERMS_US = [
@@ -790,7 +858,7 @@
     ];
     const BASELINE_TERMS = ["software","analyst","manager"];
 
-    // NKU-friendly academic lenses
+    // NKU-friendly academic lenses (simple, explainable)
     const AUDIENCE_FILTERS = {
       all: () => true,
       business: (job) => /(analyst|finance|account|marketing|operations|product|strategy|business|supply|procurement|risk|audit)/i
@@ -801,7 +869,7 @@
         .test(asText(job.title) + " " + asText(job.description)),
     };
 
-    // Transparent skill map
+    // Transparent skill map (edit freely; aligns well with academic conversations)
     const SKILLS = [
       { skill:"AI tools (Copilot/ChatGPT)", family:"GenAI tools", keys:["copilot","chatgpt","assistant"] },
       { skill:"Prompting & workflow design", family:"GenAI workflows", keys:["prompt","prompting","agent","agentic","workflow","orchestration"] },
@@ -893,29 +961,6 @@
       try{ localStorage.removeItem(CACHE_KEY); }catch{}
     }
 
-    function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
-
-    async function fanoutFetchPaged(terms, fetcher, normalizer, pages=1, perPage=25){
-      const all = [];
-      const debug = [];
-    
-      for(const term of terms){
-        for(let page=1; page<=pages; page++){
-          try{
-            const { url, json } = await fetcher(term, perPage, page);
-            debug.push({ term, page, ok:true, url });
-            all.push(...normalizer(json));
-          }catch(err){
-            debug.push({ term, page, ok:false, error:String(err).slice(0,200) });
-          }
-          if(PAGE_DELAY_MS) await sleep(PAGE_DELAY_MS);
-        }
-      }
-    
-      const deduped = dedupeJobs(all);
-      return { jobs: deduped, rawCount: all.length, debug };
-    }
-
     /*****************************************************************
      * FETCHERS (via Worker)
      *****************************************************************/
@@ -936,17 +981,17 @@
     async function fetchUSAJOBS(term, perPage=25, page=1){
       const t = encodeURIComponent(term);
       const url = `${PROXY_BASE}/usajobs?keyword=${t}&ResultsPerPage=${perPage}&Page=${page}`;
-      return { url, json: await fetchJson(url), term };
+      return { url, json: await fetchJson(url), term, page };
     }
     async function fetchAdzuna(term, perPage=25, page=1){
       const t = encodeURIComponent(term);
       const url = `${PROXY_BASE}/adzuna?what=${t}&results_per_page=${perPage}&page=${page}&country=us`;
-      return { url, json: await fetchJson(url), term };
+      return { url, json: await fetchJson(url), term, page };
     }
     async function fetchRemotive(searchTerm=""){
       const q = encodeURIComponent(searchTerm || "");
       const url = `${PROXY_BASE}/remotive${q ? `?search=${q}` : ""}`;
-      return { url, json: await fetchJson(url), term: searchTerm };
+      return { url, json: await fetchJson(url), term: searchTerm, page: 1 };
     }
 
     /*****************************************************************
@@ -1024,81 +1069,88 @@
       return out;
     }
 
-    async function fanoutFetch(terms, fetcher, normalizer){
+    async function fanoutFetchPaged(terms, pages, fetcher, normalizer){
       const all = [];
       const debug = [];
-      const settled = await Promise.allSettled(terms.map(t => fetcher(t)));
+
+      const tasks = [];
+      for(const t of terms){
+        for(const p of pages){
+          tasks.push(fetcher(t, p));
+        }
+      }
+
+      const settled = await Promise.allSettled(tasks);
       for(const r of settled){
         if(r.status === "fulfilled"){
-          const { url, json, term } = r.value;
-          debug.push({ term, ok:true, url });
+          const { url, json, term, page } = r.value;
+          debug.push({ term, page, ok:true, url });
           const normalized = normalizer(json);
           all.push(...normalized);
         } else {
-          debug.push({ ok:false, error:String(r.reason).slice(0,200) });
+          debug.push({ ok:false, error:String(r.reason).slice(0,220) });
         }
       }
+
       const deduped = dedupeJobs(all);
       return { jobs: deduped, rawCount: all.length, debug };
     }
 
     /*****************************************************************
-     * BLEND PIPELINE
+     * BLEND PIPELINE (paged)
      *****************************************************************/
     async function fetchBlend(){
       const cached = readCache();
       if(cached) return cached;
-    
-      // AI sets
+
+      const usPages = Array.from({length: USAJOBS_PAGES_PER_TERM}, (_,i)=>i+1);
+      const adPages = Array.from({length: ADZUNA_PAGES_PER_TERM}, (_,i)=>i+1);
+
       const aiUS = await fanoutFetchPaged(
         AI_TERMS_US,
-        (t, per, page)=>fetchUSAJOBS(t, per, page),
-        normalizeUSAJOBS,
-        PAGES_USAJOBS,
-        RESULTS_PER_PAGE
+        usPages,
+        (t,p)=>fetchUSAJOBS(t, USAJOBS_RESULTS_PER_PAGE, p),
+        normalizeUSAJOBS
       );
-    
+
       const aiAD = await fanoutFetchPaged(
         AI_TERMS_ADZUNA,
-        (t, per, page)=>fetchAdzuna(t, per, page),
-        normalizeAdzuna,
-        PAGES_ADZUNA,
-        RESULTS_PER_PAGE
+        adPages,
+        (t,p)=>fetchAdzuna(t, ADZUNA_RESULTS_PER_PAGE, p),
+        normalizeAdzuna
       );
-    
-      // Remotive: your route may not support paging; we just query more terms (already)
-      const aiRM = await fanoutFetch(
-        ["machine learning","generative ai","llm","copilot","prompt","rag","ai engineer"],
+
+      const aiRM = await fanoutFetchPaged(
+        REMOTIVE_QUERIES,
+        [1],
         (t)=>fetchRemotive(t),
         normalizeRemotive
       );
-    
-      // Baseline sets
+
       const baseUS = await fanoutFetchPaged(
         BASELINE_TERMS,
-        (t, per, page)=>fetchUSAJOBS(t, per, page),
-        normalizeUSAJOBS,
-        Math.max(1, Math.ceil(PAGES_USAJOBS/2)),   // baseline can be smaller
-        RESULTS_PER_PAGE
+        usPages,
+        (t,p)=>fetchUSAJOBS(t, USAJOBS_RESULTS_PER_PAGE, p),
+        normalizeUSAJOBS
       );
-    
+
       const baseAD = await fanoutFetchPaged(
         BASELINE_TERMS,
-        (t, per, page)=>fetchAdzuna(t, per, page),
-        normalizeAdzuna,
-        Math.max(1, Math.ceil(PAGES_ADZUNA/2)),
-        RESULTS_PER_PAGE
+        adPages,
+        (t,p)=>fetchAdzuna(t, ADZUNA_RESULTS_PER_PAGE, p),
+        normalizeAdzuna
       );
-    
-      const baseRM = await fanoutFetch(
-        ["engineer","analyst","manager","developer","specialist"],
+
+      const baseRM = await fanoutFetchPaged(
+        ["engineer","analyst","manager"],
+        [1],
         (t)=>fetchRemotive(t),
         normalizeRemotive
       );
-    
+
       const aiJobs = dedupeJobs([...aiUS.jobs, ...aiAD.jobs, ...aiRM.jobs]);
       const baseJobs = dedupeJobs([...baseUS.jobs, ...baseAD.jobs, ...baseRM.jobs]);
-    
+
       const out = {
         fetchedAt: new Date().toISOString(),
         aiJobs,
@@ -1109,31 +1161,34 @@
         },
         debug: {
           aiUS: aiUS.debug, aiAD: aiAD.debug, aiRM: aiRM.debug,
-          baseUS: baseUS.debug, baseAD: baseAD.debug, baseRM: baseRM.debug
+          baseUS: baseUS.debug, baseAD: baseAD.debug, baseRM: baseRM.debug,
+          paging: {
+            USAJOBS_RESULTS_PER_PAGE,
+            USAJOBS_PAGES_PER_TERM,
+            ADZUNA_RESULTS_PER_PAGE,
+            ADZUNA_PAGES_PER_TERM
+          }
         }
       };
-    
+
       writeCache(out);
       return out;
     }
 
     /*****************************************************************
-     * CATEGORY + REGION NORMALIZATION (FIXED: ONLY ONE normalizeCategoryName)
+     * CATEGORY + REGION NORMALIZATION
      *****************************************************************/
     function normalizeCategoryName(raw){
       const s = (raw ?? "").toString().trim();
       if(!s) return "Other";
-      return s
-        .replace(/\s+/g, " ")
-        .replace(/\b(ai|ml|it|ux|ui|qa|hr)\b/gi, (m)=>m.toUpperCase())
-        .replace(/\bdevops\b/gi, "DevOps")
-        .replace(/\bmachine learning\b/gi, "Machine Learning");
+      return s.replace(/\s+/g, " ").trim();
     }
 
     function textBlob(job){
       return `${asText(job.title)} ${asText(job.category)} ${asText(job.company)} ${asText(job.location)} ${asText(job.description)}`.toLowerCase();
     }
 
+    // Stable NKU exec taxonomy (consistent across sources)
     function nkuExecCategory(job){
       const blob = textBlob(job);
       const remCat = (job.source === "Remotive" ? asText(job.category).toLowerCase() : "");
@@ -1144,16 +1199,16 @@
       if (/\b(data analyst|data analytics|analytics|bi\b|sql\b|power bi|tableau|dashboard|reporting|data warehouse|etl|dbt|spark|lakehouse|data engineer)\b/.test(blob)) {
         return "Data & Analytics";
       }
+      if (/\b(devops|sre|site reliability|kubernetes|docker|ci\/cd|terraform|cloud infrastructure)\b/.test(blob)) {
+        return "DevOps / Cloud";
+      }
       if (/\b(software|developer|engineer|full[- ]stack|frontend|backend|mobile|web developer|api\b|typescript|javascript|java\b|c\+\+|c#|python\b|golang|rust)\b/.test(blob)) {
-        if (/\b(devops|sre|site reliability|kubernetes|docker|ci\/cd|terraform|cloud infrastructure)\b/.test(blob)) {
-          return "DevOps / Cloud";
-        }
         return "Software Development";
       }
       if (/\b(cyber|security|infosec|soc\b|zero trust|iam\b|identity|access|vulnerability|penetration|siem|risk|compliance)\b/.test(blob)) {
         return "Cybersecurity / IT";
       }
-      if (/\b(product manager|product management|project manager|program manager|scrum|agile|product owner|pm\b)\b/.test(blob)) {
+      if (/\b(product manager|product management|project manager|program manager|scrum|agile|product owner)\b/.test(blob)) {
         return "Product / Project";
       }
       if (/\b(business analyst|operations|strategy|process improvement|continuous improvement|lean\b|six sigma|supply chain|procurement|finance|accounting)\b/.test(blob)) {
@@ -1175,7 +1230,6 @@
         if (remCat.includes("data")) return "Data & Analytics";
         if (remCat.includes("ai")) return "AI / ML";
         if (remCat.includes("marketing") || remCat.includes("sales")) return "Marketing / Sales";
-        if (remCat.includes("customer")) return "Marketing / Sales";
         if (remCat.includes("product")) return "Product / Project";
         if (remCat.includes("security")) return "Cybersecurity / IT";
       }
@@ -1188,15 +1242,16 @@
       return /remote|telework|work from home|wfh/.test(loc);
     }
 
+    // KY/OH heuristic: transparent + explainable
     function isOHKY(job){
-      const loc = (asText(job.location) + " " + asText(job.title)).toLowerCase();
-      const isOH = /\boh\b|ohio|cincinnati|dayton|columbus|cleveland|toledo/.test(loc);
-      const isKY = /\bky\b|kentucky|covington|newport|florence|lexington|louisville/.test(loc);
+      const loc = (asText(job.location) + " " + asText(job.title) + " " + asText(job.description)).toLowerCase();
+      const isOH = /\boh\b|ohio|cincinnati|dayton|columbus|cleveland|toledo|akron/.test(loc);
+      const isKY = /\bky\b|kentucky|covington|newport|florence|lexington|louisville|bowling green|frankfort/.test(loc);
       return isOH || isKY;
     }
 
     /*****************************************************************
-     * DATE-BASED SERIES
+     * DATE-BASED SERIES (sparklines + trend)
      *****************************************************************/
     function dayKey(isoOrDate){
       const d = (isoOrDate instanceof Date) ? isoOrDate : new Date(isoOrDate);
@@ -1240,7 +1295,7 @@
       const topCatShare = [];
       const nonDevShare = [];
 
-      const devCatRx = /(software development|data|analytics|ai|ml|devops|cloud|platform)/i;
+      const devCatRx = /(software development|data & analytics|ai \/ ml|devops \/ cloud|cybersecurity \/ it)/i;
 
       for(const k of keys){
         const a = aiByDay.get(k) || [];
@@ -1257,7 +1312,6 @@
         const rem = a.filter(isRemote).length;
         remoteShare.push(rem / Math.max(aN,1));
 
-        // Top category share uses NKU taxonomy so it stays stable
         const catCounts = new Map();
         for(const j of a){
           const cat = normalizeCategoryName(nkuExecCategory(j));
@@ -1375,6 +1429,8 @@
     let whereChart = null;
     let trendChart = null;
     let skillsChart = null;
+    let kyohEmployersChart = null;
+    let kyohSkillsChart = null;
 
     function renderWhereJobsChart(labels, values){
       const ctx = $("#whereJobsChart");
@@ -1382,15 +1438,7 @@
 
       whereChart = new Chart(ctx, {
         type: "bar",
-        data: {
-          labels,
-          datasets: [{
-            label: "Postings",
-            data: values,
-            borderWidth: 1,
-            borderRadius: 10
-          }]
-        },
+        data: { labels, datasets: [{ label: "Postings", data: values, borderWidth: 1, borderRadius: 10 }] },
         options: {
           responsive: true,
           maintainAspectRatio: false,
@@ -1409,26 +1457,12 @@
 
       trendChart = new Chart(ctx, {
         type: "line",
-        data: {
-          labels,
-          datasets: [{
-            label: "AI postings (monthly)",
-            data: values,
-            borderWidth: 2,
-            pointRadius: 2,
-            tension: 0.25
-          }]
-        },
+        data: { labels, datasets: [{ label: "AI postings (monthly)", data: values, borderWidth: 2, pointRadius: 2, tension: 0.25 }] },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: { callbacks: { label: (c)=> `${c.parsed.y} postings` } }
-          },
-          scales: {
-            y: { beginAtZero: true, ticks: { precision: 0 } }
-          }
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c)=> `${c.parsed.y} postings` } } },
+          scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
         }
       });
     }
@@ -1439,23 +1473,51 @@
 
       skillsChart = new Chart(ctx, {
         type: "bar",
-        data: {
-          labels,
-          datasets: [{
-            label: "Mentions",
-            data: values,
-            borderWidth: 1,
-            borderRadius: 10
-          }]
-        },
+        data: { labels, datasets: [{ label: "Mentions", data: values, borderWidth: 1, borderRadius: 10 }] },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           indexAxis: "y",
-          plugins: {
-            legend: { display: false },
-            tooltip: { callbacks: { label: (c)=> `${c.parsed.x} mentions` } }
-          },
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c)=> `${c.parsed.x} mentions` } } },
+          scales: {
+            x: { beginAtZero: true, ticks: { precision: 0 } },
+            y: { ticks: { font: { weight: "800" } } }
+          }
+        }
+      });
+    }
+
+    function renderKyohEmployers(labels, values){
+      const ctx = $("#kyohEmployersChart");
+      if(kyohEmployersChart) kyohEmployersChart.destroy();
+
+      kyohEmployersChart = new Chart(ctx, {
+        type: "bar",
+        data: { labels, datasets: [{ label: "Postings", data: values, borderWidth: 1, borderRadius: 10 }] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, ticks: { precision: 0 } },
+            x: { ticks: { maxRotation: 30, minRotation: 30 } }
+          }
+        }
+      });
+    }
+
+    function renderKyohSkills(labels, values){
+      const ctx = $("#kyohSkillsChart");
+      if(kyohSkillsChart) kyohSkillsChart.destroy();
+
+      kyohSkillsChart = new Chart(ctx, {
+        type: "bar",
+        data: { labels, datasets: [{ label: "Mentions", data: values, borderWidth: 1, borderRadius: 10 }] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: "y",
+          plugins: { legend: { display: false } },
           scales: {
             x: { beginAtZero: true, ticks: { precision: 0 } },
             y: { ticks: { font: { weight: "800" } } }
@@ -1465,8 +1527,13 @@
     }
 
     /*****************************************************************
-     * KPI COMPUTATION (FIXED: computeLens now RETURNS and closes)
+     * KPI COMPUTATION (leadership-aligned)
      *****************************************************************/
+    function topNFromCounts(map, n=10){
+      const entries = [...map.entries()].sort((a,b)=>b[1]-a[1]).slice(0,n);
+      return { labels: entries.map(x=>x[0]), values: entries.map(x=>x[1]) };
+    }
+
     function computeLens(blended, aud){
       const audFn = AUDIENCE_FILTERS[aud] || AUDIENCE_FILTERS.all;
       const ai = blended.aiJobs.filter(audFn);
@@ -1478,7 +1545,7 @@
       const ohky = ai.filter(isOHKY).length / Math.max(ai.length, 1);
       const remote = ai.filter(isRemote).length / Math.max(ai.length, 1);
 
-      // Top category from NKU taxonomy (stable)
+      // Stable categories for exec conversations
       const catCounts = new Map();
       for(const j of ai){
         const cat = normalizeCategoryName(nkuExecCategory(j));
@@ -1488,15 +1555,12 @@
       const topCat = sortedCats[0]?.[0] || "Other";
       const topCatShare = ai.length ? (sortedCats[0]?.[1] || 0) / ai.length : 0;
 
-      // Non-dev proxy
-      const devCatRx = /(software development|data|analytics|ai|ml|devops|cloud|platform)/i;
+      const devCatRx = /(software development|data & analytics|ai \/ ml|devops \/ cloud|cybersecurity \/ it)/i;
       const devCount = ai.filter(j => devCatRx.test(normalizeCategoryName(nkuExecCategory(j)))).length;
       const nonDev = ai.length ? 1 - (devCount / ai.length) : 0;
 
-      // 14-day series for sparklines
       const series14 = buildDailySeries(ai, base, 14);
 
-      // deltas
       const deltaPts = (arr) => (arr && arr.length>=2) ? (arr[arr.length-1] - arr[0]) * 100 : 0;
       const deltaCount = (arr) => (arr && arr.length>=2) ? (arr[arr.length-1] - arr[0]) : 0;
 
@@ -1509,14 +1573,13 @@
         newDelta: deltaCount(series14.aiCount)
       };
 
-      // quality
       const quality = computeQuality(blended, ai);
 
-      // Where Jobs Are (blended + stable taxonomy)
+      // Where Jobs Are: ALL blended AI postings, stable taxonomy
       const whereCounts = new Map();
       for (const j of ai) {
-        const c = normalizeCategoryName(nkuExecCategory(j));
-        whereCounts.set(c, (whereCounts.get(c) || 0) + 1);
+        const cat = normalizeCategoryName(nkuExecCategory(j));
+        whereCounts.set(cat, (whereCounts.get(cat) || 0) + 1);
       }
       let whereEntries = [...whereCounts.entries()].sort((a, b) => b[1] - a[1]);
       const top = whereEntries.slice(0, 8);
@@ -1524,17 +1587,30 @@
       const restSum = rest.reduce((s, [, v]) => s + v, 0);
       if (restSum > 0) top.push(["All others", restSum]);
 
-      // Skills top 10
+      // Skills (overall)
       const sc = skillCounts(ai);
       const skillEntries = [...sc.entries()].sort((a,b)=>b[1]-a[1]).slice(0, 10);
 
-      // Trend 12 months
+      // Trend
       const t = trendByMonth(ai, 12);
 
-      // Source mix (for the sample tag)
+      // Source mix
       const mixUS = ai.filter(j => j.source === "USAJOBS").length;
       const mixAD = ai.filter(j => j.source === "Adzuna").length;
       const mixRM = ai.filter(j => j.source === "Remotive").length;
+
+      // KY/OH modules
+      const kyohJobs = ai.filter(isOHKY);
+      const empCounts = new Map();
+      for(const j of kyohJobs){
+        const c = normalizeCategoryName(asText(j.company)).trim();
+        if(!c || c.toLowerCase() === "unknown") continue;
+        empCounts.set(c, (empCounts.get(c)||0) + 1);
+      }
+      const topEmployers = topNFromCounts(empCounts, 10);
+
+      const kyohSkillCounts = skillCounts(kyohJobs);
+      const kyohSkillEntries = [...kyohSkillCounts.entries()].sort((a,b)=>b[1]-a[1]).slice(0, 10);
 
       return {
         ai, base,
@@ -1544,10 +1620,15 @@
         nonDev,
         series14, deltas,
         quality,
-        where: { labels: top.map(x=>x[0]), values: top.map(x=>x[1]) },
+        where: { labels: top.map(x=>x[0]), values: top.map(x=>x[1]), poolSize: ai.length },
         trend: t,
         skillsTop: { labels: skillEntries.map(x=>x[0]), values: skillEntries.map(x=>x[1]) },
-        mix: { mixUS, mixAD, mixRM }
+        mix: { mixUS, mixAD, mixRM },
+        kyoh: {
+          count: kyohJobs.length,
+          employers: { labels: topEmployers.labels, values: topEmployers.values },
+          skillsTop: { labels: kyohSkillEntries.map(x=>x[0]), values: kyohSkillEntries.map(x=>x[1]) }
+        }
       };
     }
 
@@ -1615,7 +1696,7 @@
       tc.textContent = `▲ ${(lens.topCatShare*100).toFixed(1)}% share`;
       tc.className = "kpiTag good";
 
-      // new delta (daily change proxy)
+      // new delta
       const nd = $("#kNewDelta");
       nd.textContent = `▲ ${lens.deltas.newDelta >= 0 ? "+" : ""}${lens.deltas.newDelta}`;
       nd.className = "kpiTag good";
@@ -1640,6 +1721,9 @@
       renderWhereJobsChart(lens.where.labels, lens.where.values);
       renderTrendChart(lens.trend.labels, lens.trend.values);
       renderSkillsChart(lens.skillsTop.labels, lens.skillsTop.values);
+
+      renderKyohEmployers(lens.kyoh.employers.labels, lens.kyoh.employers.values);
+      renderKyohSkills(lens.kyoh.skillsTop.labels, lens.kyoh.skillsTop.values);
     }
 
     /*****************************************************************
@@ -1675,23 +1759,48 @@
           <div class="section">
             <strong>What “blended live” means</strong>
             <p>
-              This dashboard blends three perspectives into one view:
+              This dashboard blends three perspectives:
               <ul>
                 <li><strong>USAJOBS</strong>: trusted public anchor and consistent metadata</li>
-                <li><strong>Adzuna</strong>: private-sector breadth (high volume; can rate limit)</li>
-                <li><strong>Remotive</strong>: remote-first postings</li>
+                <li><strong>Adzuna</strong>: private-sector breadth (higher volume; can rate limit)</li>
+                <li><strong>Remotive</strong>: remote-first postings and categories</li>
               </ul>
               Results are <strong>deduplicated</strong> by URL (or a stable fallback key).
             </p>
           </div>
 
           <div class="section">
+            <strong>Pagination (larger sample sizes)</strong>
+            <ul>
+              <li><strong>USAJOBS</strong>: ${dbg?.paging?.USAJOBS_PAGES_PER_TERM || "—"} pages/term × ${dbg?.paging?.USAJOBS_RESULTS_PER_PAGE || "—"} results/page</li>
+              <li><strong>Adzuna</strong>: ${dbg?.paging?.ADZUNA_PAGES_PER_TERM || "—"} pages/term × ${dbg?.paging?.ADZUNA_RESULTS_PER_PAGE || "—"} results/page</li>
+            </ul>
+            <p class="muted">If you increase pages, you may hit rate limits. Use cache + smaller term lists for reliability during leadership demos.</p>
+          </div>
+
+          <div class="section">
+            <strong>How the KPIs are computed</strong>
+            <ul>
+              <li><strong>AI-signal share</strong>: <code>AI postings ÷ (AI postings + baseline postings)</code> within the selected lens.</li>
+              <li><strong>KY/OH relevance</strong>: transparent text heuristic on location/title/description strings (state codes + major cities).</li>
+              <li><strong>Remote opportunity</strong>: remote/telework signals in location/category text.</li>
+              <li><strong>Non-dev share (proxy)</strong>: 1 − share of postings in common software/data/AI categories.</li>
+              <li><strong>Trend</strong>: monthly counts using postings with usable dates.</li>
+            </ul>
+          </div>
+
+          <div class="section">
             <strong>Data quality diagnostics</strong>
             <ul>
               <li><strong>Private-sector sources available</strong>: ${escapeHtml(privateOk)}</li>
-              <li><strong>Date coverage in lens</strong>: ${escapeHtml(dateCoverage)} of AI postings include usable dates</li>
-              <li><strong>Dedup strength (AI)</strong>: ${escapeHtml(dedupRate)} (higher means more duplicates removed)</li>
+              <li><strong>Date coverage in lens</strong>: ${escapeHtml(dateCoverage)}</li>
+              <li><strong>Dedup strength (AI)</strong>: ${escapeHtml(dedupRate)}</li>
             </ul>
+          </div>
+
+          <div class="section">
+            <strong>Skill map (transparent)</strong>
+            <pre>${escapeHtml(JSON.stringify(SKILLS, null, 2))}</pre>
           </div>
 
           <div class="section">
@@ -1710,10 +1819,20 @@
           <div class="section">
             <strong>Suggested 60-second walkthrough</strong>
             <ul>
-              <li><strong>Start with AI-signal share</strong>: “AI language is showing up in a meaningful share of postings.”</li>
-              <li><strong>Confirm sample size</strong>: “This is based on a deduped sample blended across sources.”</li>
-              <li><strong>Connect to NKU</strong>: “Regional + remote signals help prioritize outreach and internships.”</li>
-              <li><strong>Move to curriculum</strong>: “Top skills and categories show where employer language clusters.”</li>
+              <li><strong>Start with AI-signal share</strong>: “AI language is showing up meaningfully in postings in this lens.”</li>
+              <li><strong>Confirm sample size</strong>: “This view is deduped and blended across federal + private sector + remote.”</li>
+              <li><strong>Go local</strong>: “KY/OH relevance plus Top KY/OH employers helps prioritize partner outreach.”</li>
+              <li><strong>Connect to curriculum</strong>: “Top skills are actionable for modules, micro-credentials, and applied projects.”</li>
+              <li><strong>Close with action</strong>: “This gives us a data-backed shortlist for where to invest time this semester.”</li>
+            </ul>
+          </div>
+
+          <div class="section">
+            <strong>Interpretation rules (healthy academic caution)</strong>
+            <ul>
+              <li>This is a <strong>signal dashboard</strong>, not a definitive labor market taxonomy.</li>
+              <li>Counts reflect <strong>posting language</strong>. A mention does not equal a strict requirement.</li>
+              <li>Use <strong>Data quality</strong> before making strong claims about trends.</li>
             </ul>
           </div>
         `
@@ -1727,7 +1846,14 @@
         html: `
           <div class="section">
             <strong>What you’re seeing</strong>
-            <p>Monthly counts of AI-matched postings in the selected lens. Uses only postings with usable dates.</p>
+            <p>Monthly counts of AI-matched postings within the selected lens, using postings with usable dates.</p>
+          </div>
+          <div class="section">
+            <strong>How to interpret it for leadership</strong>
+            <ul>
+              <li>Use it to discuss direction (rising/flat/noisy) rather than exact forecasting.</li>
+              <li>If it’s flat, check <strong>Data quality</strong> and sample size.</li>
+            </ul>
           </div>
         `
       });
@@ -1739,8 +1865,31 @@
         subtitle: "Why the skill view is academically useful",
         html: `
           <div class="section">
-            <strong>Why a transparent map</strong>
-            <p>Academic audiences often prefer explainable methods. This list is editable by NKU and maps cleanly to curriculum decisions.</p>
+            <strong>Why a keyword map (instead of a black box)</strong>
+            <p>
+              Academic conversations value transparency. This skill view is explainable and editable:
+              NKU can expand it to include accreditation terms, program outcomes, or partner language.
+            </p>
+          </div>
+        `
+      });
+    }
+
+    function showKyohNotes(){
+      openDrawer({
+        title: "KY/OH method",
+        subtitle: "How we identify Kentucky/Ohio postings",
+        html: `
+          <div class="section">
+            <strong>What this is (and what it isn’t)</strong>
+            <p>
+              We flag KY/OH relevance using a transparent text heuristic on the job’s <strong>location</strong>, plus helpful context from title/description.
+              It will not be perfect for every posting (some sources omit location details), but it is explainable and consistent.
+            </p>
+            <ul>
+              <li><strong>Good for:</strong> partner targeting conversations and “local alignment” storytelling</li>
+              <li><strong>Not for:</strong> official state-by-state compliance reporting</li>
+            </ul>
           </div>
         `
       });
@@ -1753,8 +1902,10 @@
         html: `
           <div class="section">
             <strong>What this chart shows</strong>
-            <p>We bucket blended AI postings into an NKU-friendly taxonomy (Software, Data, AI/ML, Cyber, Business/Ops, etc.).</p>
-            <p class="muted">This avoids platform-specific category quirks and makes the chart stable for leadership presentations.</p>
+            <p>
+              We categorize <strong>all blended AI postings</strong> into a stable NKU-friendly taxonomy (AI/ML, Data & Analytics, Software Dev, etc.).
+              This prevents tiny category samples and keeps the story consistent across data sources.
+            </p>
           </div>
         `
       });
@@ -1762,18 +1913,18 @@
 
     function showHint(which){
       const hints = {
-        aiShare: { title:"AI-signal share", body:`<p>AI postings ÷ (AI postings + baseline) within the selected lens.</p>` },
-        sampleSize: { title:"AI postings (sample)", body:`<p>Deduped count of AI postings. Bigger sample = stronger signal.</p>` },
-        region: { title:"Regional relevance (OH/KY)", body:`<p>Heuristic match on OH/KY terms in title/location.</p>` },
-        remote: { title:"Remote opportunity", body:`<p>Remote/telework signals in location/category text.</p>` },
-        topCat: { title:"Top hiring category", body:`<p>Most frequent category in the NKU taxonomy.</p>` },
-        nonDev: { title:"Non-dev share", body:`<p>1 − share in software/data/AI/devops clusters.</p>` },
-        new14: { title:"New postings", body:`<p>AI postings dated in the last 14 days.</p>` },
-        quality: { title:"Data quality", body:`<p>Combines private-source success, date coverage, and dedup strength.</p>` },
+        aiShare: { title: "AI-signal share", body: `<p><strong>Definition:</strong> AI postings ÷ (AI postings + baseline postings).</p><p class="muted">Leadership-friendly: avoids overreacting to raw counts.</p>` },
+        sampleSize: { title: "AI postings (sample)", body: `<p>Count of deduped AI postings in this lens. Larger sample → stronger signal.</p>` },
+        region: { title: "KY/OH relevance", body: `<p>Transparent heuristic on location/title/description for KY/OH tokens (e.g., Cincinnati, Covington, OH, KY).</p>` },
+        remote: { title: "Remote opportunity", body: `<p>Flags remote/telework signals in location/category text.</p>` },
+        topCat: { title: "Top hiring category", body: `<p>Most common category (stable taxonomy) among AI postings in this lens.</p>` },
+        nonDev: { title: "Non-dev share (proxy)", body: `<p>1 minus the share in common software/data/AI categories. Helps quantify cross-disciplinary demand.</p>` },
+        new14: { title: "New postings (14 days)", body: `<p>AI postings with publish dates within the last 14 days.</p>` },
+        quality: { title: "Data quality", body: `<p>Combines private-source success + date coverage + dedup strength into a plain-language label.</p>` }
       };
       const h = hints[which];
       if(!h) return;
-      openDrawer({ title:h.title, subtitle:"KPI definition", html:`<div class="section">${h.body}</div>` });
+      openDrawer({ title: h.title, subtitle: "KPI definition and interpretation", html: `<div class="section">${h.body}</div>` });
     }
 
     /*****************************************************************
@@ -1797,6 +1948,10 @@
       $("#openSkillNotes").addEventListener("click", showSkillNotes);
       $("#openJobCats").addEventListener("click", showJobCategoriesHelp);
 
+      $("#openKyohNotes").addEventListener("click", showKyohNotes);
+      $("#openKyohNotes2").addEventListener("click", showKyohNotes);
+
+      // KPI hint buttons
       $$(".hint").forEach(h=> h.addEventListener("click", ()=> showHint(h.dataset.hint)));
 
       $("#forceRefresh").addEventListener("click", ()=>{
@@ -1838,10 +1993,10 @@
             <div class="section">
               <strong>What to try</strong>
               <ul>
-                <li>Verify the Worker loads: <code>${escapeHtml(PROXY_BASE)}</code></li>
+                <li>Open the Worker to verify it loads: <code>${escapeHtml(PROXY_BASE)}</code></li>
                 <li>Click <strong>Force refresh</strong> to clear cache.</li>
-                <li>If Adzuna rate limits (429), reduce terms or add throttling in the Worker.</li>
-                <li>If Remotive route is not implemented in the Worker, you’ll need to add it (or remove Remotive).</li>
+                <li>If Adzuna rate limits (429), reduce pages/terms or add throttling in the Worker.</li>
+                <li>If Remotive route is not implemented in the Worker, you’ll need to add it (or remove Remotive from the blend).</li>
               </ul>
               <pre>${escapeHtml(String(err))}</pre>
             </div>
