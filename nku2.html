@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AI Skills Demand Live Dashboard</title>
+  <title>AI Skills Demand Live Dashboard — NKU Opportunity for AI Literacy</title>
 
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -72,7 +72,7 @@
       margin:0;
       color: var(--muted);
       font-size: 13.5px;
-      max-width: 920px;
+      max-width: 980px;
     }
 
     .badge{
@@ -274,6 +274,12 @@
       box-shadow: 0 14px 28px rgba(2,8,23,0.10);
     }
     .tabBtn.primary{ background: rgba(255,199,44,0.95); border-color: rgba(2,8,23,0.12); }
+    .tabLink{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+    }
 
     /* KPI cards */
     .kpi{ padding: 14px 14px 12px; }
@@ -396,6 +402,19 @@
       line-height:1.5;
     }
 
+    .emph{
+      display:inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(22,163,74,0.18);
+      background: rgba(22,163,74,0.08);
+      color:#0f3d1c;
+      font-weight: 950;
+      font-size: 11px;
+      letter-spacing:.01em;
+      white-space:nowrap;
+    }
+
     /* Drawer */
     .drawer{
       position: fixed;
@@ -491,6 +510,7 @@
       .tabBtn, .btn{ box-shadow:none !important; }
       body{ background:#fff; }
       .card{ box-shadow:none; }
+      a[href]::after{ content:""; }
     }
   </style>
 </head>
@@ -501,17 +521,28 @@
     <div class="topbar">
       <div>
         <div class="badge"><span class="dot"></span> Dashboard prepared for NKU · AI Skills Demand (Blended Live)</div>
-        <h1>AI Skills Demand - What Employers Are Asking For</h1>
+
+        <!-- POSITIVE HEADLINE -->
+        <h1>AI Skills Demand — A Positive Signal for NKU’s AI Literacy Priority</h1>
+
+        <!-- POSITIVE SUBTITLE -->
         <p class="subtitle">
-          Built for NKU chairs, directors, associate deans, and deans. This dashboard blends a public anchor (USAJOBS),
-          private-sector (Adzuna), and remote-first (Remotive) to provide an evidence-based view of AI skill signals.
+          This dashboard translates real job-posting language into an optimistic, actionable story:
+          <span class="emph">AI is becoming a workplace literacy</span> (like data, writing, or spreadsheets).
+          That’s an opportunity for NKU to lead with <strong>responsible, student-centered AI Literacy</strong>—supporting employability,
+          academic integrity, and cross-disciplinary readiness.
         </p>
 
         <div class="headerTabs" aria-label="Top actions">
           <button class="tabBtn active" id="tabOverview" type="button">Overview</button>
           <button class="tabBtn" id="tabMethods" type="button">Methods & Sources</button>
           <button class="tabBtn" id="tabPrint" type="button">Print / PDF</button>
-          <button class="tabBtn primary" ahref="https://www.google.com" type="button">INF 125: AI Literacy</button>
+
+          <!-- FIXED: use a real link, not ahref -->
+          <!-- Update this URL to your official INF 125 page -->
+          <a class="tabBtn primary tabLink" id="tabInf125" href="https://www.nku.edu" target="_blank" rel="noopener">
+            INF 125: AI Literacy
+          </a>
         </div>
       </div>
 
@@ -546,26 +577,39 @@
       <div class="card span-12">
         <div class="hd">
           <div>
-            <h2>Academic-ready reading guide</h2>
-            <p>Use this as a fast, confident framing for curriculum alignment, employer partnerships, and student readiness.</p>
+            <h2>Academic-ready reading guide (positive framing)</h2>
+            <p>
+              Use this for curriculum alignment, employer partnerships, and student readiness—without fear-based AI narratives.
+              The focus is <strong>capability + integrity + career outcomes</strong>.
+            </p>
           </div>
           <button class="btn" id="openReadingGuide" type="button">How to use</button>
         </div>
+
         <div class="bd" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px;">
           <div class="callout">
             <div class="t">What this measures</div>
-            <div class="h">Employer language signals</div>
-            <div class="b">We scan posting titles + descriptions for transparent AI keywords and skill phrases. Results are directional signals, not a labor taxonomy.</div>
+            <div class="h">Employer language signals (directional)</div>
+            <div class="b">
+              We scan posting titles + descriptions for transparent AI keywords and skill phrases. Results are directional signals
+              that help prioritize curriculum and partnerships.
+            </div>
           </div>
           <div class="callout">
-            <div class="t">Why it’s credible</div>
-            <div class="h">Blended + deduped</div>
-            <div class="b">We combine public, private-sector, and remote-first sources and remove duplicates. We also report sample sizes and date coverage.</div>
+            <div class="t">Why it’s a positive university story</div>
+            <div class="h">AI Literacy reduces risk</div>
+            <div class="b">
+              When students learn responsible use (verification, disclosure, ethics, privacy), it strengthens academic integrity and prepares
+              graduates to use AI thoughtfully in the workplace.
+            </div>
           </div>
           <div class="callout">
-            <div class="t">How to use it</div>
-            <div class="h">Curriculum + partnerships</div>
-            <div class="b">Use Top Skills + Category Mix to prioritize modules, micro-credentials, and applied projects. Use KY/OH employer signals to target partnerships.</div>
+            <div class="t">How NKU can act quickly</div>
+            <div class="h">Baseline + embedded practice</div>
+            <div class="b">
+              Use Top Skills + Category Mix to prioritize modules, micro-credentials, and applied projects. Use KY/OH signals to target employer outreach
+              and internship pipelines.
+            </div>
           </div>
         </div>
       </div>
@@ -620,7 +664,9 @@
         <div class="hd">
           <div>
             <h2>Trend over time (last 12 months)</h2>
-            <p>Monthly counts of AI-matched postings (within the selected lens). Use for “is demand rising?” conversations.</p>
+            <p>
+              Monthly counts of AI-matched postings (within the selected lens). Use for “is demand rising?” and for timing employer outreach.
+            </p>
           </div>
           <button class="btn" id="openTrendNotes" type="button">Trend notes</button>
         </div>
@@ -633,8 +679,11 @@
       <div class="card span-6">
         <div class="hd">
           <div>
-            <h2>Top AI skill signals</h2>
-            <p>Counts of skill phrases found in posting titles/descriptions. Use for module priorities, micro-credentials, and applied project requirements.</p>
+            <h2>Top AI skill signals (teachable + measurable)</h2>
+            <p>
+              Skill phrase mentions found in posting titles/descriptions—ideal for module priorities, micro-credentials, and applied project requirements.
+              This supports a practical, responsible AI Literacy baseline.
+            </p>
           </div>
           <button class="btn" id="openSkillNotes" type="button">Skill map</button>
         </div>
@@ -651,13 +700,15 @@
         <div class="hd">
           <div>
             <h2>Top KY/OH employers posting for AI skills</h2>
-            <p>Employer names from AI-matched postings with KY/OH location signals. Helpful for targeted outreach and partnerships.</p>
+            <p>
+              Employer names from AI-matched postings with KY/OH signals—useful for partnership targeting, internships, and advisory board outreach.
+            </p>
           </div>
           <button class="btn" id="openKYOHNotes" type="button">About KY/OH</button>
         </div>
         <div class="bd">
           <div class="chartWrap"><div class="chartBoxMid"><canvas id="employersChart"></canvas></div></div>
-          <div class="footerNote">Heuristic location match (city/state tokens). Use as directional signal for outreach prioritization.</div>
+          <div class="footerNote">Heuristic location match (city/state tokens). Use as a directional signal for outreach prioritization.</div>
         </div>
       </div>
 
@@ -665,13 +716,15 @@
         <div class="hd">
           <div>
             <h2>Top skills in KY/OH postings</h2>
-            <p>Same skill map, restricted to KY/OH AI postings. Strong for “regional workforce alignment” conversations.</p>
+            <p>
+              Same skill map, restricted to KY/OH AI postings—strong for “regional workforce alignment” conversations and co-designed curriculum.
+            </p>
           </div>
           <button class="btn" id="openKYOHNotes2" type="button">About KY/OH</button>
         </div>
         <div class="bd">
           <div class="chartWrap"><div class="chartBoxMid"><canvas id="skillsKYOHChart"></canvas></div></div>
-          <div class="footerNote">Shows which AI skills are showing up in postings relevant to Kentucky and Ohio.</div>
+          <div class="footerNote">Shows which AI skills are appearing most in postings relevant to Kentucky and Ohio.</div>
         </div>
       </div>
     </section>
@@ -681,8 +734,11 @@
       <div class="card span-12">
         <div class="hd">
           <div>
-            <h2>Where the Jobs Are (Executive taxonomy)</h2>
-            <p>Category distribution for AI-matched postings using a stable NKU-friendly category mapping (better than platform categories).</p>
+            <h2>Where the Jobs Are (executive taxonomy)</h2>
+            <p>
+              Category distribution for AI-matched postings using a stable NKU-friendly mapping. This helps reinforce:
+              <strong>AI literacy is cross-disciplinary</strong>—not just a computing topic.
+            </p>
           </div>
           <button class="btn" id="openJobCats" type="button">Job categories</button>
         </div>
@@ -710,11 +766,11 @@
 
 <script>
 /*****************************************************************
- * CONFIG
+ * CONFIG (UNCHANGED DATA SETUP)
  *****************************************************************/
 const PROXY_BASE = "https://ai-skills-proxy.nealb3.workers.dev";
 
-/* sample-size controls (your request) */
+/* sample-size controls */
 const PAGES_PER_TERM = 5;
 const RESULTS_PER_PAGE = 25;
 
@@ -1161,7 +1217,7 @@ function trendByMonth(jobs, months=12){
 }
 
 /*****************************************************************
- * SKILL COUNTS (this is what powers your Top AI Skill Signals)
+ * SKILL COUNTS
  *****************************************************************/
 function skillCounts(jobs){
   const counts = new Map();
@@ -1304,7 +1360,7 @@ function renderSkillsKYOHChart(labels, values){
 }
 
 /*****************************************************************
- * LENS COMPUTATION (FIXED: this function must RETURN the data!)
+ * LENS COMPUTATION (RETURNS DATA)
  *****************************************************************/
 function computeLens(blended, aud){
   const audFn = AUDIENCE_FILTERS[aud] || AUDIENCE_FILTERS.all;
@@ -1325,7 +1381,7 @@ function computeLens(blended, aud){
 
   const quality = computeQuality(blended, aiSafe);
 
-  // Skills (THIS powers your skills chart)
+  // Skills
   const sc = skillCounts(aiSafe);
   const skillEntries = [...sc.entries()].sort((a,b)=>b[1]-a[1]).slice(0, 10);
   const skillsTop = { labels: skillEntries.map(x=>x[0]), values: skillEntries.map(x=>x[1]) };
@@ -1353,10 +1409,10 @@ function computeLens(blended, aud){
   const mixRM = aiSafe.filter(j => j.source === "Remotive").length;
   const mix = { mixUS, mixAD, mixRM };
 
-  // Total scanned pre-AI filter (requested)
+  // Total scanned pre-AI filter
   const totalScanned = aiSafe.length + baseSafe.length;
 
-  // KY/OH employer + skill focus (requested)
+  // KY/OH employer + skill focus
   const kyoh = aiSafe.filter(isOHKY);
   const employerCounts = new Map();
   for(const j of kyoh){
@@ -1439,7 +1495,7 @@ function renderAll(){
   $("#sparkTotal").setAttribute("points", sparkPoints(lens.series14.totalCount));
   $("#sparkQuality").setAttribute("points", sparkPoints(lens.quality.series));
 
-  // charts (THIS is the part that was failing in your current file)
+  // charts
   renderSkillsChart(lens.skillsTop.labels, lens.skillsTop.values);
   renderTrendChart(lens.trend.labels, lens.trend.values);
   renderWhereJobsChart(lens.where.labels, lens.where.values);
@@ -1472,6 +1528,15 @@ function showMethods(){
     subtitle: `Lens: ${audLabel} · Pages/term: ${PAGES_PER_TERM} · Per page: ${RESULTS_PER_PAGE}`,
     html: `
       <div class="section">
+        <strong>Positive NKU framing (what to say)</strong>
+        <ul>
+          <li>“AI is showing up in employer language, so <strong>AI Literacy</strong> is becoming a foundational skill.”</li>
+          <li>“Teaching responsible use strengthens <strong>integrity</strong> and reduces confusion.”</li>
+          <li>“This dashboard helps us prioritize <strong>teachable modules</strong> and <strong>partnership outreach</strong>.”</li>
+        </ul>
+      </div>
+
+      <div class="section">
         <strong>What “blended live” means</strong>
         <ul>
           <li><strong>USAJOBS</strong> (public anchor)</li>
@@ -1501,6 +1566,7 @@ function showMethods(){
 
       <div class="section">
         <strong>Skill map (transparent)</strong>
+        <p>This is intentionally NKU-editable so you can align it to outcomes, accreditation language, and partner needs.</p>
         <pre>${escapeHtml(JSON.stringify(SKILLS, null, 2))}</pre>
       </div>
 
@@ -1515,17 +1581,29 @@ function showMethods(){
 function showReadingGuide(){
   openDrawer({
     title: "How to use this in a dean/chair/director conversation",
-    subtitle: "A quick, upbeat script + interpretation tips",
+    subtitle: "A short, upbeat script + interpretation tips",
     html: `
       <div class="section">
-        <strong>Suggested 60-second walkthrough</strong>
+        <strong>Suggested 60-second walkthrough (positive)</strong>
         <ul>
-          <li><strong>AI-signal share:</strong> “AI language is showing up in a meaningful share of postings.”</li>
+          <li><strong>AI-signal share:</strong> “AI language is becoming normal in postings—NKU can lead with responsible literacy.”</li>
           <li><strong>Sample size:</strong> “This is deduped across blended sources for stronger evidence.”</li>
-          <li><strong>Top skills:</strong> “These are the skill phrases showing up most often—ideal for modules and micro-credentials.”</li>
-          <li><strong>KY/OH focus:</strong> “These employers and skills help target regional partnerships.”</li>
+          <li><strong>Top skills:</strong> “These mentions tell us which modules students need most—prompting, verification, ethics, privacy.”</li>
+          <li><strong>KY/OH focus:</strong> “These employers and skills help target regional partnerships and internships.”</li>
+          <li><strong>Where the jobs are:</strong> “AI isn’t just computing—this distribution shows cross-college relevance.”</li>
         </ul>
       </div>
+
+      <div class="section">
+        <strong>Responsible AI Literacy (integrity-friendly)</strong>
+        <ul>
+          <li>Teach <strong>disclosure</strong>: how/when AI was used</li>
+          <li>Teach <strong>verification</strong>: checking outputs and sources</li>
+          <li>Teach <strong>privacy</strong>: what not to put into tools</li>
+          <li>Teach <strong>critical thinking</strong>: when AI is wrong or biased</li>
+        </ul>
+      </div>
+
       <div class="section">
         <strong>Healthy academic caution</strong>
         <ul>
@@ -1561,18 +1639,18 @@ function showTrendNotes(){
 function showSkillNotes(){
   openDrawer({
     title: "Skill map notes",
-    subtitle: "Why the skill view is academically useful",
+    subtitle: "Why this supports AI Literacy (in a positive way)",
     html: `
       <div class="section">
         <strong>Why a transparent skill map</strong>
-        <p>For academic settings, transparency matters. NKU can edit/expand this map to align with outcomes, accreditation language, and partner needs.</p>
+        <p>For academic settings, transparency matters. The map is explicit and editable—use it to align with NKU outcomes and course design.</p>
       </div>
       <div class="section">
-        <strong>How to use it</strong>
+        <strong>How to use it (fast wins)</strong>
         <ul>
-          <li>Pick <strong>module priorities</strong> where mentions cluster.</li>
-          <li>Define <strong>micro-credentials</strong> around top 3–5 clusters.</li>
-          <li>Use <strong>KY/OH</strong> view to guide employer partnership outreach.</li>
+          <li>Select the top 3–5 clusters to form an <strong>AI Literacy baseline</strong>.</li>
+          <li>Turn clusters into short <strong>modules</strong> (prompting, verification, ethics, privacy).</li>
+          <li>Co-design applied projects with KY/OH employers around the top clusters.</li>
         </ul>
       </div>
     `
@@ -1603,10 +1681,11 @@ function showJobCategoriesHelp(){
         <p>Instead of relying on platform-defined categories, we map each posting into a stable NKU-friendly taxonomy (AI/ML, Data, DevOps/Cloud, etc.).</p>
       </div>
       <div class="section">
-        <strong>Why this is better for leadership</strong>
+        <strong>Why this is helpful</strong>
         <ul>
           <li>Consistent categories across USAJOBS, Adzuna, and Remotive.</li>
-          <li>More interpretable for curriculum and partnership decisions.</li>
+          <li>More interpretable for curriculum, advising, and partnership decisions.</li>
+          <li>Supports the key message: <strong>AI Literacy is cross-disciplinary</strong>.</li>
         </ul>
       </div>
     `
@@ -1615,10 +1694,23 @@ function showJobCategoriesHelp(){
 
 function showHint(which){
   const hints = {
-    aiShare: { title:"AI-signal share", body:`<p><strong>Definition:</strong> AI postings ÷ (AI + baseline) within the selected lens.</p><p class="muted">This helps leadership interpret “AI language prevalence” without relying only on raw counts.</p>` },
-    sampleSize: { title:"AI postings (sample)", body:`<p>This is the number of deduped AI postings in the current lens (stronger evidence with larger samples).</p>` },
-    totalScanned: { title:"Total scanned (pre-AI filter)", body:`<p>This is the AI pool + baseline pool used to compute the dashboard’s signals. It shows the total postings returned before KPI computations.</p>` },
-    quality: { title:"Data quality", body:`<p>We combine private-source success + date coverage + dedup strength into a plain-language label for meeting-ready confidence.</p>` }
+    aiShare: {
+      title:"AI-signal share",
+      body:`<p><strong>Definition:</strong> AI postings ÷ (AI + baseline) within the selected lens.</p>
+            <p class="muted">Use this as a positive signal of workplace relevance—paired with responsible AI Literacy (verification, disclosure, ethics).</p>`
+    },
+    sampleSize: {
+      title:"AI postings (sample)",
+      body:`<p>This is the number of deduped AI postings in the current lens (stronger evidence with larger samples).</p>`
+    },
+    totalScanned: {
+      title:"Total scanned (pre-AI filter)",
+      body:`<p>This is the AI pool + baseline pool used to compute the dashboard’s signals. It shows the total postings returned before KPI computations.</p>`
+    },
+    quality: {
+      title:"Data quality",
+      body:`<p>We combine private-source success + date coverage + dedup strength into a plain-language label for meeting-ready confidence.</p>`
+    }
   };
   const h = hints[which];
   if(!h) return;
