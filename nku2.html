@@ -48,6 +48,7 @@
       top:0;
       z-index: 10;
       background: var(--bg);
+      backdrop-filter: none;
       border-bottom: 1px solid rgba(219,227,239,0.75);
     }
 
@@ -85,6 +86,7 @@
       padding: 8px 12px;
       border-radius: 999px;
       box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+      white-space: nowrap;
     }
     .dot{
       width:10px;height:10px;border-radius:999px;
@@ -168,6 +170,7 @@
       font-size: 12px;
       font-weight: 800;
       color:#0b1220;
+      white-space:nowrap;
     }
     #blendStatus{
       font-weight: 900;
@@ -197,6 +200,40 @@
     .btn:hover{ box-shadow: 0 14px 30px rgba(15,23,42,0.09); }
     .btn:active{ transform: translateY(1px); }
 
+    /* Header nav like screenshot */
+    .headerNavRow{
+      display:flex;
+      gap:10px;
+      justify-content:flex-start;
+      align-items:center;
+      padding: 0 0 14px;
+    }
+    .segBtn{
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #ffffff, #f8fafc);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor:pointer;
+      color:#0b1220;
+      box-shadow: 0 10px 24px rgba(15,23,42,0.06);
+      transition: transform .06s ease, box-shadow .15s ease;
+    }
+    .segBtn:hover{ box-shadow: 0 14px 30px rgba(15,23,42,0.09); }
+    .segBtn:active{ transform: translateY(1px); }
+    .segBtn.active{
+      border-color: rgba(37,99,235,0.35);
+      box-shadow: 0 0 0 4px rgba(37,99,235,0.12), 0 14px 30px rgba(15,23,42,0.09);
+      background: linear-gradient(180deg, rgba(37,99,235,0.12), rgba(37,99,235,0.06));
+    }
+    .segBtn.primary{
+      background: linear-gradient(180deg, var(--accent), var(--accent2));
+      border-color: rgba(29,78,216,0.35);
+      color:white;
+      box-shadow: 0 12px 28px rgba(29,78,216,0.22);
+    }
+
     main{ padding-top: 14px; }
 
     .grid{
@@ -220,10 +257,13 @@
       padding: 14px 16px 10px;
       border-bottom: 1px solid rgba(219,227,239,0.7);
       background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(248,250,252,0.65));
+    }
+    .hdRow{
       display:flex;
-      align-items:flex-start;
       justify-content:space-between;
-      gap:12px;
+      align-items:flex-start;
+      gap:10px;
+      flex-wrap:wrap;
     }
     .hd h2{
       margin:0;
@@ -238,39 +278,9 @@
     }
     .bd{ padding: 14px 16px 16px; }
 
-    /* --- Tabs (Market Pulse / Sources / Print) --- */
-    .tabsRow{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:flex-start;
-      margin-top: 8px;
-      padding-bottom: 12px;
-    }
-    .tabBtn{
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.75);
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-size: 13px;
-      font-weight: 900;
-      color:#0b1220;
-      cursor:pointer;
-      box-shadow: 0 10px 24px rgba(15,23,42,0.06);
-    }
-    .tabBtn.active{
-      background: linear-gradient(180deg, rgba(37,99,235,0.16), rgba(37,99,235,0.06));
-      border-color: rgba(37,99,235,0.25);
-      color:#0b1220;
-    }
-    .tabBtn.primary{
-      background: linear-gradient(180deg, rgba(37,99,235,0.98), rgba(29,78,216,0.98));
-      border-color: rgba(29,78,216,0.2);
-      color:#fff;
-    }
-
-    /* --- KPI cards (match screenshot style) --- */
-    .kpi{ padding: 14px 14px 12px; }
+    /* KPI cards (screenshot style) */
+    .kpisPulse{ gap: 12px; }
+    .kpiPulse{ padding: 14px 14px 12px; }
     .kpiTop{
       display:flex;
       align-items:flex-start;
@@ -280,59 +290,47 @@
     }
     .kpiLabel{
       font-size: 12px;
-      font-weight: 900;
+      font-weight: 800;
       color: var(--muted);
       letter-spacing:.01em;
     }
+    .kpiValue{
+      margin-top: 6px;
+      font-size: 28px;
+      font-weight: 950;
+      letter-spacing: -0.02em;
+      line-height:1.1;
+    }
     .kpiBig{
       margin-top: 4px;
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 950;
-      letter-spacing: -0.03em;
-      line-height:1.0;
-    }
-    .kpiBig.smallText{
-      font-size: 26px;
-      letter-spacing:-0.02em;
+      letter-spacing: -0.02em;
+      line-height:1.1;
     }
     .kpiSub{
-      margin-top: 6px;
+      margin-top: 4px;
       font-size: 12px;
       color: var(--muted2);
-      font-weight: 700;
+      font-weight:700;
     }
     .kpiTag{
       font-size: 11px;
-      font-weight: 950;
+      font-weight: 900;
       padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(22,163,74,0.12);
-      color:#0f3d1c;
-      border: 1px solid rgba(22,163,74,0.18);
-      white-space: nowrap;
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-    }
-    .kpiTag.neutral{
       background: var(--chip2);
       color: var(--muted);
-      border-color: rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.06);
+      white-space: nowrap;
     }
-    .kpiTag.warn{
-      background: rgba(245,158,11,0.12);
-      color:#553004;
-      border-color: rgba(245,158,11,0.18);
-    }
-    .kpiTag.bad{
-      background: rgba(239,68,68,0.12);
-      color:#5a0d0d;
-      border-color: rgba(239,68,68,0.18);
-    }
+    .kpiTag.good{ background: rgba(22,163,74,0.12); color:#0f3d1c; border-color: rgba(22,163,74,0.18); }
+    .kpiTag.warn{ background: rgba(245,158,11,0.12); color:#553004; border-color: rgba(245,158,11,0.18); }
+    .kpiTag.bad{ background: rgba(239,68,68,0.12); color:#5a0d0d; border-color: rgba(239,68,68,0.18); }
 
     .spark{
       margin-top: 10px;
-      height: 40px;
+      height: 38px;
       border-radius: 12px;
       border: 1px solid rgba(219,227,239,0.7);
       background: linear-gradient(180deg, rgba(37,99,235,0.06), rgba(255,255,255,0));
@@ -341,35 +339,22 @@
     .spark svg{ width:100%; height:100%; display:block; }
     .spark polyline{ stroke-linecap: round; stroke-linejoin: round; }
 
-    .miniBtn{
-      border: 1px solid rgba(219,227,239,0.95);
-      background: rgba(255,255,255,0.85);
-      border-radius: 12px;
-      padding: 8px 10px;
-      font-size: 12px;
-      font-weight: 900;
-      cursor:pointer;
-      white-space: nowrap;
-      color:#0b1220;
-    }
-
-    /* Chart wrap */
     .chartWrap{
       border: 1px solid rgba(219,227,239,0.85);
       border-radius: var(--radius);
       overflow:hidden;
       background: rgba(255,255,255,0.9);
     }
-    .chartBoxMid{
-      height: 320px;
-      padding: 10px 10px 6px;
+    .chartBoxMed{
+      height: 360px;
+      padding: 12px 12px 8px;
     }
     .chartBoxTall{
       height: 460px;
       padding: 10px 10px 6px;
     }
 
-    /* Explorer */
+    /* Explorer (kept) */
     .subchips{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
     .miniChip{
       display:inline-flex;
@@ -383,10 +368,15 @@
       color: var(--muted);
       font-weight: 800;
       cursor: default;
+      white-space:nowrap;
     }
     .miniChip strong{ color:#0b1220; }
 
-    .explorer{ display:flex; flex-direction:column; gap: 12px; }
+    .explorer{
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+    }
     .controls{
       display:grid;
       grid-template-columns: repeat(4, minmax(0,1fr));
@@ -458,7 +448,7 @@
       position: fixed;
       top: 14px;
       right: 14px;
-      width: min(520px, calc(100vw - 28px));
+      width: min(560px, calc(100vw - 28px));
       height: calc(100vh - 28px);
       background: rgba(255,255,255,0.92);
       border: 1px solid rgba(219,227,239,0.9);
@@ -557,7 +547,20 @@
     .present .controls, .present .actions{ display:none !important; }
     .present h1{ font-size: 30px; }
     .present .card{ box-shadow: 0 20px 60px rgba(15,23,42,.14); }
-    .present .subtitle{ font-size: 14px; }
+
+    /* Tab visibility */
+    .tabHidden{ display:none !important; }
+
+    /* Print */
+    @media print{
+      header{ position: static; border-bottom: none; }
+      .drawer{ display:none !important; }
+      .segBtn{ display:none !important; }
+      .btn, .ghostBtn{ display:none !important; }
+      body{ background: #fff; }
+      .wrap{ max-width: none; padding: 0 0 18px; }
+      .card{ box-shadow:none; }
+    }
 
     /* Responsiveness */
     @media (max-width: 1020px){
@@ -565,21 +568,13 @@
       .toolbar{ align-items:flex-start; min-width:0; }
       .controls{ grid-template-columns: repeat(2, minmax(0,1fr)); }
       h1{ font-size: 24px; }
+      .headerNavRow{ flex-wrap:wrap; }
     }
     @media (max-width: 680px){
       .controls{ grid-template-columns: 1fr; }
       .span-4, .span-3{ grid-column: span 12; }
       .span-6{ grid-column: span 12; }
       .chartBoxTall{ height: 520px; }
-    }
-
-    /* Print tweaks */
-    @media print{
-      header{ position: static; }
-      .tabsRow{ display:none; }
-      .btn, .tabBtn, .pillset, .drawer{ display:none !important; }
-      body{ background:#fff; }
-      .card{ box-shadow:none; }
     }
   </style>
 </head>
@@ -605,7 +600,6 @@
           <div class="meta">
             <span class="chip">Last refresh: <strong id="lastRefresh">—</strong></span>
             <span class="chip">Sources: <strong>USAJOBS + Adzuna + Remotive</strong> (via Worker)</span>
-            <button class="btn" id="openSources" type="button">Data sources</button>
           </div>
 
           <div class="status">
@@ -616,11 +610,11 @@
         </div>
       </div>
 
-      <!-- Tabs row (matches your screenshot area) -->
-      <div class="tabsRow" aria-label="Dashboard tabs">
-        <button class="tabBtn active" id="tabPulse" type="button">Market Pulse</button>
-        <button class="tabBtn" id="tabSources" type="button">Sources</button>
-        <button class="tabBtn primary" id="tabPrint" type="button">Print / PDF</button>
+      <!-- Header navigation row like your screenshot -->
+      <div class="headerNavRow" aria-label="Navigation">
+        <button class="segBtn active" id="tabMarket" type="button">Market Pulse</button>
+        <button class="segBtn" id="tabSources" type="button">Sources</button>
+        <button class="segBtn primary" id="tabPrint" type="button">Print / PDF</button>
       </div>
     </div>
   </header>
@@ -628,92 +622,97 @@
   <main>
     <div class="wrap">
 
-      <!-- KPI strip (matches screenshot) -->
-      <section class="grid" aria-label="Market pulse KPIs">
-
-        <div class="card kpi span-3" role="region" aria-label="AI-skill job share">
-          <div class="kpiTop">
-            <div class="kpiLabel">AI-skill job share</div>
-            <div class="kpiTag" id="kpiShareDelta">▲ — pts</div>
-          </div>
-          <div class="kpiBig" id="kpiShare">—%</div>
-          <div class="kpiSub">Share of jobs matching AI keyword filter</div>
-          <div class="spark" aria-hidden="true">
-            <svg viewBox="0 0 120 40" preserveAspectRatio="none">
-              <polyline id="sparkShare" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
-            </svg>
-          </div>
-        </div>
-
-        <div class="card kpi span-3" role="region" aria-label="Top AI category">
-          <div class="kpiTop">
-            <div class="kpiLabel">Top AI category (share)</div>
-            <div class="kpiTag" id="kpiTopCatShareTag">▲ — share</div>
-          </div>
-          <div class="kpiBig smallText" id="kpiTopCategory">—</div>
-          <div class="kpiSub">Most common category among AI-matched postings</div>
-          <div class="spark" aria-hidden="true">
-            <svg viewBox="0 0 120 40" preserveAspectRatio="none">
-              <polyline id="sparkTopCat" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
-            </svg>
-          </div>
-        </div>
-
-        <div class="card kpi span-3" role="region" aria-label="Non-dev share proxy">
-          <div class="kpiTop">
-            <div class="kpiLabel">Non-dev share (proxy)</div>
-            <div class="kpiTag neutral">▲ proxy</div>
-          </div>
-          <div class="kpiBig" id="kpiNonDev">—%</div>
-          <div class="kpiSub">Share of AI-matched jobs not in software/data categories</div>
-          <div class="spark" aria-hidden="true">
-            <svg viewBox="0 0 120 40" preserveAspectRatio="none">
-              <polyline id="sparkNonDev" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
-            </svg>
-          </div>
-        </div>
-
-        <div class="card kpi span-3" role="region" aria-label="New postings">
-          <div class="kpiTop">
-            <div class="kpiLabel">New postings (14 days)</div>
-            <div class="kpiTag neutral">▲ count</div>
-          </div>
-          <div class="kpiBig" id="kpiNew14">—</div>
-          <div class="kpiSub">AI-matched postings published in last 14 days</div>
-          <div class="spark" aria-hidden="true">
-            <svg viewBox="0 0 120 40" preserveAspectRatio="none">
-              <polyline id="sparkNew14" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
-            </svg>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- Where the Jobs Are (matches screenshot) -->
-      <section class="grid" style="margin-top:14px" aria-label="Where the jobs are">
-        <div class="card span-12">
-          <div class="hd">
-            <div>
-              <h2>Where the Jobs Are</h2>
-              <p>Live: category distribution from Remotive postings.</p>
+      <!-- =========================
+           MARKET PULSE (BLENDED)
+           ========================= -->
+      <section id="marketPulseSection" aria-label="Market Pulse (blended)">
+        <section class="grid kpisPulse" aria-label="Market pulse indicators">
+          <div class="card kpiPulse span-3" role="region" aria-label="AI-skill job share">
+            <div class="kpiTop">
+              <div class="kpiLabel">AI-skill job share</div>
+              <div class="kpiTag good" id="mpShareTag">▲ live</div>
             </div>
-            <button class="miniBtn" id="openJobCats" type="button">Job categories</button>
+            <div class="kpiValue" id="mpShare">—</div>
+            <div class="kpiSub">Share of jobs matching AI keyword filter</div>
+            <div class="spark" aria-hidden="true">
+              <svg viewBox="0 0 120 36" preserveAspectRatio="none">
+                <polyline id="mpSparkShare" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
+              </svg>
+            </div>
           </div>
-          <div class="bd">
-            <div class="chartWrap">
-              <div class="chartBoxMid">
-                <canvas id="jobsWhereChart" role="img" aria-label="Category distribution chart"></canvas>
+
+          <div class="card kpiPulse span-3" role="region" aria-label="Top AI category">
+            <div class="kpiTop">
+              <div class="kpiLabel">Top AI category (share)</div>
+              <div class="kpiTag good" id="mpTopCatTag">▲ — share</div>
+            </div>
+            <div class="kpiBig" id="mpTopCat">—</div>
+            <div class="kpiSub">Most common category among AI-matched postings</div>
+            <div class="spark" aria-hidden="true">
+              <svg viewBox="0 0 120 36" preserveAspectRatio="none">
+                <polyline id="mpSparkTopCat" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
+              </svg>
+            </div>
+          </div>
+
+          <div class="card kpiPulse span-3" role="region" aria-label="Non-dev share">
+            <div class="kpiTop">
+              <div class="kpiLabel">Non-dev share (proxy)</div>
+              <div class="kpiTag good" id="mpNonDevTag">▲ proxy</div>
+            </div>
+            <div class="kpiValue" id="mpNonDev">—</div>
+            <div class="kpiSub">Share of AI-matched jobs not in software/data categories</div>
+            <div class="spark" aria-hidden="true">
+              <svg viewBox="0 0 120 36" preserveAspectRatio="none">
+                <polyline id="mpSparkNonDev" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
+              </svg>
+            </div>
+          </div>
+
+          <div class="card kpiPulse span-3" role="region" aria-label="New postings 14 days">
+            <div class="kpiTop">
+              <div class="kpiLabel">New postings (14 days)</div>
+              <div class="kpiTag good" id="mpNew14Tag">▲ count</div>
+            </div>
+            <div class="kpiValue" id="mpNew14">—</div>
+            <div class="kpiSub">AI-matched postings published in last 14 days</div>
+            <div class="spark" aria-hidden="true">
+              <svg viewBox="0 0 120 36" preserveAspectRatio="none">
+                <polyline id="mpSparkNew14" fill="none" stroke="rgba(37,99,235,.85)" stroke-width="2" points=""></polyline>
+              </svg>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid" style="margin-top:14px" aria-label="Where the Jobs Are (blended)">
+          <div class="card span-12">
+            <div class="hd">
+              <div class="hdRow">
+                <div>
+                  <h2>Where the Jobs Are</h2>
+                  <p>Live: category distribution from blended postings (USAJOBS + Adzuna + Remotive) inside the current program lens.</p>
+                </div>
+                <button class="btn" id="openJobCategories" type="button">Job categories</button>
               </div>
             </div>
-            <div style="margin-top:10px; font-size:12px; color:var(--muted); font-weight:700;">
-              Source: Remotive Jobs API (live) · Client-side keyword filter
+            <div class="bd">
+              <div class="chartWrap">
+                <div class="chartBoxMed">
+                  <canvas id="jobsWhereChart" role="img" aria-label="Where the jobs are chart"></canvas>
+                </div>
+              </div>
+              <div style="margin-top:10px; font-size:12px; color:var(--muted2); font-weight:800;">
+                <span>Source: Blended feeds (live) · Client-side keyword filter</span>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
       </section>
 
-      <!-- Skill Explorer (kept from your page) -->
-      <section class="grid" style="margin-top:14px" aria-label="Skill explorer section">
+      <!-- =========================
+           SKILL EXPLORER (kept)
+           ========================= -->
+      <section id="skillExplorerSection" class="grid" style="margin-top:14px" aria-label="Skill explorer section">
         <div class="card span-12">
           <div class="hd">
             <div>
@@ -804,12 +803,12 @@
      *****************************************************************/
     const PROXY_BASE = "https://ai-skills-proxy.nealb3.workers.dev";
 
-    // cache key bumped (safe against older bad-shaped cached data)
-    const CACHE_KEY = "nku_exec_ai_dashboard_cache_v6_marketpulse"; // ✅ bumped
+    // bump cache key so "bad-shaped" cached data won't keep crashing
+    const CACHE_KEY = "nku_exec_ai_dashboard_cache_v6"; // ✅ bumped
     const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 
-    // store previous share for delta
-    const SHARE_SNAPSHOT_KEY = "nku_exec_ai_share_snapshot_v1";
+    // Market Pulse history (for true sparklines)
+    const PULSE_HISTORY_KEY = "nku_market_pulse_history_v1";
 
     const AI_TERMS_US = [
       "artificial intelligence","machine learning","generative ai","genai","llm",
@@ -820,10 +819,7 @@
     ];
     const BASELINE_TERMS = ["software","analyst","manager"];
 
-    const PARTNER_FEEDS = {
-      greenhouseBoards: [],
-      ashbyOrgs: []
-    };
+    const PARTNER_FEEDS = { greenhouseBoards: [], ashbyOrgs: [] };
 
     const AUDIENCE_FILTERS = {
       all: () => true,
@@ -860,14 +856,13 @@
         .replaceAll('"',"&quot;").replaceAll("'","&#039;");
     }
     function pct(x){ return (x*100).toFixed(1) + "%"; }
-
     function sparkPoints(values){
       if(!values || values.length < 2) return "";
       const max = Math.max(...values), min = Math.min(...values);
       const range = (max - min) || 1;
       return values.map((v,i)=>{
         const x = (i/(values.length-1))*120;
-        const y = 38 - ((v-min)/range)*34;
+        const y = 34 - ((v-min)/range)*30;
         return `${x.toFixed(1)},${y.toFixed(1)}`;
       }).join(" ");
     }
@@ -879,13 +874,6 @@
       if(typeof v === "string") return v;
       if(typeof v === "number" || typeof v === "boolean") return String(v);
       try { return JSON.stringify(v); } catch { return String(v); }
-    }
-
-    function parseDateSafe(x){
-      if(!x) return null;
-      const d = new Date(x);
-      if(Number.isNaN(d.getTime())) return null;
-      return d.toISOString();
     }
 
     /*****************************************************************
@@ -943,6 +931,13 @@
     /*****************************************************************
      * NORMALIZERS
      *****************************************************************/
+    function parseDateSafe(x){
+      if(!x) return null;
+      const d = new Date(x);
+      if(Number.isNaN(d.getTime())) return null;
+      return d.toISOString();
+    }
+
     function normalizeUSAJOBS(payload){
       const items = payload?.SearchResult?.SearchResultItems || [];
       return items.map(it=>{
@@ -1027,7 +1022,7 @@
     }
 
     /*****************************************************************
-     * METRICS + HELPERS
+     * METRICS
      *****************************************************************/
     function classifyNonCS(job){
       const t = asText(job.title).toLowerCase();
@@ -1062,35 +1057,139 @@
     }
 
     function trendByDay(jobs, days=14){
-      // counts per day for last N days (based on job.date; if no dates, show flat-ish)
+      // daily counts for last N days, based on job.date
       const now = new Date();
-      const buckets = new Map();
-      for(let i=days-1;i>=0;i--){
-        const d = new Date(now);
-        d.setDate(now.getDate() - i);
-        const key = d.toISOString().slice(0,10);
-        buckets.set(key, 0);
-      }
-      let dated = 0;
+      const start = new Date(now);
+      start.setDate(now.getDate() - (days-1));
+      start.setHours(0,0,0,0);
+
+      const counts = new Map();
       for(const j of jobs){
         if(!j.date) continue;
         const d = new Date(j.date);
         if(Number.isNaN(d.getTime())) continue;
-        const key = d.toISOString().slice(0,10);
-        if(buckets.has(key)){
-          buckets.set(key, (buckets.get(key)||0) + 1);
-          dated++;
-        }
+        const dd = new Date(d);
+        dd.setHours(0,0,0,0);
+        if(dd < start) continue;
+        const key = dd.toISOString().slice(0,10);
+        counts.set(key, (counts.get(key)||0)+1);
       }
-      const labels = [...buckets.keys()];
-      let values = labels.map(k => buckets.get(k) || 0);
 
-      if(!dated){
-        // fallback: simple gentle line so spark isn't empty
-        const base = jobs.length ? Math.max(1, Math.round(jobs.length / Math.max(1, days/2))) : 0;
-        values = labels.map((_,i)=> Math.max(0, Math.round(base * (0.55 + (i/(labels.length-1))*0.45))));
+      const labels = [];
+      const values = [];
+      for(let i=0;i<days;i++){
+        const d = new Date(start);
+        d.setDate(start.getDate()+i);
+        const key = d.toISOString().slice(0,10);
+        labels.push(key.slice(5)); // MM-DD
+        values.push(counts.get(key) || 0);
       }
       return { labels, values };
+    }
+
+    /*****************************************************************
+     * MARKET PULSE (BLENDED) + CATEGORY NORMALIZATION
+     *****************************************************************/
+    function normalizeCategoryName(raw){
+      const c = (asText(raw) || "Other").trim();
+      const lower = c.toLowerCase();
+
+      if(/software|development|developer|engineering/.test(lower)) return "Software Development";
+      if(/data|analytics|bi|business intelligence/.test(lower)) return "Data / Analytics";
+      if(/ai|ml|machine learning/.test(lower)) return "AI / ML";
+      if(/devops|sre|sysadmin|platform/.test(lower)) return "DevOps / Sysadmin";
+      if(/product/.test(lower)) return "Product";
+      if(/marketing/.test(lower)) return "Marketing";
+      if(/sales|business development/.test(lower)) return "Sales / Business";
+      if(/support|customer/.test(lower)) return "Customer Service";
+      if(/writing|content/.test(lower)) return "Writing";
+      if(/design/.test(lower)) return "Design";
+      return c;
+    }
+
+    function computeMarketPulseFromBlend(data){
+      const audFn = AUDIENCE_FILTERS[currentAudience] || AUDIENCE_FILTERS.all;
+
+      // Market Pulse should be blended and follow ONLY program lens (per screenshot behavior)
+      const ai = data.aiJobs.filter(audFn);
+      const base = data.baseJobs.filter(audFn);
+
+      const share = ai.length / Math.max(ai.length + base.length, 1);
+
+      // Categories across blended AI
+      const catCounts = new Map();
+      for(const j of ai){
+        const cat = normalizeCategoryName(j.category);
+        catCounts.set(cat, (catCounts.get(cat)||0) + 1);
+      }
+      const categories = [...catCounts.entries()]
+        .map(([name,count])=>({ name, count }))
+        .sort((a,b)=>b.count-a.count);
+
+      const topCat = categories[0]?.name || "—";
+      const topCatShare = categories.length ? ((categories[0]?.count || 0) / Math.max(ai.length, 1)) : 0;
+
+      // Non-dev proxy
+      const devCatRx = /(software development|data \/ analytics|ai \/ ml|devops \/ sysadmin|engineering|cloud|platform)/i;
+      const devCount = ai.filter(j => devCatRx.test(normalizeCategoryName(j.category))).length;
+      const nonDevShare = 1 - (devCount / Math.max(ai.length, 1));
+
+      // New postings (14 days)
+      const now = Date.now();
+      const cutoff = now - (14 * 24 * 60 * 60 * 1000);
+      const new14 = ai.filter(j => {
+        if(!j.date) return false;
+        const t = new Date(j.date).getTime();
+        return !Number.isNaN(t) && t >= cutoff;
+      }).length;
+
+      // True trend via localStorage history
+      const hist = updatePulseHistory({
+        share,
+        topCatShare,
+        nonDevShare,
+        new14,
+        topCat
+      });
+
+      const sparkShare = historyToSpark(hist, "share", 14);
+      const sparkTopCat = historyToSpark(hist, "topCatShare", 14);
+      const sparkNonDev = historyToSpark(hist, "nonDevShare", 14);
+      const sparkNew14 = historyToSpark(hist, "new14", 14);
+
+      // For chart
+      const topCatsForChart = categories.slice(0, 12);
+
+      return {
+        share, topCat, topCatShare, nonDevShare, new14,
+        sparks: { sparkShare, sparkTopCat, sparkNonDev, sparkNew14 },
+        categories: topCatsForChart,
+        aiCount: ai.length,
+        baseCount: base.length
+      };
+    }
+
+    function updatePulseHistory(snapshot){
+      const day = new Date().toISOString().slice(0,10); // YYYY-MM-DD
+      let hist = [];
+      try{ hist = JSON.parse(localStorage.getItem(PULSE_HISTORY_KEY) || "[]"); }catch{ hist = []; }
+
+      // replace same-day or append
+      hist = hist.filter(x => x.day !== day);
+      hist.push({ day, ...snapshot });
+
+      // keep last 60 days
+      hist.sort((a,b)=> a.day.localeCompare(b.day));
+      hist = hist.slice(-60);
+
+      try{ localStorage.setItem(PULSE_HISTORY_KEY, JSON.stringify(hist)); }catch{}
+      return hist;
+    }
+
+    function historyToSpark(hist, field, days=14){
+      const slice = (hist || []).slice(-days);
+      const values = slice.map(x => Number(x?.[field]) || 0);
+      return values.length > 1 ? values : [0,0];
     }
 
     /*****************************************************************
@@ -1155,10 +1254,9 @@
       });
     }
 
-    function renderJobsWhereChart(categories){
-      // categories: [{name,count}]
-      const labels = categories.map(x => x.name);
-      const values = categories.map(x => x.count);
+    function renderJobsWhereChart(catRows){
+      const labels = (catRows || []).map(r => r.name);
+      const values = (catRows || []).map(r => r.count);
 
       const ctx = $("#jobsWhereChart");
       if(jobsWhereChart) jobsWhereChart.destroy();
@@ -1177,10 +1275,19 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { display:false } },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks:{
+                label: (c)=> `${c.parsed.y} postings`
+              }
+            }
+          },
           scales: {
-            y: { beginAtZero:true, ticks:{ precision:0 } },
-            x: { ticks:{ maxRotation:30, minRotation:30 } }
+            y: { beginAtZero: true },
+            x: {
+              ticks: { maxRotation: 35, minRotation: 35, font:{ weight:"800" } }
+            }
           }
         }
       });
@@ -1198,7 +1305,7 @@
     function closeDrawer(){ $("#drawer").classList.remove("open"); }
 
     /*****************************************************************
-     * DATA PIPELINE
+     * DATA PIPELINE (USAJOBS + Adzuna + Remotive)
      *****************************************************************/
     async function fetchBlend(){
       const cached = readCache();
@@ -1225,7 +1332,7 @@
         },
         debug: {
           aiUS: aiUS.debug, aiAD: aiAD.debug, aiRM: aiRM.debug,
-          baseUS: baseUS.debug, baseAD: baseAD.debug, baseRM: baseRM.debug,
+          baseUS: baseUS.debug, baseAD: baseAD.debug, baseRM: baseRM.debug
         }
       };
 
@@ -1239,14 +1346,9 @@
     let currentAudience = "all";
     let blended = null;
 
-    const explorerState = {
-      region: "all",
-      role: "all",
-      view: "count",
-      search: ""
-    };
-
+    const explorerState = { region: "all", role: "all", view: "count", search: "" };
     let familyFilter = "all";
+    let isPresent = false;
 
     function applyAudience(aud){
       currentAudience = aud;
@@ -1260,9 +1362,7 @@
     /*****************************************************************
      * FAMILY CHIPS
      *****************************************************************/
-    function uniqueFamilies(){
-      return [...new Set(SKILLS.map(s=>s.family))].sort();
-    }
+    function uniqueFamilies(){ return [...new Set(SKILLS.map(s=>s.family))].sort(); }
 
     function renderFamilyChips(){
       const el = $("#familyChips");
@@ -1290,7 +1390,7 @@
     }
 
     /*****************************************************************
-     * FILTERS
+     * SKILL EXPLORER RENDER
      *****************************************************************/
     function filteredAiJobs(data){
       const audFn = AUDIENCE_FILTERS[currentAudience] || AUDIENCE_FILTERS.all;
@@ -1328,108 +1428,6 @@
       return rows;
     }
 
-    /*****************************************************************
-     * MARKET PULSE (KPIs + Where jobs are)
-     *****************************************************************/
-    function computeMarketPulse(data){
-      const audFn = AUDIENCE_FILTERS[currentAudience] || AUDIENCE_FILTERS.all;
-      const ai = data.aiJobs.filter(audFn);
-      const base = data.baseJobs.filter(audFn);
-
-      const share = ai.length / Math.max(ai.length + base.length, 1);
-
-      // delta vs last snapshot (localStorage)
-      let deltaPts = null;
-      try{
-        const prev = JSON.parse(localStorage.getItem(SHARE_SNAPSHOT_KEY) || "null");
-        if(prev && typeof prev.share === "number") deltaPts = (share - prev.share) * 100;
-        localStorage.setItem(SHARE_SNAPSHOT_KEY, JSON.stringify({ time: Date.now(), share }));
-      }catch{}
-
-      // Remotive-only category distribution (for “Where the Jobs Are”)
-      const remotiveAi = ai.filter(j => j.source === "Remotive");
-      const catPool = remotiveAi.length ? remotiveAi : ai;
-
-      const catCounts = new Map();
-      for(const j of catPool){
-        const c = (asText(j.category) || "Other").trim();
-        catCounts.set(c, (catCounts.get(c)||0) + 1);
-      }
-      const categories = [...catCounts.entries()]
-        .map(([name,count])=>({ name, count }))
-        .sort((a,b)=>b.count - a.count)
-        .slice(0, 12);
-
-      const topCat = categories[0]?.name || "—";
-      const topCatShare = categories.length ? ((categories[0]?.count || 0) / Math.max(catPool.length, 1)) : 0;
-
-      // Non-dev share (proxy) based on category text
-      const devCatRx = /(software|devops|sysadmin|data|ai|ml|machine learning|engineering|cloud|platform)/i;
-      const devCount = catPool.filter(j => devCatRx.test(asText(j.category))).length;
-      const nonDevShare = 1 - (devCount / Math.max(catPool.length, 1));
-
-      // New postings (14 days) based on date
-      const now = Date.now();
-      const cutoff = now - (14 * 24 * 60 * 60 * 1000);
-      const new14 = ai.filter(j => {
-        if(!j.date) return false;
-        const t = new Date(j.date).getTime();
-        return !Number.isNaN(t) && t >= cutoff;
-      }).length;
-
-      // sparklines
-      const dayTrend = trendByDay(ai, 14);
-
-      return {
-        share,
-        deltaPts,
-        topCat,
-        topCatShare,
-        nonDevShare,
-        new14,
-        categories,
-        dayTrend
-      };
-    }
-
-    function setDeltaTag(el, deltaPts){
-      if(!el) return;
-      if(deltaPts == null || !Number.isFinite(deltaPts)){
-        el.textContent = "▲ — pts";
-        el.className = "kpiTag neutral";
-        return;
-      }
-      const sign = deltaPts >= 0 ? "+" : "";
-      el.textContent = `▲ ${sign}${deltaPts.toFixed(1)} pts`;
-      // keep green look even when negative (matches your screenshot vibe), but you can switch to warn/bad here if you want
-      el.className = "kpiTag";
-    }
-
-    function renderMarketPulse(data){
-      const mp = computeMarketPulse(data);
-
-      setText("#kpiShare", pct(mp.share));
-      setDeltaTag($("#kpiShareDelta"), mp.deltaPts);
-
-      setText("#kpiTopCategory", mp.topCat);
-      setText("#kpiTopCatShareTag", `▲ ${(mp.topCatShare*100).toFixed(1)}% share`);
-
-      setText("#kpiNonDev", pct(mp.nonDevShare));
-      setText("#kpiNew14", String(mp.new14));
-
-      // sparks
-      $("#sparkShare").setAttribute("points", sparkPoints(mp.dayTrend.values));
-      $("#sparkTopCat").setAttribute("points", sparkPoints(mp.dayTrend.values));
-      $("#sparkNonDev").setAttribute("points", sparkPoints(mp.dayTrend.values));
-      $("#sparkNew14").setAttribute("points", sparkPoints(mp.dayTrend.values));
-
-      // Where the jobs are chart
-      renderJobsWhereChart(mp.categories);
-    }
-
-    /*****************************************************************
-     * EXPLORER RENDER
-     *****************************************************************/
     function showSkillDetails(skillName, jobs){
       const meta = SKILLS.find(s => s.skill === skillName);
       const keys = meta?.keys || [];
@@ -1494,26 +1492,31 @@
     }
 
     /*****************************************************************
-     * MAIN RENDER
+     * MARKET PULSE RENDER (BLENDED) + "WHERE JOBS ARE" (BLENDED)
      *****************************************************************/
-    function renderFromData(data){
-      // status: "live" if any private-sector source succeeded
-      const adOk = data.debug?.aiAD?.some(x => x.ok);
-      const rmOk = data.debug?.aiRM?.some(x => x.ok);
+    function renderMarketPulse(data){
+      const mp = computeMarketPulseFromBlend(data);
 
-      const statusEl = $("#blendStatus");
-      if(adOk || rmOk){
-        statusEl.textContent = "live (blended)";
-        statusEl.className = "live";
-      } else {
-        statusEl.textContent = "partial (USAJOBS-only fallback)";
-        statusEl.className = "warn";
-      }
+      // KPI values
+      setText("#mpShare", pct(mp.share));
+      setText("#mpTopCat", mp.topCat);
+      setText("#mpNonDev", pct(mp.nonDevShare));
+      setText("#mpNew14", String(mp.new14));
 
-      setText("#lastRefresh", new Date(data.fetchedAt).toLocaleString());
+      // Tags
+      setText("#mpTopCatTag", `▲ ${(mp.topCatShare*100).toFixed(1)}% share`);
+      setText("#mpShareTag", "▲ live");
+      setText("#mpNonDevTag", "▲ proxy");
+      setText("#mpNew14Tag", "▲ count");
 
-      renderMarketPulse(data);
-      renderExplorer(data);
+      // Sparklines from history
+      $("#mpSparkShare").setAttribute("points", sparkPoints(mp.sparks.sparkShare));
+      $("#mpSparkTopCat").setAttribute("points", sparkPoints(mp.sparks.sparkTopCat));
+      $("#mpSparkNonDev").setAttribute("points", sparkPoints(mp.sparks.sparkNonDev));
+      $("#mpSparkNew14").setAttribute("points", sparkPoints(mp.sparks.sparkNew14));
+
+      // Blended category chart
+      renderJobsWhereChart(mp.categories);
     }
 
     /*****************************************************************
@@ -1522,7 +1525,7 @@
     function showSources(){
       const dbg = blended?.debug || {};
       openDrawer({
-        title: "Data sources & definitions",
+        title: "Sources",
         subtitle: `Worker: ${PROXY_BASE} · Cache: 1 hour · Program lens: ${currentAudience}`,
         html: `
           <div class="section">
@@ -1544,16 +1547,6 @@
           </div>
 
           <div class="section">
-            <strong>Market Pulse notes</strong>
-            <ul>
-              <li><strong>AI-skill job share</strong>: AI ÷ (AI + baseline).</li>
-              <li><strong>Top AI category</strong>: most common <em>category</em> among AI-matched postings (prefers Remotive if available).</li>
-              <li><strong>Non-dev share (proxy)</strong>: category text heuristic (software/data/devops/etc).</li>
-              <li><strong>New postings (14 days)</strong>: uses job <code>date</code> fields where available.</li>
-            </ul>
-          </div>
-
-          <div class="section">
             <strong>Debug (last fetch)</strong>
             <pre>${escapeHtml(JSON.stringify(dbg, null, 2))}</pre>
           </div>
@@ -1561,7 +1554,7 @@
       });
     }
 
-    function showJobCategoriesExplainer(){
+    function showJobCategoriesInfo(){
       openDrawer({
         title: "Job categories",
         subtitle: "How the 'Where the Jobs Are' chart is built",
@@ -1569,16 +1562,18 @@
           <div class="section">
             <strong>What this chart shows</strong>
             <p>
-              It counts job categories from <strong>Remotive</strong> postings inside the current program lens.
-              If there are no Remotive hits for the current lens, it falls back to categories from the full blended AI sample.
+              It counts job categories from the <strong>blended AI-matched sample</strong> (USAJOBS + Adzuna + Remotive)
+              inside the current <strong>program lens</strong>. Category names are lightly normalized so similar labels
+              roll up (e.g., “Software Engineering” → “Software Development”).
             </p>
           </div>
+
           <div class="section">
             <strong>Why categories can look “uneven”</strong>
             <ul>
-              <li>Remotive categories are platform-defined (not standardized across all sources).</li>
+              <li>Categories are source-defined (not standardized across all sources).</li>
               <li>Keyword filtering can over-represent “Software Development” for AI terms.</li>
-              <li>Some sources have sparse or inconsistent category fields.</li>
+              <li>Some postings have sparse or inconsistent category fields.</li>
             </ul>
           </div>
         `
@@ -1628,7 +1623,6 @@
     /*****************************************************************
      * PRESENTATION MODE
      *****************************************************************/
-    let isPresent = false;
     function togglePresentation(){
       isPresent = !isPresent;
       document.documentElement.classList.toggle("present", isPresent);
@@ -1639,18 +1633,55 @@
           html:`<div class="section">
             <strong>How to use this in a meeting</strong>
             <ul>
-              <li>Start with <strong>AI-skill job share</strong> and <strong>Top AI category</strong>.</li>
-              <li>Use <strong>Non-dev share</strong> to show AI demand beyond purely technical roles.</li>
-              <li>Use <strong>New postings (14 days)</strong> as a “freshness” pulse.</li>
-              <li>Use <strong>Where the Jobs Are</strong> to discuss labor-market distribution.</li>
-              <li>Click skill bars to pull example postings as evidence.</li>
+              <li>Start with <strong>Market Pulse</strong> KPIs and the <strong>Where the Jobs Are</strong> distribution.</li>
+              <li>Then jump to <strong>Skill Explorer</strong> and click bars to show example postings.</li>
+              <li>Use lens toggles (Business / Informatics / Health) to tailor the story.</li>
             </ul>
-            <p class="muted">Tip: Try Region = OH/KY and lens = All programs for an NKU workforce narrative.</p>
           </div>`
         });
       } else {
         closeDrawer();
       }
+    }
+
+    /*****************************************************************
+     * TABS (Market Pulse / Sources / Print)
+     *****************************************************************/
+    function setActiveTab(which){
+      const tabMarket = $("#tabMarket");
+      const tabSources = $("#tabSources");
+      const tabPrint = $("#tabPrint");
+
+      tabMarket.classList.toggle("active", which==="market");
+      tabSources.classList.toggle("active", which==="sources");
+
+      // Market Pulse stays visible always; Sources just opens drawer.
+      // (Matches your screenshot behavior.)
+    }
+
+    /*****************************************************************
+     * MAIN RENDER
+     *****************************************************************/
+    function renderFromData(data){
+      // status: "live" if any private-sector source succeeded
+      const adOk = data.debug?.aiAD?.some(x => x.ok);
+      const rmOk = data.debug?.aiRM?.some(x => x.ok);
+      const statusEl = $("#blendStatus");
+      if(adOk || rmOk){
+        statusEl.textContent = "live (blended)";
+        statusEl.className = "live";
+      } else {
+        statusEl.textContent = "partial (USAJOBS-only fallback)";
+        statusEl.className = "warn";
+      }
+
+      setText("#lastRefresh", new Date(data.fetchedAt).toLocaleString());
+
+      // Blended Market Pulse + Blended Category chart
+      renderMarketPulse(data);
+
+      // Skill explorer
+      renderExplorer(data);
     }
 
     /*****************************************************************
@@ -1660,41 +1691,42 @@
       $("#drawerClose").addEventListener("click", closeDrawer);
       document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeDrawer(); });
 
-      $("#openSources").addEventListener("click", showSources);
-      $("#openJobCats").addEventListener("click", showJobCategoriesExplainer);
-
       $("#presentMode").addEventListener("click", togglePresentation);
-
       $("#forceRefresh").addEventListener("click", ()=>{
         clearCache();
         location.reload();
       });
 
+      // Lens buttons
       $$("#audienceToggle button").forEach(btn=>{
         btn.addEventListener("click", ()=> applyAudience(btn.dataset.aud));
       });
 
-      // tabs row actions
-      $("#tabPulse").addEventListener("click", ()=>{
-        $("#tabPulse").classList.add("active");
-        $("#tabSources").classList.remove("active");
-        showJobCategoriesExplainer(); // quick “pulse” helper when clicking
+      // Tab buttons
+      $("#tabMarket").addEventListener("click", ()=>{
+        setActiveTab("market");
+        closeDrawer();
+        document.getElementById("marketPulseSection")?.scrollIntoView({ behavior:"smooth", block:"start" });
       });
       $("#tabSources").addEventListener("click", ()=>{
-        $("#tabSources").classList.add("active");
-        $("#tabPulse").classList.remove("active");
+        setActiveTab("sources");
         showSources();
       });
-      $("#tabPrint").addEventListener("click", ()=> window.print());
+      $("#tabPrint").addEventListener("click", ()=>{
+        window.print();
+      });
+
+      // Job categories drawer (matches screenshot)
+      $("#openJobCategories").addEventListener("click", showJobCategoriesInfo);
 
       // explorer controls
       $("#regionSel").addEventListener("change", (e)=>{
         explorerState.region = e.target.value;
-        if(blended) renderFromData(blended);
+        if(blended) renderExplorer(blended);
       });
       $("#roleSel").addEventListener("change", (e)=>{
         explorerState.role = e.target.value;
-        if(blended) renderFromData(blended);
+        if(blended) renderExplorer(blended);
       });
       $("#viewSel").addEventListener("change", (e)=>{
         explorerState.view = e.target.value;
@@ -1707,12 +1739,16 @@
       $("#exportCsv").addEventListener("click", exportSkillsCsv);
 
       // initial shimmer placeholders
-      $("#chipSample").innerHTML = `<span class="skel" style="width:70px;height:14px;"></span>`;
-      $("#chipDates").innerHTML = `<span class="skel" style="width:55px;height:14px;"></span>`;
-      $("#chipDedup").innerHTML = `<span class="skel" style="width:55px;height:14px;"></span>`;
+      const cs = $("#chipSample");
+      if(cs) cs.innerHTML = `<span class="skel" style="width:70px;height:14px;"></span>`;
+      const cd = $("#chipDates");
+      if(cd) cd.innerHTML = `<span class="skel" style="width:55px;height:14px;"></span>`;
+      const cdu = $("#chipDedup");
+      if(cdu) cdu.innerHTML = `<span class="skel" style="width:55px;height:14px;"></span>`;
 
       renderFamilyChips();
 
+      // load
       try{
         blended = await fetchBlend();
         renderFromData(blended);
