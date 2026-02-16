@@ -32,6 +32,7 @@
 
       --radius:16px;
       --radius2:22px;
+      --radiusSm:12px;
     }
 
     *{ box-sizing:border-box; }
@@ -483,6 +484,106 @@
     }
     @keyframes shimmer{ 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
+    /* ---------- Explorer ---------- */
+    .explorerTop{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+    }
+    .controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .input, .select{
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 850;
+      color: var(--text);
+      outline: none;
+      box-shadow: 0 10px 22px rgba(2,8,23,0.04);
+    }
+    .select{ padding-right: 32px; }
+    .mini{
+      font-size: 12px;
+      font-weight: 850;
+      color: var(--muted2);
+    }
+
+    .tableWrap{
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow:hidden;
+      background:#fff;
+    }
+    table{
+      width:100%;
+      border-collapse: collapse;
+    }
+    thead th{
+      text-align:left;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 950;
+      letter-spacing:.01em;
+      padding: 10px 12px;
+      background: linear-gradient(180deg, #fff, rgba(2,8,23,0.015));
+      border-bottom: 1px solid var(--border);
+      white-space:nowrap;
+    }
+    tbody td{
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      font-size: 13px;
+      color: var(--text);
+    }
+    tbody tr:hover{
+      background: rgba(255,199,44,0.10);
+    }
+    .colDate{ width: 120px; white-space:nowrap; color: var(--muted2); font-weight: 850; }
+    .colSource{ width: 90px; white-space:nowrap; }
+    .colCompany{ width: 220px; }
+    .titleLink{
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 950;
+    }
+    .titleLink:hover{ text-decoration: underline; }
+    .rowMeta{
+      margin-top: 4px;
+      color: var(--muted2);
+      font-size: 12px;
+      font-weight: 750;
+      line-height: 1.4;
+    }
+    .pager{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+    }
+    .pager .btn{ box-shadow:none; }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      padding: 2px 6px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(2,8,23,0.02);
+      color: var(--muted);
+      font-weight: 850;
+    }
+
     @media (max-width: 1020px){
       .topbar{ flex-direction:column; align-items:stretch; }
       .toolbar{ align-items:flex-start; min-width:0; }
@@ -491,11 +592,14 @@
     @media (max-width: 900px){
       .span-3{ grid-column: span 6; }
       .span-6{ grid-column: span 12; }
+      .colCompany{ width:auto; }
     }
     @media (max-width: 680px){
       .span-3, .span-4, .span-6{ grid-column: span 12; }
       .chartBoxMid{ height: 360px; }
       .chartBoxTall{ height: 460px; }
+      .colCompany{ display:none; }
+      thead th:nth-child(3), tbody td:nth-child(3){ display:none; } /* hide company col on small */
     }
 
     @media print{
@@ -505,6 +609,7 @@
       body{ background:#fff; }
       .card{ box-shadow:none; }
       a[href]::after{ content:""; }
+      .explorerTop, .pager{ display:none !important; }
     }
   </style>
 </head>
@@ -516,12 +621,12 @@
       <div>
         <div class="badge"><span class="dot"></span> Dashboard prepared for NKU · AI Skills Demand (Blended Live)</div>
 
-        <h1>AI Skills Demand — A Positive Signal for NKU’s AI Literacy Priority</h1>
+        <h1>AI Skills Demand Live Dashboard - A Resource for NKU’s AI Literacy Priorities</h1>
 
         <p class="subtitle">
-          This dashboard translates real job-posting language into an optimistic, actionable story:
+          This dashboard translates real job-posting language into an actionable story:
           <span class="emph">AI is becoming a workplace literacy</span> (like data, writing, or spreadsheets).
-          That’s an opportunity for NKU to lead with <strong>responsible, student-centered AI Literacy</strong>—supporting employability,
+          That’s an opportunity for NKU to lead with <strong>responsible, student-centered AI Literacy</strong> -supporting employability,
           academic integrity, and cross-disciplinary readiness.
         </p>
 
@@ -567,7 +672,7 @@
           <div>
             <h2>Academic-ready reading guide (positive framing)</h2>
             <p>
-              Use this for curriculum alignment, employer partnerships, and student readiness—without fear-based AI narratives.
+              Use this for curriculum alignment, employer partnerships, and student readiness.
               The focus is <strong>capability + integrity + career outcomes</strong>.
             </p>
           </div>
@@ -733,6 +838,74 @@
       </div>
     </section>
 
+    <!-- ✅ NEW: Job Postings Explorer (dates + clickable links) -->
+    <section class="grid" style="margin-top:14px" aria-label="Job postings explorer">
+      <div class="card span-12">
+        <div class="hd">
+          <div>
+            <h2>AI job postings (click to open source + view dates)</h2>
+            <p>
+              This is the underlying deduped AI posting sample for the selected lens. Use search to spot-check and open real postings.
+              Tip: press <span class="kbd">/</span> to jump to search.
+            </p>
+          </div>
+          <button class="btn" id="openExplorerHelp" type="button">Explorer help</button>
+        </div>
+        <div class="bd">
+          <div class="explorerTop">
+            <div class="controls">
+              <input id="jobSearch" class="input" type="search" placeholder="Search title, company, location, skills…" />
+              <select id="jobScope" class="select" aria-label="Scope">
+                <option value="lens" selected>Scope: Current lens</option>
+                <option value="all">Scope: All AI postings</option>
+                <option value="kyoh">Scope: KY/OH subset</option>
+              </select>
+              <select id="jobSort" class="select" aria-label="Sort">
+                <option value="dateDesc" selected>Sort: Date (newest)</option>
+                <option value="dateAsc">Sort: Date (oldest)</option>
+                <option value="companyAsc">Sort: Company (A→Z)</option>
+                <option value="sourceAsc">Sort: Source (A→Z)</option>
+              </select>
+              <select id="jobPageSize" class="select" aria-label="Rows per page">
+                <option value="15">15 rows</option>
+                <option value="25" selected>25 rows</option>
+                <option value="50">50 rows</option>
+              </select>
+            </div>
+            <div class="mini" id="jobMeta">—</div>
+          </div>
+
+          <div class="tableWrap" role="region" aria-label="Job postings table" tabindex="0">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Posting</th>
+                  <th>Company</th>
+                  <th>Location</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody id="jobsTbody">
+                <tr><td colspan="5" class="mini">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pager">
+            <div class="mini" id="jobPagerText">—</div>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+              <button class="btn" id="jobPrev" type="button">Prev</button>
+              <button class="btn" id="jobNext" type="button">Next</button>
+              <button class="btn" id="jobOpenFirst" type="button">Open first result</button>
+            </div>
+          </div>
+
+          <div class="footerNote">Dates vary by source. Some postings may not include a usable publish date; those display as “—”.</div>
+        </div>
+      </div>
+    </section>
+
   </div>
 </main>
 
@@ -760,9 +933,9 @@ const RESULTS_PER_PAGE = 25;
 /* LinkedIn pull via Worker: /linkedin (0-based paging) */
 const LINKEDIN_PAGES_PER_TERM = 2;       // keep lower (scrape risk / rate limits)
 const LINKEDIN_RESULTS_PER_PAGE = 25;    // keep <= 25
-const LINKEDIN_DEFAULT_LOCATION = "United States"; // ✅ changed from hard-coded Kentucky
+const LINKEDIN_DEFAULT_LOCATION = "United States";
 
-const CACHE_KEY = "nku_exec_ai_dashboard_v10_worker_linkedin";
+const CACHE_KEY = "nku_exec_ai_dashboard_v11_explorer_verify";
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 
 const AI_TERMS_US = [
@@ -859,6 +1032,13 @@ function tagForDelta(deltaPts){
   return { cls: "good" };
 }
 
+function formatDateShort(iso){
+  if(!iso) return "—";
+  const d = new Date(iso);
+  if(Number.isNaN(d.getTime())) return "—";
+  return d.toLocaleDateString(undefined, { year:"numeric", month:"short", day:"2-digit" });
+}
+
 /*****************************************************************
  * CACHE
  *****************************************************************/
@@ -910,11 +1090,9 @@ async function fetchRemotive(searchTerm=""){
   const url = `${PROXY_BASE}/remotive${q ? `?search=${q}` : ""}`;
   return { url, json: await fetchJson(url), term: searchTerm, page: 1 };
 }
-
-/* ✅ LinkedIn via Worker: /linkedin (0-based paging) */
 async function fetchLinkedIn(term, perPage=25, page0=0){
   const t = encodeURIComponent(term);
-  const loc = encodeURIComponent(LINKEDIN_DEFAULT_LOCATION); // ✅ changed
+  const loc = encodeURIComponent(LINKEDIN_DEFAULT_LOCATION);
   const url =
     `${PROXY_BASE}/linkedin?keyword=${t}` +
     `&location=${loc}` +
@@ -922,7 +1100,6 @@ async function fetchLinkedIn(term, perPage=25, page0=0){
     `&sortBy=${encodeURIComponent("recent")}` +
     `&page=${encodeURIComponent(String(page0))}` +
     `&limit=${encodeURIComponent(String(perPage))}`;
-
   return { url, json: await fetchJson(url), term, page: page0 };
 }
 
@@ -985,8 +1162,6 @@ function normalizeRemotive(payload){
     date: parseDateSafe(it?.publication_date || it?.created_at || null)
   }));
 }
-
-/* ✅ LinkedIn normalizer: NOW reads postedAt so trend/date coverage works */
 function normalizeLinkedIn(payload){
   const items = payload?.jobs || payload?.data?.jobs || payload?.results || [];
   return items.map(it => ({
@@ -998,7 +1173,7 @@ function normalizeLinkedIn(payload){
     location: asText(it?.location || ""),
     url: asText(it?.url || it?.jobUrl || it?.link || ""),
     date: parseDateSafe(
-      it?.postedAt ||          // ✅ your upstream returns this
+      it?.postedAt ||
       it?.date ||
       it?.listedAt ||
       it?.publishedAt ||
@@ -1050,7 +1225,6 @@ async function fanoutFetchPages(terms, fetcher, normalizer, pages=5, perPage=25)
   const deduped = dedupeJobs(all);
   return { jobs: deduped, rawCount: all.length, debug };
 }
-
 async function fanoutFetchPagesZeroBased(terms, fetcher, normalizer, pages=2, perPage=25){
   const all = [];
   const debug = [];
@@ -1245,15 +1419,6 @@ function buildDailySeries(aiJobs, baseJobs, n=14){
 
   return { aiShare, aiCount, totalCount };
 }
-function sumNewInLastDays(aiJobs, days=14){
-  const keys = new Set(lastNDaysKeys(days));
-  let n = 0;
-  for(const j of aiJobs){
-    const k = j.date ? dayKey(j.date) : null;
-    if(k && keys.has(k)) n++;
-  }
-  return n;
-}
 function monthKey(iso){
   const d = new Date(iso);
   if(Number.isNaN(d.getTime())) return null;
@@ -1363,7 +1528,6 @@ function renderWhereJobsChart(labels, values){
     }
   });
 }
-
 function renderTrendChart(labels, values){
   const ctx = $("#trendChart");
   if(trendChart) trendChart.destroy();
@@ -1378,7 +1542,6 @@ function renderTrendChart(labels, values){
     }
   });
 }
-
 function renderSkillsChart(labels, values){
   const ctx = $("#skillsChart");
   if(skillsChart) skillsChart.destroy();
@@ -1394,7 +1557,6 @@ function renderSkillsChart(labels, values){
     }
   });
 }
-
 function renderEmployersChart(labels, values){
   const ctx = $("#employersChart");
   if(employersChart) employersChart.destroy();
@@ -1410,7 +1572,6 @@ function renderEmployersChart(labels, values){
     }
   });
 }
-
 function renderSkillsKYOHChart(labels, values){
   const ctx = $("#skillsKYOHChart");
   if(skillsKYOHChart) skillsKYOHChart.destroy();
@@ -1428,7 +1589,7 @@ function renderSkillsKYOHChart(labels, values){
 }
 
 /*****************************************************************
- * LENS COMPUTATION
+ * LENS COMPUTATION (✅ adds verification counts)
  *****************************************************************/
 function computeLens(blended, aud){
   const audFn = AUDIENCE_FILTERS[aud] || AUDIENCE_FILTERS.all;
@@ -1486,6 +1647,12 @@ function computeLens(blended, aud){
   // Raw total returned across sources (pre-dedupe, pre-lens)
   const totalReturnedRaw = (blended.raw?.aiRaw || 0) + (blended.raw?.baseRaw || 0);
 
+  // ✅ Verification pools
+  const aiTotal = aiSafe.length;
+  const aiDated = aiSafe.filter(j => !!j.date).length;
+  const kyohTotal = kyoh.length;
+  const kyohDated = kyoh.filter(j => !!j.date).length;
+
   return {
     ai: aiSafe,
     base: baseSafe,
@@ -1499,7 +1666,11 @@ function computeLens(blended, aud){
     mix,
     kyohEmployers,
     skillsKYOH,
-    totalReturnedRaw
+    totalReturnedRaw,
+    aiTotal,
+    aiDated,
+    kyohTotal,
+    kyohDated
   };
 }
 
@@ -1524,11 +1695,158 @@ function renderHeaderStatus(data){
   setText("#pagesUsed", String(data.pagesUsed || PAGES_PER_TERM));
 }
 
+/*****************************************************************
+ * Explorer state + render
+ *****************************************************************/
+let explorer = {
+  scope: "lens",     // lens | all | kyoh
+  search: "",
+  sort: "dateDesc",
+  page: 1,
+  pageSize: 25
+};
+
+function getExplorerPool(lens){
+  if(!blended || !lens) return [];
+  if(explorer.scope === "all") return blended.aiJobs;
+  if(explorer.scope === "kyoh") return lens.ai.filter(isOHKY);
+  return lens.ai; // lens
+}
+
+function compareStr(a,b){ return String(a||"").localeCompare(String(b||""), undefined, { sensitivity:"base" }); }
+
+function sortJobs(arr){
+  const s = explorer.sort;
+  const copy = [...arr];
+
+  const dateVal = (j) => {
+    if(!j.date) return null;
+    const t = new Date(j.date).getTime();
+    return Number.isNaN(t) ? null : t;
+  };
+
+  if(s === "dateAsc"){
+    copy.sort((x,y)=>{
+      const ax = dateVal(x), ay = dateVal(y);
+      if(ax == null && ay == null) return compareStr(x.title, y.title);
+      if(ax == null) return 1;
+      if(ay == null) return -1;
+      return ax - ay;
+    });
+  } else if(s === "dateDesc"){
+    copy.sort((x,y)=>{
+      const ax = dateVal(x), ay = dateVal(y);
+      if(ax == null && ay == null) return compareStr(x.title, y.title);
+      if(ax == null) return 1;
+      if(ay == null) return -1;
+      return ay - ax;
+    });
+  } else if(s === "companyAsc"){
+    copy.sort((x,y)=> compareStr(x.company, y.company) || compareStr(x.title, y.title));
+  } else if(s === "sourceAsc"){
+    copy.sort((x,y)=> compareStr(x.source, y.source) || compareStr(x.company, y.company) || compareStr(x.title, y.title));
+  } else {
+    copy.sort((x,y)=> compareStr(x.title, y.title));
+  }
+  return copy;
+}
+
+function filterJobs(arr){
+  const q = (explorer.search || "").trim().toLowerCase();
+  if(!q) return arr;
+  return arr.filter(j => {
+    const blob = `${asText(j.title)} ${asText(j.company)} ${asText(j.location)} ${asText(j.source)} ${asText(j.category)} ${asText(j.description)}`.toLowerCase();
+    return blob.includes(q);
+  });
+}
+
+function safeUrl(url){
+  const u = String(url||"").trim();
+  if(!u) return "";
+  if(/^https?:\/\//i.test(u)) return u;
+  return ""; // prevent opening javascript: or invalid
+}
+
+function renderExplorer(lens){
+  const tbody = $("#jobsTbody");
+  const meta = $("#jobMeta");
+  const pagerText = $("#jobPagerText");
+
+  if(!tbody || !meta || !pagerText) return;
+
+  const pool = getExplorerPool(lens);
+  const filtered = filterJobs(pool);
+  const sorted = sortJobs(filtered);
+
+  const total = sorted.length;
+  const pageSize = explorer.pageSize;
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  explorer.page = Math.max(1, Math.min(explorer.page, totalPages));
+
+  const start = (explorer.page - 1) * pageSize;
+  const slice = sorted.slice(start, start + pageSize);
+
+  const scopeLabel = explorer.scope === "all" ? "All AI postings" : (explorer.scope === "kyoh" ? "KY/OH subset" : "Current lens");
+  meta.textContent = `${scopeLabel} · ${total.toLocaleString()} matches`;
+
+  pagerText.textContent = total
+    ? `Showing ${Math.min(start+1,total).toLocaleString()}–${Math.min(start+pageSize,total).toLocaleString()} of ${total.toLocaleString()}`
+    : "No results (try clearing search).";
+
+  if(!slice.length){
+    tbody.innerHTML = `<tr><td colspan="5" class="mini">No results.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = slice.map(j=>{
+    const date = formatDateShort(j.date);
+    const url = safeUrl(j.url);
+    const title = escapeHtml(asText(j.title) || "Untitled posting");
+    const company = escapeHtml(asText(j.company) || "Unknown");
+    const loc = escapeHtml(asText(j.location) || "—");
+    const src = escapeHtml(asText(j.source) || "—");
+    const cat = escapeHtml(normalizeCategoryDisplay(j.category || ""));
+    const hasUrl = !!url;
+
+    const link = hasUrl
+      ? `<a class="titleLink" href="${escapeHtml(url)}" target="_blank" rel="noopener">${title}</a>`
+      : `<span class="titleLink" style="cursor:not-allowed; opacity:.75;" title="No URL provided by source">${title}</span>`;
+
+    return `
+      <tr>
+        <td class="colDate">${escapeHtml(date)}</td>
+        <td>
+          ${link}
+          <div class="rowMeta">${escapeHtml(cat)}</div>
+        </td>
+        <td class="colCompany">${company}</td>
+        <td>${loc}</td>
+        <td class="colSource">${src}</td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function openFirstExplorerResult(lens){
+  const pool = getExplorerPool(lens);
+  const filtered = filterJobs(pool);
+  const sorted = sortJobs(filtered);
+  const first = sorted[0];
+  const url = safeUrl(first?.url);
+  if(url) window.open(url, "_blank", "noopener");
+  else showHint("sampleSize");
+}
+
+/*****************************************************************
+ * Main renderAll
+ *****************************************************************/
+let _lastLens = null;
 function renderAll(){
   if(!blended) return;
   renderHeaderStatus(blended);
 
   const lens = computeLens(blended, currentAudience);
+  _lastLens = lens;
 
   animatePercent($("#kAiShare"), pct(lens.share));
   setText("#kAiCount", lens.ai.length.toLocaleString());
@@ -1558,6 +1876,9 @@ function renderAll(){
   renderWhereJobsChart(lens.where.labels, lens.where.values);
   renderEmployersChart(lens.kyohEmployers.labels, lens.kyohEmployers.values);
   renderSkillsKYOHChart(lens.skillsKYOH.labels, lens.skillsKYOH.values);
+
+  // ✅ Explorer (dates + clickable postings)
+  renderExplorer(lens);
 }
 
 /*****************************************************************
@@ -1580,6 +1901,11 @@ function showMethods(){
   const dedupRate = lens ? (lens.quality.dedupRate*100).toFixed(1) + "%" : "—";
   const privateOk = lens ? (lens.quality.anyPrivateOk ? "Yes" : "No") : "—";
 
+  const aiTotal = lens?.aiTotal ?? 0;
+  const aiDated = lens?.aiDated ?? 0;
+  const kyohTotal = lens?.kyohTotal ?? 0;
+  const kyohDated = lens?.kyohDated ?? 0;
+
   openDrawer({
     title: "Methods & Sources (Academic Detail)",
     subtitle: `Lens: ${audLabel} · Pages/term: ${PAGES_PER_TERM} · Per page: ${RESULTS_PER_PAGE} · LinkedIn pages: ${LINKEDIN_PAGES_PER_TERM}`,
@@ -1593,6 +1919,17 @@ function showMethods(){
           <li><strong>LinkedIn</strong> (via Cloudflare Worker route <code>/linkedin</code>)</li>
         </ul>
         <p>We dedupe across sources to reduce double-counting.</p>
+      </div>
+
+      <div class="section">
+        <strong>Chart pool verification (why counts differ)</strong>
+        <ul>
+          <li><strong>AI pool used by KPI/Skills/Where:</strong> ${aiTotal.toLocaleString()}</li>
+          <li><strong>AI with usable dates (Trend input):</strong> ${aiDated.toLocaleString()}</li>
+          <li><strong>KY/OH subset (KY/OH charts input):</strong> ${kyohTotal.toLocaleString()}</li>
+          <li><strong>KY/OH with usable dates:</strong> ${kyohDated.toLocaleString()}</li>
+        </ul>
+        <p class="muted">Trend and KY/OH charts intentionally use subsets of the AI pool.</p>
       </div>
 
       <div class="section">
@@ -1630,6 +1967,7 @@ function showReadingGuide(){
           <li><strong>Top skills:</strong> “These mentions tell us which modules students need most—prompting, verification, ethics, privacy.”</li>
           <li><strong>KY/OH focus:</strong> “These employers and skills help target regional partnerships and internships.”</li>
           <li><strong>Where the jobs are:</strong> “AI isn’t just computing—this distribution shows cross-college relevance.”</li>
+          <li><strong>Explorer:</strong> “Here are the actual postings—click to open and spot-check dates and language.”</li>
         </ul>
       </div>
     `
@@ -1644,11 +1982,11 @@ function showTrendNotes(){
       <div class="section">
         <strong>What you’re seeing</strong>
         <p>Monthly counts of AI-matched postings within the selected lens. It uses postings with usable publish dates.</p>
+        <p class="muted">If many postings have missing dates, trend will undercount compared with the KPI.</p>
       </div>
     `
   });
 }
-
 function showSkillNotes(){
   openDrawer({
     title: "Skill map notes",
@@ -1657,11 +1995,11 @@ function showSkillNotes(){
       <div class="section">
         <strong>Why a transparent skill map</strong>
         <p>For academic settings, transparency matters. The map is explicit and editable—use it to align with NKU outcomes and course design.</p>
+        <p class="muted">Counts are mentions, not endorsements, and one posting can include multiple skills.</p>
       </div>
     `
   });
 }
-
 function showKYOHNotes(){
   openDrawer({
     title: "KY/OH focus notes",
@@ -1670,12 +2008,11 @@ function showKYOHNotes(){
       <div class="section">
         <strong>What counts as KY/OH</strong>
         <p>We detect location tokens in the posting location/title (e.g., Ohio, KY, Cincinnati, Covington, Louisville, Lexington).</p>
-        <p class="muted">This is a directional heuristic meant for outreach prioritization—not a perfect state-level census.</p>
+        <p class="muted">Remote/US-wide postings may not contain these tokens; KY/OH charts can be much smaller than the AI sample.</p>
       </div>
     `
   });
 }
-
 function showJobCategoriesHelp(){
   openDrawer({
     title: "Job categories",
@@ -1684,6 +2021,24 @@ function showJobCategoriesHelp(){
       <div class="section">
         <strong>Executive taxonomy (stable)</strong>
         <p>We map each posting into a stable NKU-friendly taxonomy (AI/ML, Data, DevOps/Cloud, etc.).</p>
+      </div>
+    `
+  });
+}
+function showExplorerHelp(){
+  openDrawer({
+    title: "Explorer help",
+    subtitle: "How to use postings + dates",
+    html: `
+      <div class="section">
+        <strong>What you can do</strong>
+        <ul>
+          <li><strong>Click a posting title</strong> to open the original source in a new tab.</li>
+          <li><strong>Date column</strong> shows publish/created date if provided by that source.</li>
+          <li><strong>Scope</strong> lets you view current lens vs all AI vs KY/OH subset.</li>
+          <li><strong>Search</strong> filters across title/company/location/source/category/description.</li>
+        </ul>
+        <p class="muted">Some sources do not provide a reliable date or URL for every item; those display as “—” or non-clickable titles.</p>
       </div>
     `
   });
@@ -1697,7 +2052,7 @@ function showHint(which){
     },
     sampleSize: {
       title:"AI postings (sample)",
-      body:`<p>This is the number of deduped AI postings in the current lens.</p>`
+      body:`<p>This is the number of deduped AI postings in the current lens. Use the Explorer below to spot-check actual postings.</p>`
     },
     totalScanned: {
       title:"Total returned (raw, pre-filter)",
@@ -1735,6 +2090,7 @@ async function init(){
   $("#openKYOHNotes").addEventListener("click", showKYOHNotes);
   $("#openKYOHNotes2").addEventListener("click", showKYOHNotes);
   $("#openJobCats").addEventListener("click", showJobCategoriesHelp);
+  $("#openExplorerHelp").addEventListener("click", showExplorerHelp);
 
   $$(".hint").forEach(h=> h.addEventListener("click", ()=> showHint(h.dataset.hint)));
 
@@ -1751,11 +2107,73 @@ async function init(){
     });
   });
 
+  // Explorer bindings
+  const jobSearch = $("#jobSearch");
+  const jobScope = $("#jobScope");
+  const jobSort = $("#jobSort");
+  const jobPageSize = $("#jobPageSize");
+  const jobPrev = $("#jobPrev");
+  const jobNext = $("#jobNext");
+  const jobOpenFirst = $("#jobOpenFirst");
+
+  function rerenderExplorer(){
+    if(!_lastLens) return;
+    renderExplorer(_lastLens);
+  }
+
+  jobSearch.addEventListener("input", ()=>{
+    explorer.search = jobSearch.value || "";
+    explorer.page = 1;
+    rerenderExplorer();
+  });
+
+  jobScope.addEventListener("change", ()=>{
+    explorer.scope = jobScope.value;
+    explorer.page = 1;
+    rerenderExplorer();
+  });
+
+  jobSort.addEventListener("change", ()=>{
+    explorer.sort = jobSort.value;
+    explorer.page = 1;
+    rerenderExplorer();
+  });
+
+  jobPageSize.addEventListener("change", ()=>{
+    explorer.pageSize = parseInt(jobPageSize.value, 10) || 25;
+    explorer.page = 1;
+    rerenderExplorer();
+  });
+
+  jobPrev.addEventListener("click", ()=>{
+    explorer.page = Math.max(1, explorer.page - 1);
+    rerenderExplorer();
+  });
+
+  jobNext.addEventListener("click", ()=>{
+    explorer.page = explorer.page + 1;
+    rerenderExplorer();
+  });
+
+  jobOpenFirst.addEventListener("click", ()=>{
+    if(!_lastLens) return;
+    openFirstExplorerResult(_lastLens);
+  });
+
+  // Keyboard shortcut: "/" focuses search
+  document.addEventListener("keydown", (e)=>{
+    if(e.key === "/" && document.activeElement !== jobSearch){
+      e.preventDefault();
+      jobSearch.focus();
+    }
+  });
+
   const shimmer = (w,h)=>`<span class="skel" style="width:${w}px;height:${h}px;"></span>`;
   $("#kAiShare").innerHTML = shimmer(90,28);
   $("#kAiCount").innerHTML = shimmer(70,28);
   $("#kTotalScanned").innerHTML = shimmer(90,28);
   $("#kQuality").innerHTML = shimmer(70,22);
+  $("#jobsTbody").innerHTML = `<tr><td colspan="5" class="mini">Loading…</td></tr>`;
 
   try{
     blended = await fetchBlend();
@@ -1781,6 +2199,7 @@ async function init(){
         </div>
       `
     });
+    $("#jobsTbody").innerHTML = `<tr><td colspan="5" class="mini">Could not load postings.</td></tr>`;
   }
 }
 
