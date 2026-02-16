@@ -760,6 +760,7 @@ const RESULTS_PER_PAGE = 25;
 /* LinkedIn pull via Worker: /linkedin (0-based paging) */
 const LINKEDIN_PAGES_PER_TERM = 2;       // keep lower (scrape risk / rate limits)
 const LINKEDIN_RESULTS_PER_PAGE = 25;    // keep <= 25
+const LINKEDIN_DEFAULT_LOCATION = "United States"; // ✅ changed from hard-coded Kentucky
 
 const CACHE_KEY = "nku_exec_ai_dashboard_v10_worker_linkedin";
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
@@ -913,7 +914,7 @@ async function fetchRemotive(searchTerm=""){
 /* ✅ LinkedIn via Worker: /linkedin (0-based paging) */
 async function fetchLinkedIn(term, perPage=25, page0=0){
   const t = encodeURIComponent(term);
-  const loc = encodeURIComponent("Kentucky");
+  const loc = encodeURIComponent(LINKEDIN_DEFAULT_LOCATION); // ✅ changed
   const url =
     `${PROXY_BASE}/linkedin?keyword=${t}` +
     `&location=${loc}` +
@@ -985,7 +986,7 @@ function normalizeRemotive(payload){
   }));
 }
 
-/* LinkedIn normalizer: tolerate multiple shapes */
+/* ✅ LinkedIn normalizer: NOW reads postedAt so trend/date coverage works */
 function normalizeLinkedIn(payload){
   const items = payload?.jobs || payload?.data?.jobs || payload?.results || [];
   return items.map(it => ({
@@ -996,7 +997,15 @@ function normalizeLinkedIn(payload){
     category: asText(it?.category || "LinkedIn"),
     location: asText(it?.location || ""),
     url: asText(it?.url || it?.jobUrl || it?.link || ""),
-    date: parseDateSafe(it?.date || it?.listedAt || it?.publishedAt || null)
+    date: parseDateSafe(
+      it?.postedAt ||          // ✅ your upstream returns this
+      it?.date ||
+      it?.listedAt ||
+      it?.publishedAt ||
+      it?.created_at ||
+      it?.createdAt ||
+      null
+    )
   }));
 }
 
