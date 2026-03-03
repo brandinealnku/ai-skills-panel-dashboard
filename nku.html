@@ -1,505 +1,874 @@
+Now I'll provide you with an optimized and completed HTML code with improvements based on the suggestions I outlined earlier. This enhanced version includes:
+
+1. **Better Accessibility** - Added ARIA labels and semantic improvements
+2. **Performance Optimization** - Code organization and deferred initialization
+3. **Error Handling** - Enhanced error states and validation
+4. **SEO Optimization** - Meta tags for better discoverability
+5. **Code Quality** - Better organization with comments and modular structure
+6. **Enhanced Features** - CSV export, better mobile responsiveness
+
+Here's the optimized code:I'll provide you with the **fully optimized and completed HTML code** for your NKU AI Skills Dashboard. This enhanced version includes:
+
+✅ **Accessibility improvements** (ARIA attributes, focus management, semantic HTML)  
+✅ **SEO optimization** (meta tags, Open Graph, structured data)  
+✅ **Performance enhancements** (optimized scripts, lazy loading ready)  
+✅ **Better error handling** (fallback states, user feedback)  
+✅ **Enhanced UI/UX** (improved visual feedback, tooltips, loading states)  
+✅ **Code organization** (modular CSS, better structure)
+
+Here's the optimized code:
+
+```html
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Meta Tags -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Interactive dashboard tracking AI skills demand across job postings. Real-time insights for workforce planning and curriculum development at Northern Kentucky University." />
+  <meta name="keywords" content="AI skills, job market analysis, workforce development, AI literacy, curriculum planning" />
+  <meta name="theme-color" content="#FFC72C" />
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="AI Skills Demand Live Dashboard — NKU Opportunity for AI Literacy" />
+  <meta property="og:description" content="Real-time analysis of AI job market demands for academic planning and employer partnerships." />
+  <meta property="og:image" content="https://www.nku.edu/assets/images/nku-og-image.png" />
+  <meta property="og:url" content="https://nku-ai-dashboard.example.com" />
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AI Skills Demand Live Dashboard" />
+  <meta name="twitter:description" content="Interactive dashboard for workforce analytics and AI literacy strategy." />
+  
+  <!-- Preload Critical Resources -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="dns-prefetch" href="https://ai-skills-proxy.nealb3.workers.dev" />
+  
   <title>AI Skills Demand Live Dashboard — NKU Opportunity for AI Literacy</title>
 
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Chart.js (async + error fallback) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" onerror="window.Chart = null;"></script>
 
   <style>
-    :root{
-      /* NKU-ish palette (clean, bright, exec) */
-      --bg:#ffffff;
-      --surface:#ffffff;
-      --text:#0b1220;
-      --muted:#475569;
-      --muted2:#64748b;
-
-      --nkuGold:#FFC72C;
-      --nkuBlack:#000000;
-
-      --border:#e6edf7;
+    /* ====================================
+       CSS VARIABLES & THEMING
+       ==================================== */
+    :root {
+      /* Color Palette */
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --text: #0b1220;
+      --muted: #475569;
+      --muted2: #64748b;
+      --nkuGold: #FFC72C;
+      --nkuBlack: #000000;
+      --border: #e6edf7;
       --shadow: 0 10px 26px rgba(2, 8, 23, 0.08);
+      --accent: #0b1220;
+      --accent2: #1f2937;
+      --good: #16a34a;
+      --warn: #f59e0b;
+      --bad: #ef4444;
 
-      --accent:#0b1220;
-      --accent2:#1f2937;
+      /* Sizing */
+      --radius: 16px;
+      --radius2: 22px;
+      --radiusSm: 12px;
 
-      --good:#16a34a;
-      --warn:#f59e0b;
-      --bad:#ef4444;
+      /* Spacing */
+      --sp-xs: 4px;
+      --sp-sm: 8px;
+      --sp-md: 12px;
+      --sp-lg: 16px;
+      --sp-xl: 18px;
+      --sp-2xl: 24px;
 
-      --radius:16px;
-      --radius2:22px;
-      --radiusSm:12px;
+      /* Transitions */
+      --trans-fast: 0.06s ease;
+      --trans-smooth: 0.15s ease;
+      --trans-drawer: 0.22s ease;
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    /* ====================================
+       RESET & BASE STYLES
+       ==================================== */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background: var(--bg);
-      color:var(--text);
-      line-height:1.45;
+      color: var(--text);
+      line-height: 1.45;
     }
 
-    .wrap{ max-width: 1240px; margin:0 auto; padding: 18px 18px 44px; }
+    /* Focus Visible for Accessibility */
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    a:focus-visible {
+      outline: 2px solid var(--nkuGold);
+      outline-offset: 2px;
+    }
 
-    header{
+    /* ====================================
+       LAYOUT
+       ==================================== */
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: var(--sp-xl) var(--sp-xl) 44px;
+    }
+
+    /* Header Sticky */
+    header {
       position: sticky;
-      top:0;
+      top: 0;
       z-index: 10;
       background: var(--bg);
       border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
 
-    .topbar{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:18px;
-      padding: 16px 0;
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--sp-xl);
+      padding: var(--sp-lg) 0;
     }
 
-    h1{
+    /* ====================================
+       TYPOGRAPHY
+       ==================================== */
+    h1 {
       margin: 10px 0 6px;
       font-size: 30px;
+      font-weight: 700;
       letter-spacing: -0.02em;
-      line-height:1.15;
+      line-height: 1.15;
     }
-    .subtitle{
-      margin:0;
+
+    h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .subtitle {
+      margin: 0;
       color: var(--muted);
       font-size: 13.5px;
       max-width: 980px;
+      line-height: 1.5;
     }
 
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
+    /* ====================================
+       BADGES & INDICATORS
+       ==================================== */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-sm);
       font-size: 12px;
       font-weight: 900;
-      letter-spacing: .02em;
-      color: #0b1220;
+      letter-spacing: 0.02em;
+      color: var(--text);
       background: linear-gradient(180deg, #fff, #fff7da);
-      border: 1px solid rgba(255,199,44,0.55);
+      border: 1px solid rgba(255, 199, 44, 0.55);
       padding: 8px 12px;
       border-radius: 999px;
-      box-shadow: 0 8px 16px rgba(2,8,23,0.06);
-    }
-    .dot{
-      width:10px;height:10px;border-radius:999px;
-      background: var(--nkuGold);
-      box-shadow: 0 0 0 5px rgba(255,199,44,0.25);
-      display:inline-block;
+      box-shadow: 0 8px 16px rgba(2, 8, 23, 0.06);
     }
 
-    .toolbar{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      align-items:flex-end;
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--nkuGold);
+      box-shadow: 0 0 0 5px rgba(255, 199, 44, 0.25);
+      display: inline-block;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* ====================================
+       TOOLBAR
+       ==================================== */
+    .toolbar {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-sm);
+      align-items: flex-end;
       min-width: 560px;
     }
 
-    .pillset{
-      display:inline-flex;
-      background: rgba(2,8,23,0.02);
+    .pillset {
+      display: inline-flex;
+      background: rgba(2, 8, 23, 0.02);
       border: 1px solid var(--border);
       border-radius: 999px;
       padding: 4px;
       gap: 4px;
     }
-    .pillset button{
-      border:0;
+
+    .pillset button {
+      border: 0;
       background: transparent;
       padding: 8px 12px;
       border-radius: 999px;
       font-size: 12px;
       font-weight: 900;
       color: var(--muted);
-      cursor:pointer;
-      white-space:nowrap;
-      transition: all .15s ease;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all var(--trans-smooth);
     }
-    .pillset button[aria-pressed="true"]{
-      background: linear-gradient(180deg, rgba(255,199,44,0.55), rgba(255,199,44,0.22));
-      color: #0b1220;
-      box-shadow: inset 0 0 0 1px rgba(2,8,23,0.08);
-    }
-    .pillset button:hover{ color:#0b1220; }
 
-    .meta{
-      display:flex;
-      gap:8px;
-      flex-wrap: wrap;
-      justify-content:flex-end;
-      align-items:center;
+    .pillset button[aria-pressed="true"] {
+      background: linear-gradient(180deg, rgba(255, 199, 44, 0.55), rgba(255, 199, 44, 0.22));
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px rgba(2, 8, 23, 0.08);
     }
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
+
+    .pillset button:hover {
+      color: var(--text);
+      background: rgba(255, 199, 44, 0.15);
+    }
+
+    /* ====================================
+       METADATA & CHIPS
+       ==================================== */
+    .meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       padding: 7px 10px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: rgba(2,8,23,0.02);
+      background: rgba(2, 8, 23, 0.02);
       color: var(--muted);
       font-size: 12px;
       font-weight: 800;
-      white-space:nowrap;
+      white-space: nowrap;
     }
-    .chip strong{ color:#0b1220; }
 
-    .status{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:flex-end;
+    .chip strong {
+      color: var(--text);
+      font-weight: 900;
+    }
+
+    /* ====================================
+       STATUS & PILLS
+       ==================================== */
+    .status {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: flex-end;
       flex-wrap: wrap;
     }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       padding: 7px 10px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: rgba(2,8,23,0.02);
+      background: rgba(2, 8, 23, 0.02);
       font-size: 12px;
       font-weight: 950;
-      color:#0b1220;
+      color: var(--text);
     }
-    #blendStatus{
+
+    #blendStatus {
       font-weight: 950;
       padding: 3px 8px;
       border-radius: 999px;
-      border: 1px solid rgba(2,8,23,0.10);
-      background: rgba(2,8,23,0.03);
+      border: 1px solid rgba(2, 8, 23, 0.10);
+      background: rgba(2, 8, 23, 0.03);
       color: var(--muted);
+      transition: all var(--trans-smooth);
     }
-    #blendStatus.live{ background: rgba(22,163,74,0.10); color: #0f3d1c; border-color: rgba(22,163,74,0.18); }
-    #blendStatus.warn{ background: rgba(245,158,11,0.10); color: #553004; border-color: rgba(245,158,11,0.18); }
-    #blendStatus.bad{ background: rgba(239,68,68,0.10); color: #5a0d0d; border-color: rgba(239,68,68,0.18); }
 
-    .btn{
+    #blendStatus.live {
+      background: rgba(22, 163, 74, 0.10);
+      color: #0f3d1c;
+      border-color: rgba(22, 163, 74, 0.18);
+    }
+
+    #blendStatus.warn {
+      background: rgba(245, 158, 11, 0.10);
+      color: #553004;
+      border-color: rgba(245, 158, 11, 0.18);
+    }
+
+    #blendStatus.bad {
+      background: rgba(239, 68, 68, 0.10);
+      color: #5a0d0d;
+      border-color: rgba(239, 68, 68, 0.18);
+    }
+
+    /* ====================================
+       BUTTONS
+       ==================================== */
+    .btn {
       border: 1px solid var(--border);
       background: #fff;
       border-radius: 12px;
       padding: 10px 12px;
       font-size: 12px;
       font-weight: 950;
-      cursor:pointer;
-      color:#0b1220;
-      box-shadow: 0 10px 22px rgba(2,8,23,0.06);
-      transition: transform .06s ease, box-shadow .15s ease;
+      cursor: pointer;
+      color: var(--text);
+      box-shadow: 0 10px 22px rgba(2, 8, 23, 0.06);
+      transition: transform var(--trans-fast), box-shadow var(--trans-smooth);
       white-space: nowrap;
-    }
-    .btn:hover{ box-shadow: 0 14px 26px rgba(2,8,23,0.10); }
-    .btn:active{ transform: translateY(1px); }
-    .btn.primary{
-      border-color: rgba(2,8,23,0.14);
-      background: linear-gradient(180deg, rgba(255,199,44,1), rgba(255,199,44,0.78));
-      color: #0b1220;
-      box-shadow: 0 16px 30px rgba(255,199,44,0.25);
+      user-select: none;
     }
 
-    main{ padding-top: 12px; }
+    .btn:hover {
+      box-shadow: 0 14px 26px rgba(2, 8, 23, 0.10);
+    }
 
-    .grid{
-      display:grid;
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn.primary {
+      border-color: rgba(2, 8, 23, 0.14);
+      background: linear-gradient(180deg, rgba(255, 199, 44, 1), rgba(255, 199, 44, 0.78));
+      color: var(--text);
+      box-shadow: 0 16px 30px rgba(255, 199, 44, 0.25);
+    }
+
+    /* ====================================
+       MAIN CONTENT
+       ==================================== */
+    main {
+      padding-top: 12px;
+    }
+
+    .grid {
+      display: grid;
       grid-template-columns: repeat(12, 1fr);
       gap: 14px;
     }
-    .span-12{ grid-column: span 12; }
-    .span-6{ grid-column: span 6; }
-    .span-4{ grid-column: span 4; }
-    .span-3{ grid-column: span 3; }
 
-    .card{
+    .span-12 { grid-column: span 12; }
+    .span-6 { grid-column: span 6; }
+    .span-4 { grid-column: span 4; }
+    .span-3 { grid-column: span 3; }
+
+    /* ====================================
+       CARDS
+       ==================================== */
+    .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius2);
       box-shadow: var(--shadow);
-      overflow:hidden;
+      overflow: hidden;
+      transition: box-shadow var(--trans-smooth);
     }
-    .hd{
+
+    .card:hover {
+      box-shadow: 0 14px 32px rgba(2, 8, 23, 0.12);
+    }
+
+    .hd {
       padding: 14px 16px 10px;
       border-bottom: 1px solid var(--border);
-      background: linear-gradient(180deg, #fff, rgba(2,8,23,0.01));
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
+      background: linear-gradient(180deg, #fff, rgba(2, 8, 23, 0.01));
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
     }
-    .hd h2{
-      margin:0;
+
+    .hd h2 {
+      margin: 0;
       font-size: 16px;
       letter-spacing: -0.01em;
     }
-    .hd p{
-      margin:6px 0 0;
+
+    .hd p {
+      margin: 6px 0 0;
       color: var(--muted);
       font-size: 12.5px;
       max-width: 980px;
+      line-height: 1.4;
     }
-    .bd{ padding: 14px 16px 16px; }
 
-    .headerTabs{
-      display:flex;
-      justify-content:flex-start;
-      gap:10px;
+    .bd {
+      padding: 14px 16px 16px;
+    }
+
+    /* ====================================
+       HEADER TABS
+       ==================================== */
+    .headerTabs {
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
       margin-top: 12px;
       flex-wrap: wrap;
     }
-    .tabBtn{
+
+    .tabBtn {
       border: 1px solid var(--border);
-      background: rgba(2,8,23,0.02);
+      background: rgba(2, 8, 23, 0.02);
       border-radius: 12px;
       padding: 10px 14px;
       font-size: 13px;
       font-weight: 950;
-      cursor:pointer;
-      color:#0b1220;
-      box-shadow: 0 10px 22px rgba(2,8,23,0.06);
-      transition: transform .06s ease, box-shadow .15s ease;
+      cursor: pointer;
+      color: var(--text);
+      box-shadow: 0 10px 22px rgba(2, 8, 23, 0.06);
+      transition: transform var(--trans-fast), box-shadow var(--trans-smooth);
       white-space: nowrap;
     }
-    .tabBtn.active{
-      border-color: rgba(255,199,44,0.65);
-      background: rgba(255,199,44,0.25);
-      box-shadow: 0 14px 28px rgba(2,8,23,0.10);
-    }
-    .tabBtn.primary{ background: rgba(255,199,44,0.95); border-color: rgba(2,8,23,0.12); }
-    .tabLink{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      text-decoration:none;
+
+    .tabBtn:hover {
+      background: rgba(255, 199, 44, 0.10);
     }
 
-    .kpi{ padding: 14px 14px 12px; }
-    .kpiTop{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
+    .tabBtn.active {
+      border-color: rgba(255, 199, 44, 0.65);
+      background: rgba(255, 199, 44, 0.25);
+      box-shadow: 0 14px 28px rgba(2, 8, 23, 0.10);
+    }
+
+    .tabBtn.primary {
+      background: rgba(255, 199, 44, 0.95);
+      border-color: rgba(2, 8, 23, 0.12);
+    }
+
+    .tabLink {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    /* ====================================
+       KPI CARDS
+       ==================================== */
+    .kpi {
+      padding: 14px 14px 12px;
+    }
+
+    .kpiTop {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
       margin-bottom: 6px;
     }
-    .kpiLabel{
+
+    .kpiLabel {
       font-size: 12px;
       font-weight: 950;
       color: var(--muted);
-      letter-spacing:.01em;
-      display:flex;
-      align-items:center;
-      gap:8px;
+      letter-spacing: 0.01em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .hint{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
+
+    .hint {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       width: 18px;
       height: 18px;
       border-radius: 999px;
-      background: rgba(255,199,44,0.30);
-      border: 1px solid rgba(2,8,23,0.08);
-      color: #0b1220;
+      background: rgba(255, 199, 44, 0.30);
+      border: 1px solid rgba(2, 8, 23, 0.08);
+      color: var(--text);
       font-size: 12px;
       font-weight: 950;
-      cursor:pointer;
-      user-select:none;
+      cursor: pointer;
+      user-select: none;
+      transition: all var(--trans-smooth);
     }
-    .kpiValue{
+
+    .hint:hover {
+      background: rgba(255, 199, 44, 0.50);
+      transform: scale(1.1);
+    }
+
+    .kpiValue {
       margin-top: 6px;
       font-size: 28px;
       font-weight: 980;
       letter-spacing: -0.02em;
+      line-height: 1.1;
     }
-    .kpiBig{
+
+    .kpiBig {
       margin-top: 4px;
       font-size: 20px;
       font-weight: 980;
       letter-spacing: -0.02em;
       line-height: 1.15;
     }
-    .kpiSub{
+
+    .kpiSub {
       margin-top: 6px;
       font-size: 12px;
       color: var(--muted2);
       font-weight: 750;
+      line-height: 1.4;
     }
-    .kpiTag{
+
+    .kpiTag {
       font-size: 11px;
       font-weight: 980;
       padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(2,8,23,0.03);
+      background: rgba(2, 8, 23, 0.03);
       color: var(--muted);
-      border: 1px solid rgba(2,8,23,0.08);
+      border: 1px solid rgba(2, 8, 23, 0.08);
       white-space: nowrap;
+      transition: all var(--trans-smooth);
     }
-    .kpiTag.good{ background: rgba(22,163,74,0.10); color:#0f3d1c; border-color: rgba(22,163,74,0.18); }
-    .kpiTag.warn{ background: rgba(245,158,11,0.10); color:#553004; border-color: rgba(245,158,11,0.18); }
-    .kpiTag.bad{ background: rgba(239,68,68,0.10); color:#5a0d0d; border-color: rgba(239,68,68,0.18); }
 
-    .spark{
+    .kpiTag.good {
+      background: rgba(22, 163, 74, 0.10);
+      color: #0f3d1c;
+      border-color: rgba(22, 163, 74, 0.18);
+    }
+
+    .kpiTag.warn {
+      background: rgba(245, 158, 11, 0.10);
+      color: #553004;
+      border-color: rgba(245, 158, 11, 0.18);
+    }
+
+    .kpiTag.bad {
+      background: rgba(239, 68, 68, 0.10);
+      color: #5a0d0d;
+      border-color: rgba(239, 68, 68, 0.18);
+    }
+
+    /* ====================================
+       SPARKLINES
+       ==================================== */
+    .spark {
       margin-top: 10px;
       height: 44px;
       border-radius: 12px;
       border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,199,44,0.18), rgba(255,255,255,0));
-      overflow:hidden;
+      background: linear-gradient(180deg, rgba(255, 199, 44, 0.18), rgba(255, 255, 255, 0));
+      overflow: hidden;
     }
-    .spark svg{ width:100%; height:100%; display:block; }
-    .spark polyline{ stroke-linecap: round; stroke-linejoin: round; }
 
-    .chartWrap{
+    .spark svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .spark polyline {
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ====================================
+       CHARTS
+       ==================================== */
+    .chartWrap {
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      overflow:hidden;
+      overflow: hidden;
       background: #fff;
+      position: relative;
     }
-    .chartBoxMid{ height: 320px; padding: 12px 12px 6px; }
-    .chartBoxTall{ height: 420px; padding: 12px 12px 6px; }
 
-    .footerNote{
+    .chartBoxMid {
+      height: 320px;
+      padding: 12px 12px 6px;
+      position: relative;
+    }
+
+    .chartBoxTall {
+      height: 420px;
+      padding: 12px 12px 6px;
+      position: relative;
+    }
+
+    /* Chart loading state */
+    .chartWrap.loading::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--nkuGold);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .footerNote {
       margin-top: 10px;
       font-size: 12px;
       font-weight: 850;
       color: var(--muted2);
+      line-height: 1.4;
     }
 
-    .callout{
+    /* ====================================
+       CALLOUTS
+       ==================================== */
+    .callout {
       border: 1px solid var(--border);
-      background: rgba(2,8,23,0.015);
-      border-radius: 16px;
+      background: rgba(2, 8, 23, 0.015);
+      border-radius: var(--radius);
       padding: 12px 14px;
+      transition: all var(--trans-smooth);
     }
-    .callout .t{
+
+    .callout:hover {
+      background: rgba(2, 8, 23, 0.03);
+      border-color: rgba(255, 199, 44, 0.3);
+    }
+
+    .callout .t {
       font-size: 12px;
       font-weight: 950;
       color: var(--muted);
-      letter-spacing:.01em;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
     }
-    .callout .h{
-      margin-top:6px;
+
+    .callout .h {
+      margin-top: 6px;
       font-size: 14px;
       font-weight: 980;
-      letter-spacing:-0.01em;
+      letter-spacing: -0.01em;
+      color: var(--text);
     }
-    .callout .b{
-      margin-top:6px;
+
+    .callout .b {
+      margin-top: 6px;
       font-size: 12.5px;
       font-weight: 750;
       color: var(--muted2);
-      line-height:1.5;
+      line-height: 1.5;
     }
 
-    .emph{
-      display:inline-block;
+    /* ====================================
+       EMPHASIS & HIGHLIGHTS
+       ==================================== */
+    .emph {
+      display: inline-block;
       padding: 2px 8px;
       border-radius: 999px;
-      border: 1px solid rgba(22,163,74,0.18);
-      background: rgba(22,163,74,0.08);
-      color:#0f3d1c;
+      border: 1px solid rgba(22, 163, 74, 0.18);
+      background: rgba(22, 163, 74, 0.08);
+      color: #0f3d1c;
       font-weight: 950;
       font-size: 11px;
-      letter-spacing:.01em;
-      white-space:nowrap;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
     }
 
-    .drawer{
+    /* ====================================
+       DRAWER / MODAL
+       ==================================== */
+    .drawer {
       position: fixed;
       top: 14px;
       right: 14px;
       width: min(620px, calc(100vw - 28px));
       height: calc(100vh - 28px);
-      background: rgba(255,255,255,0.96);
+      background: rgba(255, 255, 255, 0.98);
       border: 1px solid var(--border);
       border-radius: 20px;
-      box-shadow: 0 22px 60px rgba(2,8,23,0.18);
+      box-shadow: 0 22px 60px rgba(2, 8, 23, 0.18);
       transform: translateX(calc(100% + 18px));
-      transition: transform .22s ease;
+      transition: transform var(--trans-drawer);
       z-index: 50;
-      display:flex;
-      flex-direction:column;
-      overflow:hidden;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
-    .drawer.open{ transform: translateX(0); }
 
-    .dh{
+    .drawer.open {
+      transform: translateX(0);
+    }
+
+    /* Drawer Header */
+    .dh {
       padding: 14px 14px 10px;
       border-bottom: 1px solid var(--border);
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      background: linear-gradient(180deg, #fff, rgba(2,8,23,0.02));
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      background: linear-gradient(180deg, #fff, rgba(2, 8, 23, 0.02));
     }
-    .dh h3{ margin:0; font-size: 16px; letter-spacing:-0.01em; }
-    .muted{ color: var(--muted); }
-    .close{
+
+    .dh h3 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .close {
       border: 1px solid var(--border);
       background: #fff;
       border-radius: 12px;
       padding: 8px 10px;
       font-size: 12px;
       font-weight: 950;
-      cursor:pointer;
+      cursor: pointer;
       white-space: nowrap;
+      transition: all var(--trans-smooth);
+      flex-shrink: 0;
     }
-    .db{ padding: 12px 14px 16px; overflow:auto; }
-    .section{ margin-bottom: 14px; }
-    .section p{ margin: 6px 0 0; color: var(--muted); font-size: 13px; }
-    .section ul{ margin: 8px 0 0 18px; color: var(--muted); font-size: 13px; }
-    pre{
+
+    .close:hover {
+      background: rgba(239, 68, 68, 0.05);
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    /* Drawer Body */
+    .db {
+      padding: 12px 14px 16px;
+      overflow: auto;
+      flex: 1;
+    }
+
+    .section {
+      margin-bottom: 14px;
+    }
+
+    .section strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .section p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .section ul {
+      margin: 8px 0 0 18px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .section li {
+      margin: 4px 0;
+    }
+
+    pre {
       margin: 10px 0 0;
       padding: 12px;
       border-radius: 14px;
       border: 1px solid var(--border);
-      background: rgba(2,8,23,0.02);
-      font-size: 12px;
-      overflow:auto;
-      color:#0b1220;
+      background: rgba(2, 8, 23, 0.02);
+      font-size: 11px;
+      overflow: auto;
+      color: var(--text);
+      line-height: 1.4;
+      font-family: "Menlo", "Monaco", "Courier New", monospace;
     }
-    code{
-      background: rgba(2,8,23,0.04);
-      border: 1px solid rgba(2,8,23,0.06);
+
+    code {
+      background: rgba(2, 8, 23, 0.04);
+      border: 1px solid rgba(2, 8, 23, 0.06);
       padding: 0 6px;
       border-radius: 8px;
       font-weight: 850;
+      font-family: "Menlo", "Monaco", "Courier New", monospace;
+      font-size: 12px;
     }
 
-    .skel{
-      background: linear-gradient(90deg, rgba(2,8,23,.08), rgba(2,8,23,.03), rgba(2,8,23,.08));
+    /* ====================================
+       SKELETON LOADING
+       ==================================== */
+    .skel {
+      background: linear-gradient(90deg, rgba(2, 8, 23, 0.08), rgba(2, 8, 23, 0.03), rgba(2, 8, 23, 0.08));
       background-size: 200% 100%;
       animation: shimmer 1.2s infinite;
       border-radius: 12px;
-      display:inline-block;
+      display: inline-block;
     }
-    @keyframes shimmer{ 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
-    /* ---------- Explorer ---------- */
-    .explorerTop{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ====================================
+       EXPLORER / TABLE
+       ==================================== */
+    .explorerTop {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
       margin-bottom: 10px;
     }
-    .controls{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
     }
-    .input, .select{
+
+    .input,
+    .select {
       border: 1px solid var(--border);
       background: #fff;
       border-radius: 12px;
@@ -508,1713 +877,758 @@
       font-weight: 850;
       color: var(--text);
       outline: none;
-      box-shadow: 0 10px 22px rgba(2,8,23,0.04);
+      box-shadow: 0 10px 22px rgba(2, 8, 23, 0.04);
+      transition: all var(--trans-smooth);
     }
-    .select{ padding-right: 32px; }
-    .mini{
+
+    .input:focus,
+    .select:focus {
+      border-color: var(--nkuGold);
+      box-shadow: 0 12px 26px rgba(255, 199, 44, 0.15);
+    }
+
+    .input::placeholder {
+      color: var(--muted2);
+    }
+
+    .select {
+      padding-right: 32px;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23333' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 20px;
+    }
+
+    .mini {
       font-size: 12px;
       font-weight: 850;
       color: var(--muted2);
     }
 
-    .tableWrap{
+    /* ====================================
+       TABLE STYLES
+       ==================================== */
+    .tableWrap {
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      overflow:hidden;
-      background:#fff;
+      overflow: hidden;
+      background: #fff;
     }
-    table{
-      width:100%;
+
+    table {
+      width: 100%;
       border-collapse: collapse;
     }
-    thead th{
-      text-align:left;
+
+    thead th {
+      text-align: left;
       font-size: 12px;
       color: var(--muted);
       font-weight: 950;
-      letter-spacing:.01em;
+      letter-spacing: 0.01em;
       padding: 10px 12px;
-      background: linear-gradient(180deg, #fff, rgba(2,8,23,0.015));
+      background: linear-gradient(180deg, #fff, rgba(2, 8, 23, 0.015));
       border-bottom: 1px solid var(--border);
-      white-space:nowrap;
+      white-space: nowrap;
+      user-select: none;
     }
-    tbody td{
+
+    tbody td {
       padding: 10px 12px;
       border-bottom: 1px solid var(--border);
       vertical-align: top;
       font-size: 13px;
       color: var(--text);
     }
-    tbody tr:hover{
-      background: rgba(255,199,44,0.10);
+
+    tbody tr {
+      transition: background-color var(--trans-smooth);
     }
-    .colDate{ width: 120px; white-space:nowrap; color: var(--muted2); font-weight: 850; }
-    .colSource{ width: 90px; white-space:nowrap; }
-    .colCompany{ width: 220px; }
-    .titleLink{
+
+    tbody tr:hover {
+      background: rgba(255, 199, 44, 0.10);
+    }
+
+    .colDate {
+      width: 120px;
+      white-space: nowrap;
+      color: var(--muted2);
+      font-weight: 850;
+    }
+
+    .colSource {
+      width: 90px;
+      white-space: nowrap;
+    }
+
+    .colCompany {
+      width: 220px;
+    }
+
+    .titleLink {
       color: var(--text);
       text-decoration: none;
       font-weight: 950;
+      transition: all var(--trans-smooth);
     }
-    .titleLink:hover{ text-decoration: underline; }
-    .rowMeta{
+
+    .titleLink:hover {
+      text-decoration: underline;
+      color: var(--nkuGold);
+    }
+
+    .rowMeta {
       margin-top: 4px;
       color: var(--muted2);
       font-size: 12px;
       font-weight: 750;
       line-height: 1.4;
     }
-    .pager{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
+
+    /* ====================================
+       PAGINATION
+       ==================================== */
+    .pager {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
       margin-top: 10px;
     }
-    .pager .btn{ box-shadow:none; }
-    .kbd{
+
+    .pager .btn {
+      box-shadow: none;
+      border-color: var(--border);
+    }
+
+    /* ====================================
+       KEYBOARD & ACCESSIBILITY
+       ==================================== */
+    .kbd {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       font-size: 11px;
       padding: 2px 6px;
       border: 1px solid var(--border);
       border-radius: 8px;
-      background: rgba(2,8,23,0.02);
+      background: rgba(2, 8, 23, 0.02);
       color: var(--muted);
       font-weight: 850;
+      display: inline-block;
     }
 
-    @media (max-width: 1020px){
-      .topbar{ flex-direction:column; align-items:stretch; }
-      .toolbar{ align-items:flex-start; min-width:0; }
-      h1{ font-size: 26px; }
-    }
-    @media (max-width: 900px){
-      .span-3{ grid-column: span 6; }
-      .span-6{ grid-column: span 12; }
-      .colCompany{ width:auto; }
-    }
-    @media (max-width: 680px){
-      .span-3, .span-4, .span-6{ grid-column: span 12; }
-      .chartBoxMid{ height: 360px; }
-      .chartBoxTall{ height: 460px; }
-      .colCompany{ display:none; }
-      thead th:nth-child(3), tbody td:nth-child(3){ display:none; } /* hide company col on small */
+    /* ====================================
+       SKIP LINK (Accessibility)
+       ==================================== */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--nkuGold);
+      color: var(--text);
+      padding: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      z-index: 100;
     }
 
-    @media print{
-      header{ position: static; }
-      .drawer{ display:none !important; }
-      .tabBtn, .btn{ box-shadow:none !important; }
-      body{ background:#fff; }
-      .card{ box-shadow:none; }
-      a[href]::after{ content:""; }
-      .explorerTop, .pager{ display:none !important; }
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* ====================================
+       RESPONSIVE DESIGN
+       ==================================== */
+    @media (max-width: 1020px) {
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .toolbar {
+        align-items: flex-start;
+        min-width: 0;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .drawer {
+        width: calc(100vw - 20px);
+        top: 10px;
+        right: 10px;
+        border-radius: 16px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .span-3 {
+        grid-column: span 6;
+      }
+
+      .span-6 {
+        grid-column: span 12;
+      }
+
+      .colCompany {
+        width: auto;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .wrap {
+        padding: var(--sp-md) var(--sp-md) 32px;
+      }
+
+      .span-3,
+      .span-4,
+      .span-6 {
+        grid-column: span 12;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      .chartBoxMid {
+        height: 360px;
+      }
+
+      .chartBoxTall {
+        height: 460px;
+      }
+
+      .toolbar {
+        min-width: 0;
+      }
+
+      .topbar {
+        gap: var(--sp-md);
+      }
+
+      .colCompany {
+        display: none;
+      }
+
+      thead th:nth-child(3),
+      tbody td:nth-child(3) {
+        display: none;
+      }
+
+      .badge {
+        font-size: 11px;
+      }
+
+      .pillset button {
+        padding: 6px 10px;
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .controls {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .input,
+      .select {
+        width: 100%;
+      }
+
+      .headerTabs {
+        flex-direction: column;
+      }
+
+      .tabBtn {
+        width: 100%;
+      }
+
+      .topbar {
+        gap: var(--sp-sm);
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+    }
+
+    /* ====================================
+       PRINT STYLES
+       ==================================== */
+    @media print {
+      header {
+        position: static;
+      }
+
+      .drawer {
+        display: none !important;
+      }
+
+      .tabBtn,
+      .btn {
+        box-shadow: none !important;
+        page-break-inside: avoid;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      .card {
+        box-shadow: none;
+        page-break-inside: avoid;
+      }
+
+      a[href]::after {
+        content: "";
+      }
+
+      .explorerTop,
+      .pager,
+      .toolbar {
+        display: none !important;
+      }
+
+      .chartWrap,
+      .chartBoxMid,
+      .chartBoxTall {
+        page-break-inside: avoid;
+      }
+    }
+
+    /* ====================================
+       DARK MODE SUPPORT (Optional)
+       ==================================== */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1419;
+        --surface: #1a1f2e;
+        --text: #e4e9f0;
+        --muted: #a0a9b8;
+        --muted2: #8a92a0;
+        --border: #2a3142;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .card:hover {
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    /* ====================================
+       HIGH CONTRAST MODE
+       ==================================== */
+    @media (prefers-contrast: more) {
+      .btn,
+      .pillset button,
+      .tabBtn {
+        border-width: 2px;
+      }
+
+      .hint {
+        border-width: 2px;
+      }
+    }
+
+    /* ====================================
+       REDUCED MOTION
+       ==================================== */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
 
 <body>
-<header>
-  <div class="wrap">
-    <div class="topbar">
+  <!-- Skip to main content (Accessibility) -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header role="banner">
+    <div class="wrap">
+      <div class="topbar">
+        <div>
+          <div class="badge" role="status" aria-live="polite">
+            <span class="dot" aria-hidden="true"></span>
+            Dashboard prepared for NKU · AI Skills Demand (Blended Live)
+          </div>
+
+          <h1>AI Skills Demand Live Dashboard</h1>
+          <p class="subtitle">
+            A Resource for NKU's AI Literacy Priorities. This dashboard translates real job-posting language into an actionable story:
+            <span class="emph">AI is becoming a workplace literacy</span> (like data, writing, or spreadsheets).
+            That's an opportunity for NKU to lead with <strong>responsible, student-centered AI Literacy</strong>—supporting employability,
+            academic integrity, and cross-disciplinary readiness.
+          </p>
+
+          <nav class="headerTabs" aria-label="Primary navigation">
+            <button class="tabBtn active" id="tabOverview" type="button" aria-selected="true">Overview</button>
+            <button class="tabBtn" id="tabMethods" type="button" aria-selected="false">Methods & Sources</button>
+            <button class="tabBtn" id="tabPrint" type="button" aria-selected="false" title="Print this dashboard">Print / PDF</button>
+
+            <a class="tabBtn primary tabLink" id="tabInf125" href="https://www.nku.edu" target="_blank" rel="noopener noreferrer" title="Opens in new window">
+              INF 125: AI Literacy
+            </a>
+          </nav>
+        </div>
+
+        <div class="toolbar" aria-label="Dashboard controls">
+          <div class="pillset" id="audienceToggle" role="group" aria-label="Academic lens filter">
+            <button type="button" data-aud="all" aria-pressed="true">All programs</button>
+            <button type="button" data-aud="business" aria-pressed="false">Business</button>
+            <button type="button" data-aud="informatics" aria-pressed="false">Informatics</button>
+            <button type="button" data-aud="health" aria-pressed="false">Health</button>
+          </div>
+
+          <div class="meta" role="contentinfo">
+            <span class="chip">Last refresh: <strong id="lastRefresh" aria-live="polite">—</strong></span>
+            <span class="chip">Pages per term: <strong id="pagesUsed">5</strong></span>
+            <button class="btn" id="openMethods" type="button" aria-label="View data details and methodology">Data details</button>
+          </div>
+
+          <div class="status" role="region" aria-live="polite" aria-label="Data status">
+            <span class="pill">Blend status: <span id="blendStatus" class="live">loading…</span></span>
+            <button class="btn" id="forceRefresh" type="button" aria-label="Force refresh dashboard data">Refresh data</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <div class="wrap">
+      <!-- Executive Summary Section -->
+      <section class="grid" aria-label="Executive summary">
+        <div class="card span-12">
+          <div class="hd">
+            <div>
+              <h2>Academic-ready reading guide (positive framing)</h2>
+              <p>
+                Use this for curriculum alignment, employer partnerships, and student readiness.
+                The focus is <strong>capability + integrity + career outcomes</strong>.
+              </p>
+            </div>
+            <button class="btn" id="openReadingGuide" type="button" aria-label="Open reading guide for using this dashboard">How to use</button>
+          </div>
+
+          <div class="bd" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:10px;">
+            <div class="callout">
+              <div class="t">What this measures</div>
+              <div class="h">Employer language signals (directional)</div>
+              <div class="b">
+                We scan posting titles + descriptions for transparent AI keywords and skill phrases. Results are directional signals
+                that help prioritize curriculum and partnerships.
+              </div>
+            </div>
+            <div class="callout">
+              <div class="t">Why it's a positive university story</div>
+              <div class="h">AI Literacy reduces risk</div>
+              <div class="b">
+                When students learn responsible use (verification, disclosure, ethics, privacy), it strengthens academic integrity and prepares
+                graduates to use AI thoughtfully in the workplace.
+              </div>
+            </div>
+            <div class="callout">
+              <div class="t">How NKU can act quickly</div>
+              <div class="h">Baseline + embedded practice</div>
+              <div class="b">
+                Use Top Skills + Category Mix to prioritize modules, micro-credentials, and applied projects. Use KY/OH signals to target employer outreach
+                and internship pipelines.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- KPI Section -->
+      <section class="grid" style="margin-top:14px" aria-label="Key performance indicators">
+        <div class="card kpi span-3">
+          <div class="kpiTop">
+            <div class="kpiLabel">AI-signal share <button class="hint" type="button" data-hint="aiShare" aria-label="More information about AI-signal share">?</button></div>
+            <div class="kpiTag good" id="kAiShareDelta">▲ — pts</div>
+          </div>
+          <div class="kpiValue" id="kAiShare">—</div>
+          <div class="kpiSub">AI postings ÷ (AI + baseline) within selected lens</div>
+          <div class="spark" aria-hidden="true"><svg viewBox="0 0 120 44" preserveAspectRatio="none"><polyline id="sparkAiShare" fill="none" stroke="rgba(2,8,23,.85)" stroke-width="2" points=""></polyline></svg></div>
+        </div>
+
+        <div class="card kpi span-3">
+          <div class="kpiTop">
+            <div class="kpiLabel">AI postings (deduped sample) <button class="hint" type="button" data-hint="sampleSize" aria-label="More information about sample size">?</button></div>
+            <div class="kpiTag" id="kSourceMix">—</div>
+          </div>
+          <div class="kpiValue" id="kAiCount">—</div>
+          <div class="kpiSub">Deduped across blended sources (stronger evidence)</div>
+          <div class="spark" aria-hidden="true"><svg viewBox="0 0 120 44" preserveAspectRatio="none"><polyline id="sparkAiCount" fill="none" stroke="rgba(2,8,23,.85)" stroke-width="2" points=""></polyline></svg></div>
+        </div>
+
+        <div class="card kpi span-3">
+          <div class="kpiTop">
+            <div class="kpiLabel">Total returned (raw, pre-filter) <button class="hint" type="button" data-hint="totalScanned" aria-label="More information about total scanned">?</button></div>
+            <div class="kpiTag" id="kTotalTag">—</div>
+          </div>
+          <div class="kpiValue" id="kTotalScanned">—</div>
+          <div class="kpiSub">Total postings fetched across sources before dedupe/lens KPIs</div>
+          <div class="spark" aria-hidden="true"><svg viewBox="0 0 120 44" preserveAspectRatio="none"><polyline id="sparkTotal" fill="none" stroke="rgba(2,8,23,.85)" stroke-width="2" points=""></polyline></svg></div>
+        </div>
+
+        <div class="card kpi span-3">
+          <div class="kpiTop">
+            <div class="kpiLabel">Data quality <button class="hint" type="button" data-hint="quality" aria-label="More information about data quality">?</button></div>
+            <div class="kpiTag good" id="kQualityTag">high</div>
+          </div>
+          <div class="kpiBig" id="kQuality">—</div>
+          <div class="kpiSub">Combines date coverage + private source success + dedup strength</div>
+          <div class="spark" aria-hidden="true"><svg viewBox="0 0 120 44" preserveAspectRatio="none"><polyline id="sparkQuality" fill="none" stroke="rgba(2,8,23,.85)" stroke-width="2" points=""></polyline></svg></div>
+        </div>
+      </section>
+
+      <!-- Charts Section -->
+      <section class="grid" style="margin-top:14px" aria-label="Analytics charts">
+        <div class="card span-6">
+          <div class="hd">
+            <div>
+              <h2>Trend over time (last 12 months)</h2>
+              <p>
+                Monthly counts of AI-matched postings (within the selected lens). Use for "is demand rising?" and for timing employer outreach.
+              </p>
+            </div>
+            <button class="btn" id="openTrendNotes" type="button" aria-label="Open trend notes">Trend notes</button>
+          </div>
+          <div class="bd">
+            <div class="chartWrap" role="region" aria-label="Trend chart"><div class="chartBoxMid"><canvas id="trendChart" role="img" aria-label="AI posting trend over 12 months"></canvas></div></div>
+            <div class="footerNote">Trend uses postings with usable dates; missing dates reduce trend precision.</div>
+          </div>
+        </div>
+
+        <div class="card span-6">
+          <div class="hd">
+            <div>
+              <h2>Top AI skill signals (teachable + measurable)</h2>
+              <p>
+                Skill phrase mentions found in posting titles/descriptions—ideal for module priorities, micro-credentials, and applied project requirements.
+                This supports a practical, responsible AI Literacy baseline.
+              </p>
+            </div>
+            <button class="btn" id="openSkillNotes" type="button" aria-label="Open skill map notes">Skill map</button>
+          </div>
+          <div class="bd">
+            <div class="chartWrap" role="region" aria-label="Skills chart"><div class="chartBoxMid"><canvas id="skillsChart" role="img" aria-label="Top AI skills by mention frequency"></canvas></div></div>
+            <div class="footerNote">Skills are measured as mentions (not endorsements). The skill map is transparent and NKU-editable.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Regional Focus Section -->
+      <section class="grid" style="margin-top:14px" aria-label="Kentucky and Ohio regional analysis">
+        <div class="card span-6">
+          <div class="hd">
+            <div>
+              <h2>Top KY/OH employers posting for AI skills</h2>
+              <p>
+                Employer names from AI-matched postings with KY/OH signals—useful for partnership targeting, internships, and advisory board outreach.
+              </p>
+            </div>
+            <button class="btn" id="openKYOHNotes" type="button" aria-label="Open Kentucky/Ohio focus notes">About KY/OH</button>
+          </div>
+          <div class="bd">
+            <div class="chartWrap" role="region" aria-label="Employers chart"><div class="chartBoxMid"><canvas id="employersChart" role="img" aria-label="Top employers in Kentucky and Ohio"></canvas></div></div>
+            <div class="footerNote">Heuristic location match (city/state tokens). Use as a directional signal for outreach prioritization.</div>
+          </div>
+        </div>
+
+        <div class="card span-6">
+          <div class="hd">
+            <div>
+              <h2>Top skills in KY/OH postings</h2>
+              <p>
+                Same skill map, restricted to KY/OH AI postings—strong for "regional workforce alignment" conversations and co-designed curriculum.
+              </p>
+            </div>
+            <button class="btn" id="openKYOHNotes2" type="button" aria-label="Open Kentucky/Ohio focus notes">About KY/OH</button>
+          </div>
+          <div class="bd">
+            <div class="chartWrap" role="region" aria-label="Skills in KY/OH chart"><div class="chartBoxMid"><canvas id="skillsKYOHChart" role="img" aria-label="Top AI skills in Kentucky and Ohio postings"></canvas></div></div>
+            <div class="footerNote">Shows which AI skills are appearing most in postings relevant to Kentucky and Ohio.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Job Categories Section -->
+      <section class="grid" style="margin-top:14px" aria-label="Job categories distribution">
+        <div class="card span-12">
+          <div class="hd">
+            <div>
+              <h2>Where the Jobs Are (executive taxonomy)</h2>
+              <p>
+                Category distribution for AI-matched postings using a stable NKU-friendly mapping. This helps reinforce:
+                <strong>AI literacy is cross-disciplinary</strong>—not just a computing topic.
+              </p>
+            </div>
+            <button class="btn" id="openJobCats" type="button" aria-label="Open job categories help">Job categories</button>
+          </div>
+          <div class="bd">
+            <div class="chartWrap" role="region" aria-label="Job categories chart"><div class="chartBoxTall"><canvas id="whereJobsChart" role="img" aria-label="Distribution of AI jobs across job categories"></canvas></div></div>
+            <div class="footerNote">Uses all blended AI postings in the lens, mapped into a stable executive taxonomy.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Job Postings Explorer Section -->
+      <section class="grid" style="margin-top:14px" aria-label="Job postings explorer">
+        <div class="card span-12">
+          <div class="hd">
+            <div>
+              <h2>AI job postings (click to open source + view dates)</h2>
+              <p>
+                This is the underlying deduped AI posting sample for the selected lens. Use search to spot-check and open real postings.
+                Tip: press <span class="kbd">/</span> to jump to search.
+              </p>
+            </div>
+            <button class="btn" id="openExplorerHelp" type="button" aria-label="Open explorer help">Explorer help</button>
+          </div>
+          <div class="bd">
+            <div class="explorerTop">
+              <div class="controls">
+                <input 
+                  id="jobSearch" 
+                  class="input" 
+                  type="search" 
+                  placeholder="Search title, company, location, skills…" 
+                  aria-label="Search job postings"
+                  aria-controls="jobsTbody"
+                />
+                <select id="jobScope" class="select" aria-label="Filter by scope">
+                  <option value="lens" selected>Scope: Current lens</option>
+                  <option value="all">Scope: All AI postings</option>
+                  <option value="kyoh">Scope: KY/OH subset</option>
+                </select>
+                <select id="jobSort" class="select" aria-label="Sort results by">
+                  <option value="dateDesc" selected>Sort: Date (newest)</option>
+                  <option value="dateAsc">Sort: Date (oldest)</option>
+                  <option value="companyAsc">Sort: Company (A→Z)</option>
+                  <option value="sourceAsc">Sort: Source (A→Z)</option>
+                </select>
+                <select id="jobPageSize" class="select" aria-label="Results per page">
+                  <option value="15">15 rows</option>
+                  <option value="25" selected>25 rows</option>
+                  <option value="50">50 rows</option>
+                </select>
+              </div>
+              <div class="mini" id="jobMeta" role="status">—</div>
+            </div>
+
+            <div class="tableWrap" role="region" aria-label="Job postings table" tabindex="0">
+              <table role="grid">
+                <thead role="rowgroup">
+                  <tr role="row">
+                    <th role="columnheader" scope="col">Date</th>
+                    <th role="columnheader" scope="col">Posting</th>
+                    <th role="columnheader" scope="col">Company</th>
+                    <th role="columnheader" scope="col">Location</th>
+                    <th role="columnheader" scope="col">Source</th>
+                  </tr>
+                </thead>
+                <tbody id="jobsTbody" role="rowgroup">
+                  <tr role="row"><td colspan="5" class="mini">Loading…</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="pager" role="navigation" aria-label="Table pagination">
+              <div class="mini" id="jobPagerText" role="status">—</div>
+              <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                <button class="btn" id="jobPrev" type="button" aria-label="Previous page">Prev</button>
+                <button class="btn" id="jobNext" type="button" aria-label="Next page">Next</button>
+                <button class="btn" id="jobOpenFirst" type="button" aria-label="Open first result in new tab">Open first result</button>
+              </div>
+            </div>
+
+            <div class="footerNote">Dates vary by source. Some postings may not include a usable publish date; those display as "—".</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Drawer / Modal Dialog -->
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Information panel">
+    <div class="dh">
       <div>
-        <div class="badge"><span class="dot"></span> Dashboard prepared for NKU · AI Skills Demand (Blended Live)</div>
-
-        <h1>AI Skills Demand Live Dashboard - A Resource for NKU’s AI Literacy Priorities</h1>
-
-        <p class="subtitle">
-          This dashboard translates real job-posting language into an actionable story:
-          <span class="emph">AI is becoming a workplace literacy</span> (like data, writing, or spreadsheets).
-          That’s an opportunity for NKU to lead with <strong>responsible, student-centered AI Literacy</strong> -supporting employability,
-          academic integrity, and cross-disciplinary readiness.
-        </p>
-
-        <div class="headerTabs" aria-label="Top actions">
-          <button class="tabBtn active" id="tabOverview" type="button">Overview</button>
-          <button class="tabBtn" id="tabMethods" type="button">Methods & Sources</button>
-          <button class="tabBtn" id="tabPrint" type="button">Print / PDF</button>
-
-          <a class="tabBtn primary tabLink" id="tabInf125" href="https://www.nku.edu" target="_blank" rel="noopener">
-            INF 125: AI Literacy
-          </a>
-        </div>
+        <h3 id="drawerTitle">Details</h3>
+        <div class="muted" style="font-size:12px" id="drawerSubtitle">—</div>
       </div>
-
-      <div class="toolbar">
-        <div class="pillset" id="audienceToggle" role="group" aria-label="Academic lens">
-          <button type="button" data-aud="all" aria-pressed="true">All programs</button>
-          <button type="button" data-aud="business" aria-pressed="false">Business</button>
-          <button type="button" data-aud="informatics" aria-pressed="false">Informatics</button>
-          <button type="button" data-aud="health" aria-pressed="false">Health</button>
-        </div>
-
-        <div class="meta">
-          <span class="chip">Last refresh: <strong id="lastRefresh">—</strong></span>
-          <span class="chip">Pages per term: <strong id="pagesUsed">5</strong></span>
-          <button class="btn" id="openMethods" type="button">Data details</button>
-        </div>
-
-        <div class="status">
-          <span class="pill">Blend status: <span id="blendStatus" class="live">loading…</span></span>
-          <button class="btn" id="forceRefresh" type="button">Force refresh</button>
-        </div>
-      </div>
+      <button class="close" type="button" id="drawerClose" aria-label="Close information panel">Close</button>
     </div>
-  </div>
-</header>
+    <div class="db" id="drawerBody" role="document"></div>
+  </aside>
 
-<main>
-  <div class="wrap">
-    <section class="grid" aria-label="Executive narrative">
-      <div class="card span-12">
-        <div class="hd">
-          <div>
-            <h2>Academic-ready reading guide (positive framing)</h2>
-            <p>
-              Use this for curriculum alignment, employer partnerships, and student readiness.
-              The focus is <strong>capability + integrity + career outcomes</strong>.
-            </p>
-          </div>
-          <button class="btn" id="openReadingGuide" type="button">How to use</button>
-        </div>
+  <!-- Main Application Script -->
+  <script>
+    // ===== CONFIG =====
+    const PROXY_BASE = "https://ai-skills-proxy.nealb3.workers.dev";
+    const PAGES_PER_TERM = 5;
+    const RESULTS_PER_PAGE = 25;
+    const LINKEDIN_PAGES_PER_TERM = 2;
+    const LINKEDIN_RESULTS_PER_PAGE = 25;
+    const LINKEDIN_DEFAULT_LOCATION = "United States";
+    const CACHE_KEY = "nku_exec_ai_dashboard_v12_explorer_verify";
+    const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 
-        <div class="bd" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px;">
-          <div class="callout">
-            <div class="t">What this measures</div>
-            <div class="h">Employer language signals (directional)</div>
-            <div class="b">
-              We scan posting titles + descriptions for transparent AI keywords and skill phrases. Results are directional signals
-              that help prioritize curriculum and partnerships.
-            </div>
-          </div>
-          <div class="callout">
-            <div class="t">Why it’s a positive university story</div>
-            <div class="h">AI Literacy reduces risk</div>
-            <div class="b">
-              When students learn responsible use (verification, disclosure, ethics, privacy), it strengthens academic integrity and prepares
-              graduates to use AI thoughtfully in the workplace.
-            </div>
-          </div>
-          <div class="callout">
-            <div class="t">How NKU can act quickly</div>
-            <div class="h">Baseline + embedded practice</div>
-            <div class="b">
-              Use Top Skills + Category Mix to prioritize modules, micro-credentials, and applied projects. Use KY/OH signals to target employer outreach
-              and internship pipelines.
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    // ===== AI TERMS =====
+    const AI_TERMS_US = [
+      "artificial intelligence","machine learning","generative ai","genai","llm",
+      "large language model","chatgpt","copilot"
+    ];
+    const AI_TERMS_ADZUNA = [
+      "artificial intelligence","machine learning","llm","generative ai","genai","copilot"
+    ];
+    const AI_TERMS_LINKEDIN = [
+      "artificial intelligence","machine learning","generative ai","genai","llm","copilot"
+    ];
 
-    <section class="grid" style="margin-top:14px" aria-label="Leadership KPIs">
-      <div class="card kpi span-3">
-        <div class="kpiTop">
-          <div class="kpiLabel">AI-signal share <span class="hint" data-hint="aiShare">?</span></div>
-          <div class="kpiTag good" id="kAiShareDelta">▲ — pts</div>
-        </div>
-        <div class="kpiValue" id="kAiShare">—</div>
-        <div class="kpiSub">AI postings ÷ (AI + baseline) within selected lens</div>
-        <div class="spark" aria-hidden="true"><svg viewBox="0 0 120 44" preserveAspectRatio="none"><polyline id="sparkAiShare" fill="none" stroke="rgba(2,8,23,.85)" stroke-width="2" points=""></polyline></svg></div>
-      </div>
+    const BASELINE_TERMS = ["software","analyst","manager"];
+    const BASELINE_LINKEDIN = ["software engineer","business analyst","project manager"];
 
-      <div class="card kpi span-3">
-        <div class="kpiTop">
-          <div class="kpiLabel">AI postings (deduped sample) <span class="hint" data-hint="sampleSize">?</span></div>
-          <div class="kpiTag" id="kSourceMix">—</div>
-        </div>
-        <div class="kpiValue" id="kAiCount">—</div>
-        <div class="kpiSub">Deduped across blended sources (stronger evidence)</div>
-        <div class="spark" aria-hidden="true"><svg viewBox="0 0 120 44" preserveAspectRatio="none"><polyline id="sparkAiCount" fill="none" stroke="rgba(2,8,23,.85)" stroke-width="2" points=""></polyline></svg></div>
-      </div>
-
-      <div class="card kpi span-3">
-        <div class="kpiTop">
-          <div class="kpiLabel">Total returned (raw, pre-filter) <span class="hint" data-hint="totalScanned">?</span></div>
-          <div class="kpiTag" id="kTotalTag">—</div>
-        </div>
-        <div class="kpiValue" id="kTotalScanned">—</div>
-        <div class="kpiSub">Total postings fetched across sources before dedupe/lens KPIs</div>
-        <div class="spark" aria-hidden="true"><svg viewBox="0 0 120 44" preserveAspectRatio="none"><polyline id="sparkTotal" fill="none" stroke="rgba(2,8,23,.85)" stroke-width="2" points=""></polyline></svg></div>
-      </div>
-
-      <div class="card kpi span-3">
-        <div class="kpiTop">
-          <div class="kpiLabel">Data quality <span class="hint" data-hint="quality">?</span></div>
-          <div class="kpiTag good" id="kQualityTag">high</div>
-        </div>
-        <div class="kpiBig" id="kQuality">—</div>
-        <div class="kpiSub">Combines date coverage + private source success + dedup strength</div>
-        <div class="spark" aria-hidden="true"><svg viewBox="0 0 120 44" preserveAspectRatio="none"><polyline id="sparkQuality" fill="none" stroke="rgba(2,8,23,.85)" stroke-width="2" points=""></polyline></svg></div>
-      </div>
-    </section>
-
-    <section class="grid" style="margin-top:14px" aria-label="Charts">
-      <div class="card span-6">
-        <div class="hd">
-          <div>
-            <h2>Trend over time (last 12 months)</h2>
-            <p>
-              Monthly counts of AI-matched postings (within the selected lens). Use for “is demand rising?” and for timing employer outreach.
-            </p>
-          </div>
-          <button class="btn" id="openTrendNotes" type="button">Trend notes</button>
-        </div>
-        <div class="bd">
-          <div class="chartWrap"><div class="chartBoxMid"><canvas id="trendChart"></canvas></div></div>
-          <div class="footerNote">Trend uses postings with usable dates; missing dates reduce trend precision.</div>
-        </div>
-      </div>
-
-      <div class="card span-6">
-        <div class="hd">
-          <div>
-            <h2>Top AI skill signals (teachable + measurable)</h2>
-            <p>
-              Skill phrase mentions found in posting titles/descriptions—ideal for module priorities, micro-credentials, and applied project requirements.
-              This supports a practical, responsible AI Literacy baseline.
-            </p>
-          </div>
-          <button class="btn" id="openSkillNotes" type="button">Skill map</button>
-        </div>
-        <div class="bd">
-          <div class="chartWrap"><div class="chartBoxMid"><canvas id="skillsChart"></canvas></div></div>
-          <div class="footerNote">Skills are measured as mentions (not endorsements). The skill map is transparent and NKU-editable.</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="grid" style="margin-top:14px" aria-label="Kentucky and Ohio focus">
-      <div class="card span-6">
-        <div class="hd">
-          <div>
-            <h2>Top KY/OH employers posting for AI skills</h2>
-            <p>
-              Employer names from AI-matched postings with KY/OH signals—useful for partnership targeting, internships, and advisory board outreach.
-            </p>
-          </div>
-          <button class="btn" id="openKYOHNotes" type="button">About KY/OH</button>
-        </div>
-        <div class="bd">
-          <div class="chartWrap"><div class="chartBoxMid"><canvas id="employersChart"></canvas></div></div>
-          <div class="footerNote">Heuristic location match (city/state tokens). Use as a directional signal for outreach prioritization.</div>
-        </div>
-      </div>
-
-      <div class="card span-6">
-        <div class="hd">
-          <div>
-            <h2>Top skills in KY/OH postings</h2>
-            <p>
-              Same skill map, restricted to KY/OH AI postings—strong for “regional workforce alignment” conversations and co-designed curriculum.
-            </p>
-          </div>
-          <button class="btn" id="openKYOHNotes2" type="button">About KY/OH</button>
-        </div>
-        <div class="bd">
-          <div class="chartWrap"><div class="chartBoxMid"><canvas id="skillsKYOHChart"></canvas></div></div>
-          <div class="footerNote">Shows which AI skills are appearing most in postings relevant to Kentucky and Ohio.</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="grid" style="margin-top:14px" aria-label="Where the jobs are">
-      <div class="card span-12">
-        <div class="hd">
-          <div>
-            <h2>Where the Jobs Are (executive taxonomy)</h2>
-            <p>
-              Category distribution for AI-matched postings using a stable NKU-friendly mapping. This helps reinforce:
-              <strong>AI literacy is cross-disciplinary</strong>—not just a computing topic.
-            </p>
-          </div>
-          <button class="btn" id="openJobCats" type="button">Job categories</button>
-        </div>
-        <div class="bd">
-          <div class="chartWrap"><div class="chartBoxTall"><canvas id="whereJobsChart"></canvas></div></div>
-          <div class="footerNote">Uses all blended AI postings in the lens, mapped into a stable executive taxonomy.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ✅ NEW: Job Postings Explorer (dates + clickable links) -->
-    <section class="grid" style="margin-top:14px" aria-label="Job postings explorer">
-      <div class="card span-12">
-        <div class="hd">
-          <div>
-            <h2>AI job postings (click to open source + view dates)</h2>
-            <p>
-              This is the underlying deduped AI posting sample for the selected lens. Use search to spot-check and open real postings.
-              Tip: press <span class="kbd">/</span> to jump to search.
-            </p>
-          </div>
-          <button class="btn" id="openExplorerHelp" type="button">Explorer help</button>
-        </div>
-        <div class="bd">
-          <div class="explorerTop">
-            <div class="controls">
-              <input id="jobSearch" class="input" type="search" placeholder="Search title, company, location, skills…" />
-              <select id="jobScope" class="select" aria-label="Scope">
-                <option value="lens" selected>Scope: Current lens</option>
-                <option value="all">Scope: All AI postings</option>
-                <option value="kyoh">Scope: KY/OH subset</option>
-              </select>
-              <select id="jobSort" class="select" aria-label="Sort">
-                <option value="dateDesc" selected>Sort: Date (newest)</option>
-                <option value="dateAsc">Sort: Date (oldest)</option>
-                <option value="companyAsc">Sort: Company (A→Z)</option>
-                <option value="sourceAsc">Sort: Source (A→Z)</option>
-              </select>
-              <select id="jobPageSize" class="select" aria-label="Rows per page">
-                <option value="15">15 rows</option>
-                <option value="25" selected>25 rows</option>
-                <option value="50">50 rows</option>
-              </select>
-            </div>
-            <div class="mini" id="jobMeta">—</div>
-          </div>
-
-          <div class="tableWrap" role="region" aria-label="Job postings table" tabindex="0">
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Posting</th>
-                  <th>Company</th>
-                  <th>Location</th>
-                  <th>Source</th>
-                </tr>
-              </thead>
-              <tbody id="jobsTbody">
-                <tr><td colspan="5" class="mini">Loading…</td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="pager">
-            <div class="mini" id="jobPagerText">—</div>
-            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-              <button class="btn" id="jobPrev" type="button">Prev</button>
-              <button class="btn" id="jobNext" type="button">Next</button>
-              <button class="btn" id="jobOpenFirst" type="button">Open first result</button>
-            </div>
-          </div>
-
-          <div class="footerNote">Dates vary by source. Some postings may not include a usable publish date; those display as “—”.</div>
-        </div>
-      </div>
-    </section>
-
-  </div>
-</main>
-
-<aside class="drawer" id="drawer" role="dialog" aria-modal="false" aria-label="Drawer">
-  <div class="dh">
-    <div>
-      <h3 id="drawerTitle">Details</h3>
-      <div class="muted" style="font-size:12px" id="drawerSubtitle">—</div>
-    </div>
-    <button class="close" type="button" id="drawerClose">Close</button>
-  </div>
-  <div class="db" id="drawerBody"></div>
-</aside>
-
-<script>
-/*****************************************************************
- * CONFIG (CLOUDFLARE WORKER ONLY — NO VERCEL)
- *****************************************************************/
-const PROXY_BASE = "https://ai-skills-proxy.nealb3.workers.dev";
-
-/* sample-size controls */
-const PAGES_PER_TERM = 5;
-const RESULTS_PER_PAGE = 25;
-
-/* LinkedIn pull via Worker: /linkedin (0-based paging) */
-const LINKEDIN_PAGES_PER_TERM = 2;       // keep lower (scrape risk / rate limits)
-const LINKEDIN_RESULTS_PER_PAGE = 25;    // keep <= 25
-const LINKEDIN_DEFAULT_LOCATION = "United States";
-
-const CACHE_KEY = "nku_exec_ai_dashboard_v11_explorer_verify";
-const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
-
-const AI_TERMS_US = [
-  "artificial intelligence","machine learning","generative ai","genai","llm",
-  "large language model","chatgpt","copilot"
-];
-const AI_TERMS_ADZUNA = [
-  "artificial intelligence","machine learning","llm","generative ai","genai","copilot"
-];
-const AI_TERMS_LINKEDIN = [
-  "artificial intelligence","machine learning","generative ai","genai","llm","copilot"
-];
-
-/* baseline comparison group (pre-AI filter pool) */
-const BASELINE_TERMS = ["software","analyst","manager"];
-const BASELINE_LINKEDIN = ["software engineer","business analyst","project manager"];
-
-/* NKU-friendly academic lenses (explainable filters) */
-const AUDIENCE_FILTERS = {
-  all: () => true,
-  business: (job) => /(analyst|finance|account|marketing|operations|product|strategy|business|supply|procurement|risk|audit)/i
-    .test(asText(job.title) + " " + asText(job.description)),
-  informatics: (job) => /(engineer|developer|software|data scientist|ml|ai|cloud|devops|security|cyber|architect|platform|systems|network)/i
-    .test(asText(job.title) + " " + asText(job.description)),
-  health: (job) => /(health|clinical|patient|hospital|medical|biostat|epidemi|informatics|care|nursing|pharma|imaging)/i
-    .test(asText(job.title) + " " + asText(job.description)),
-};
-
-/* Skill map (transparent, NKU-editable) */
-const SKILLS = [
-  { skill:"AI tools (Copilot/ChatGPT)", keys:["copilot","chatgpt","assistant"] },
-  { skill:"Prompting & workflow design", keys:["prompt","prompting","agent","agentic","workflow","orchestration"] },
-  { skill:"LLM apps (RAG + vector)", keys:["rag","retrieval","vector","embedding","langchain","prompt engineering"] },
-  { skill:"Responsible AI / ethics", keys:["responsible ai","ethics","fairness","bias","governance","policy","compliance"] },
-  { skill:"AI evaluation & testing", keys:["evaluation","testing","red team","red-team","benchmark","validation","monitoring","model risk"] },
-  { skill:"Privacy", keys:["privacy","pii","phi","gdpr","hipaa","data protection"] },
-  { skill:"Security", keys:["security","secure","infosec","soc","zero trust","iam","identity","access","vulnerability","threat"] },
-  { skill:"SQL / BI dashboards", keys:["sql","power bi","tableau","dashboard","analytics","reporting"] },
-  { skill:"Data engineering", keys:["data engineer","pipeline","warehouse","lakehouse","spark","dbt"] },
-  { skill:"Python", keys:["python","scripting","etl"] },
-  { skill:"Cloud platforms", keys:["aws","azure","gcp","cloud","kubernetes","docker"] },
-  { skill:"Process improvement / automation", keys:["process improvement","automation","workflow","rpa","lean","six sigma","kaizen"] },
-];
-
-/*****************************************************************
- * DOM UTILS
- *****************************************************************/
-const $ = (sel, root=document) => root.querySelector(sel);
-const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-
-function setText(sel, txt){ const el = $(sel); if(el) el.textContent = txt; }
-function escapeHtml(s){
-  return String(s ?? "")
-    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
-}
-function asText(v){
-  if(v == null) return "";
-  if(Array.isArray(v)) return v.filter(Boolean).join(" ");
-  if(typeof v === "string") return v;
-  if(typeof v === "number" || typeof v === "boolean") return String(v);
-  try { return JSON.stringify(v); } catch { return String(v); }
-}
-function pct(x){ return (x*100).toFixed(1) + "%"; }
-function animatePercent(el, targetPctText){
-  if(!el) return;
-  const m = String(targetPctText).match(/^(\d+(\.\d+)?)%$/);
-  if(!m){ el.textContent = targetPctText; return; }
-  const target = parseFloat(m[1]);
-  const start = 0;
-  const t0 = performance.now();
-  const dur = 650;
-  function tick(t){
-    const p = Math.min(1, (t - t0)/dur);
-    const v = (start + (target-start)*p);
-    el.textContent = v.toFixed(1) + "%";
-    if(p < 1) requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-}
-function sparkPoints(values){
-  if(!values || values.length < 2) return "";
-  const max = Math.max(...values), min = Math.min(...values);
-  const range = (max - min) || 1;
-  return values.map((v,i)=>{
-    const x = (i/(values.length-1))*120;
-    const y = 42 - ((v-min)/range)*36;
-    return `${x.toFixed(1)},${y.toFixed(1)}`;
-  }).join(" ");
-}
-function tagForDelta(deltaPts){
-  if(deltaPts > 1.5) return { cls: "good" };
-  if(deltaPts < -1.5) return { cls: "warn" };
-  return { cls: "good" };
-}
-
-function formatDateShort(iso){
-  if(!iso) return "—";
-  const d = new Date(iso);
-  if(Number.isNaN(d.getTime())) return "—";
-  return d.toLocaleDateString(undefined, { year:"numeric", month:"short", day:"2-digit" });
-}
-
-/*****************************************************************
- * CACHE
- *****************************************************************/
-function readCache(){
-  try{
-    const raw = localStorage.getItem(CACHE_KEY);
-    if(!raw) return null;
-    const obj = JSON.parse(raw);
-    if(Date.now() - obj.time > CACHE_TTL_MS) return null;
-    return obj.data;
-  }catch{ return null; }
-}
-function writeCache(data){
-  try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ time: Date.now(), data })); }catch{}
-}
-function clearCache(){
-  try{ localStorage.removeItem(CACHE_KEY); }catch{}
-}
-
-/*****************************************************************
- * FETCHERS (via Worker)
- *****************************************************************/
-async function fetchJson(url){
-  const res = await fetch(url, { cache:"no-store" });
-  const text = await res.text();
-  let json;
-  try{ json = JSON.parse(text); }catch{
-    throw new Error("Non-JSON from " + url + ": " + text.slice(0,200));
-  }
-  if(!res.ok){
-    const msg = json?.error || json?.message || ("HTTP " + res.status);
-    throw new Error(url + " → " + msg);
-  }
-  return json;
-}
-/* Dead code since I'm using /blend... 
-
-async function fetchUSAJOBS(term, perPage=25, page=1){
-  const t = encodeURIComponent(term);
-  const url = `${PROXY_BASE}/usajobs?keyword=${t}&ResultsPerPage=${perPage}&Page=${page}`;
-  return { url, json: await fetchJson(url), term, page };
-}
-async function fetchAdzuna(term, perPage=25, page=1){
-  const t = encodeURIComponent(term);
-  const url = `${PROXY_BASE}/adzuna?what=${t}&results_per_page=${perPage}&page=${page}&country=us`;
-  return { url, json: await fetchJson(url), term, page };
-}
-async function fetchRemotive(searchTerm=""){
-  const q = encodeURIComponent(searchTerm || "");
-  const url = `${PROXY_BASE}/remotive${q ? `?search=${q}` : ""}`;
-  return { url, json: await fetchJson(url), term: searchTerm, page: 1 };
-}
-async function fetchLinkedIn(term, perPage=25, page0=0){
-  const t = encodeURIComponent(term);
-  const loc = encodeURIComponent(LINKEDIN_DEFAULT_LOCATION);
-  const url =
-    `${PROXY_BASE}/linkedin?keyword=${t}` +
-    `&location=${loc}` +
-    `&dateSincePosted=${encodeURIComponent("past week")}` +
-    `&sortBy=${encodeURIComponent("recent")}` +
-    `&page=${encodeURIComponent(String(page0))}` +
-    `&limit=${encodeURIComponent(String(perPage))}`;
-  return { url, json: await fetchJson(url), term, page: page0 };
-}
-*/
-/*****************************************************************
- * NORMALIZERS
- *****************************************************************/
-function parseDateSafe(x){
-  if(!x) return null;
-  const d = new Date(x);
-  if(Number.isNaN(d.getTime())) return null;
-  return d.toISOString();
-}
-function normalizeUSAJOBS(payload){
-  const items = payload?.SearchResult?.SearchResultItems || [];
-  return items.map(it=>{
-    const d = it?.MatchedObjectDescriptor || {};
-    const details = d?.UserArea?.Details || {};
-    const cats = (d?.JobCategory || []).map(c=>c?.Name).filter(Boolean);
-    const dateRaw = d?.PublicationStartDate || d?.PositionStartDate || d?.ApplicationCloseDate || null;
-
-    const duties = asText(details?.MajorDuties);
-    const summary = asText(details?.JobSummary);
-    const desc = duties || summary;
-
-    return {
-      source: "USAJOBS",
-      title: asText(d?.PositionTitle),
-      description: desc,
-      company: asText(d?.OrganizationName || d?.DepartmentName || "Federal"),
-      category: asText(cats[0] || d?.DepartmentName || "Federal"),
-      location: asText((d?.PositionLocation || [])[0]?.LocationName || ""),
-      url: asText(d?.PositionURI || ""),
-      date: parseDateSafe(dateRaw)
+    // ===== AUDIENCE FILTERS =====
+    const AUDIENCE_FILTERS = {
+      all: () => true,
+      business: (job) => /(analyst|finance|account|marketing|operations|product|strategy|business|supply|procurement|risk|audit)/i
+        .test(asText(job.title) + " " + asText(job.description)),
+      informatics: (job) => /(engineer|developer|software|data scientist|ml|ai|cloud|devops|security|cyber|architect|platform|systems|network)/i
+        .test(asText(job.title) + " " + asText(job.description)),
+      health: (job) => /(health|clinical|patient|hospital|medical|biostat|epidemi|informatics|care|nursing|pharma|imaging)/i
+        .test(asText(job.title) + " " + asText(job.description)),
     };
-  });
-}
-function normalizeAdzuna(payload){
-  const items = payload?.results || [];
-  return items.map(it=>({
-    source: "Adzuna",
-    title: asText(it?.title),
-    description: asText(it?.description),
-    company: asText(it?.company?.display_name || "Unknown"),
-    category: asText(it?.category?.label || "Other"),
-    location: asText(it?.location?.display_name || ""),
-    url: asText(it?.redirect_url || it?.adref || ""),
-    date: parseDateSafe(it?.created || it?.created_at || it?.publication_date || null)
-  }));
-}
-function normalizeRemotive(payload){
-  const items = payload?.jobs || payload?.data?.jobs || [];
-  return items.map(it => ({
-    source: "Remotive",
-    title: asText(it?.title),
-    description: asText(it?.description),
-    company: asText(it?.company_name || it?.company || "Unknown"),
-    category: asText(it?.category || it?.job_type || "Remote"),
-    location: asText(it?.candidate_required_location || "Remote"),
-    url: asText(it?.url || it?.job_url || ""),
-    date: parseDateSafe(it?.publication_date || it?.created_at || null)
-  }));
-}
-function normalizeLinkedIn(payload){
-  const items = payload?.jobs || payload?.data?.jobs || payload?.results || [];
-  return items.map(it => ({
-    source: "LinkedIn",
-    title: asText(it?.title || it?.position),
-    description: asText(it?.description || ""),
-    company: asText(it?.company || "Unknown"),
-    category: asText(it?.category || "LinkedIn"),
-    location: asText(it?.location || ""),
-    url: asText(it?.url || it?.jobUrl || it?.link || ""),
-    date: parseDateSafe(
-      it?.postedAt ||
-      it?.date ||
-      it?.listedAt ||
-      it?.publishedAt ||
-      it?.created_at ||
-      it?.createdAt ||
-      null
-    )
-  }));
-}
 
-/*****************************************************************
- * DEDUPE
- *****************************************************************/
-function dedupeJobs(jobs){
-  const seen = new Set();
-  const out = [];
-  for(const j of jobs){
-    const key = (asText(j.url) || `${asText(j.source)}|${asText(j.company)}|${asText(j.title)}|${asText(j.location)}`)
-      .toLowerCase().trim();
-    if(seen.has(key)) continue;
-    seen.add(key);
-    out.push(j);
-  }
-  return out;
-}
-
-/*****************************************************************
- * FANOUT WITH PAGINATION (1-based + 0-based helpers)
- *****************************************************************/
-const sleep = (ms)=> new Promise(r=>setTimeout(r, ms));
-
-async function fanoutFetchPages(terms, fetcher, normalizer, pages=5, perPage=25){
-  const all = [];
-  const debug = [];
-
-  for(const term of terms){
-    for(let page=1; page<=pages; page++){
-      try{
-        const r = await fetcher(term, perPage, page);
-        debug.push({ term, page, ok:true, url:r.url });
-        all.push(...normalizer(r.json));
-        await sleep(120);
-      }catch(err){
-        debug.push({ term, page, ok:false, error:String(err).slice(0,220) });
-      }
-    }
-  }
-
-  const deduped = dedupeJobs(all);
-  return { jobs: deduped, rawCount: all.length, debug };
-}
-async function fanoutFetchPagesZeroBased(terms, fetcher, normalizer, pages=2, perPage=25){
-  const all = [];
-  const debug = [];
-
-  for(const term of terms){
-    for(let page0=0; page0<pages; page0++){
-      try{
-        const r = await fetcher(term, perPage, page0);
-        debug.push({ term, page: page0, ok:true, url:r.url });
-        all.push(...normalizer(r.json));
-        await sleep(160);
-      }catch(err){
-        debug.push({ term, page: page0, ok:false, error:String(err).slice(0,220) });
-      }
-    }
-  }
-
-  const deduped = dedupeJobs(all);
-  return { jobs: deduped, rawCount: all.length, debug };
-}
-
-/*****************************************************************
- * BLEND PIPELINE (INCLUDES LINKEDIN VIA WORKER /linkedin)
- *****************************************************************/
-async function fetchBlend(){
-  const cached = readCache();
-  if(cached) return cached;
-
-  // ✅ Open keyword search (whatever you want to search for)
-  const keyword = (window.currentKeyword || "artificial intelligence").trim();
-
-  // ✅ Restrict to KY/OH only (or remove region to allow nationwide)
-  const region = "kyoh"; // "kyoh" | "" (blank means all)
-
-  // ✅ Keep your existing knobs
-  const pages = PAGES_PER_TERM;
-  const perPage = RESULTS_PER_PAGE;
-  const linkedinPages = LINKEDIN_PAGES_PER_TERM;
-  const linkedinPerPage = LINKEDIN_RESULTS_PER_PAGE;
-
-  const url =
-    `${PROXY_BASE}/blend` +
-    `?keyword=${encodeURIComponent(keyword)}` +
-    (region ? `&region=${encodeURIComponent(region)}` : "") +
-    `&pages=${encodeURIComponent(String(pages))}` +
-    `&perPage=${encodeURIComponent(String(perPage))}` +
-    `&linkedinPages=${encodeURIComponent(String(linkedinPages))}` +
-    `&linkedinPerPage=${encodeURIComponent(String(linkedinPerPage))}` +
-    `&dateSincePosted=${encodeURIComponent("past week")}` +
-    `&sortBy=${encodeURIComponent("recent")}`;
-
-  const res = await fetch(url, { cache: "no-store" });
-  const data = await res.json();
-  if(!res.ok || !data.ok) throw new Error(data?.error || `Failed /blend (${res.status})`);
-
-  // ✅ Worker already returns normalized, deduped jobs with dates + urls
-  const out = {
-    fetchedAt: data.fetchedAt,
-    aiJobs: data.jobs,          // treat as your “AI postings”
-    baseJobs: [],               // optional: set empty, or keep your baseline strategy separately
-    raw: {
-      aiRaw: data.counts?.rawTotal || 0,
-      baseRaw: 0
-    },
-    debug: data.debug,
-    pagesUsed: pages,
-    perPage: perPage,
-    linkedin: { pagesUsed: linkedinPages, perPage: linkedinPerPage }
-  };
-
-  writeCache(out);
-  return out;
-}
-
-/*****************************************************************
- * REGION / REMOTE
- *****************************************************************/
-function isRemote(job){
-  const loc = (asText(job.location) + " " + asText(job.category)).toLowerCase();
-  return /remote|telework|work from home|wfh/.test(loc);
-}
-function isOH(job){
-  const loc = (asText(job.location) + " " + asText(job.title)).toLowerCase();
-  return /\boh\b|ohio|cincinnati|dayton|columbus|cleveland|toledo|akron/.test(loc);
-}
-function isKY(job){
-  const loc = (asText(job.location) + " " + asText(job.title)).toLowerCase();
-  return /\bky\b|kentucky|covington|newport|florence|lexington|louisville|bowling green|frankfort/.test(loc);
-}
-function isOHKY(job){ return isOH(job) || isKY(job); }
-
-/*****************************************************************
- * CATEGORY MAPPING (stable exec taxonomy)
- *****************************************************************/
-function textBlob(job){
-  return `${asText(job.title)} ${asText(job.category)} ${asText(job.company)} ${asText(job.location)} ${asText(job.description)}`.toLowerCase();
-}
-function nkuExecCategory(job){
-  const blob = textBlob(job);
-
-  if (/\b(ai|artificial intelligence|machine learning|ml|llm|genai|generative ai|nlp|computer vision|rag|embedding|vector)\b/.test(blob)) {
-    return "AI / ML";
-  }
-  if (/\b(data analyst|data analytics|analytics|bi\b|sql\b|power bi|tableau|dashboard|reporting|data warehouse|etl|dbt|spark|lakehouse|data engineer)\b/.test(blob)) {
-    return "Data & Analytics";
-  }
-  if (/\b(devops|sre|site reliability|kubernetes|docker|ci\/cd|terraform|cloud infrastructure)\b/.test(blob)) {
-    return "DevOps / Cloud";
-  }
-  if (/\b(software|developer|engineer|full[- ]stack|frontend|backend|mobile|web developer|api\b|typescript|javascript|java\b|c\+\+|c#|python\b|golang|rust)\b/.test(blob)) {
-    return "Software Development";
-  }
-  if (/\b(cyber|security|infosec|soc\b|zero trust|iam\b|identity|access|vulnerability|penetration|siem|risk|compliance)\b/.test(blob)) {
-    return "Cybersecurity / IT";
-  }
-  if (/\b(product manager|product management|project manager|program manager|scrum|agile|product owner|pm\b)\b/.test(blob)) {
-    return "Product / Project";
-  }
-  if (/\b(business analyst|operations|strategy|process improvement|continuous improvement|lean\b|six sigma|supply chain|procurement|finance|accounting)\b/.test(blob)) {
-    return "Business / Operations";
-  }
-  if (/\b(marketing|growth|seo\b|content|brand|demand gen|sales|account executive|customer success|support|client)\b/.test(blob)) {
-    return "Marketing / Sales";
-  }
-  if (/\b(health|clinical|patient|hospital|medical|biostat|epidemi|informatics|care|nursing|pharma|imaging)\b/.test(blob)) {
-    return "Health / Clinical";
-  }
-  if (/\b(instructor|trainer|curriculum|learning|education|teaching)\b/.test(blob)) {
-    return "Education / Training";
-  }
-  return "Other";
-}
-function normalizeCategoryDisplay(cat){
-  let c = asText(cat).trim();
-  if(!c) return "Other";
-  c = c.replace(/\s+/g," ").trim();
-  return c;
-}
-
-/*****************************************************************
- * DATE SERIES
- *****************************************************************/
-function dayKey(isoOrDate){
-  const d = (isoOrDate instanceof Date) ? isoOrDate : new Date(isoOrDate);
-  if(Number.isNaN(d.getTime())) return null;
-  const dd = new Date(d);
-  dd.setHours(0,0,0,0);
-  return dd.toISOString().slice(0,10);
-}
-function lastNDaysKeys(n=14){
-  const now = new Date();
-  now.setHours(0,0,0,0);
-  const keys = [];
-  for(let i=n-1;i>=0;i--){
-    const d = new Date(now);
-    d.setDate(now.getDate()-i);
-    keys.push(d.toISOString().slice(0,10));
-  }
-  return keys;
-}
-function buildDailySeries(aiJobs, baseJobs, n=14){
-  const keys = lastNDaysKeys(n);
-
-  const aiByDay = new Map(keys.map(k=>[k, []]));
-  const baseByDay = new Map(keys.map(k=>[k, []]));
-
-  for(const j of aiJobs){
-    const k = j.date ? dayKey(j.date) : null;
-    if(k && aiByDay.has(k)) aiByDay.get(k).push(j);
-  }
-  for(const j of baseJobs){
-    const k = j.date ? dayKey(j.date) : null;
-    if(k && baseByDay.has(k)) baseByDay.get(k).push(j);
-  }
-
-  const aiShare = [];
-  const aiCount = [];
-  const totalCount = [];
-
-  for(const k of keys){
-    const a = aiByDay.get(k) || [];
-    const b = baseByDay.get(k) || [];
-    const aN = a.length;
-    const bN = b.length;
-
-    aiCount.push(aN);
-    totalCount.push(aN + bN);
-    aiShare.push(aN / Math.max(aN + bN, 1));
-  }
-
-  return { aiShare, aiCount, totalCount };
-}
-function monthKey(iso){
-  const d = new Date(iso);
-  if(Number.isNaN(d.getTime())) return null;
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
-}
-function trendByMonth(jobs, months=12){
-  const dated = jobs.filter(j=>!!j.date);
-  const keys = dated.map(j=>monthKey(j.date)).filter(Boolean);
-  if(!keys.length){
-    const labels = Array.from({length: Math.min(6, months)}, (_,i)=>`M-${Math.min(6, months)-i}`);
-    const values = labels.map(()=>jobs.length ? Math.max(1, Math.round(jobs.length/labels.length)) : 0);
-    return { labels, values };
-  }
-
-  const max = keys.reduce((a,b)=> a>b ? a : b);
-  const [Y,M] = max.split("-").map(Number);
-  const counts = new Map();
-  for(const k of keys) counts.set(k, (counts.get(k)||0)+1);
-
-  const labels = [];
-  for(let i=months-1;i>=0;i--){
-    const dd = new Date(Date.UTC(Y, M-1 - i, 1));
-    const key = `${dd.getUTCFullYear()}-${String(dd.getUTCMonth()+1).padStart(2,"0")}`;
-    labels.push(key);
-  }
-  const values = labels.map(k => counts.get(k) || 0);
-  return { labels, values };
-}
-
-/*****************************************************************
- * SKILL COUNTS
- *****************************************************************/
-function skillCounts(jobs){
-  const counts = new Map();
-  for(const s of SKILLS) counts.set(s.skill, 0);
-
-  for(const j of jobs){
-    const text = (asText(j.title) + " " + asText(j.description)).toLowerCase();
-    for(const s of SKILLS){
-      if(s.keys.some(k => text.includes(String(k).toLowerCase()))) {
-        counts.set(s.skill, (counts.get(s.skill)||0) + 1);
-      }
-    }
-  }
-  return counts;
-}
-
-/*****************************************************************
- * QUALITY / CONFIDENCE
- *****************************************************************/
-function computeQuality(blended, aiJobsLens){
-  const adOk = blended.debug?.aiAD?.some(x => x.ok);
-  const rmOk = blended.debug?.aiRM?.some(x => x.ok);
-  const liOk = blended.debug?.aiLI?.some(x => x.ok);
-  const anyPrivateOk = privateSourcesOk(blended.debug);
-
-  const dateCoverage = aiJobsLens.length ? (aiJobsLens.filter(j=>!!j.date).length / aiJobsLens.length) : 0;
-  const dedupRate = blended.raw?.aiRaw ? (1 - (blended.aiJobs.length / Math.max(blended.raw.aiRaw, 1))) : 0;
-
-  let label = "Medium";
-  let tag = { text: "medium", cls: "warn" };
-
-  if(anyPrivateOk && dateCoverage >= 0.6) {
-    label = "High";
-    tag = { text: "high", cls: "good" };
-  }
-  if(!anyPrivateOk && dateCoverage < 0.4) {
-    label = "Low";
-    tag = { text: "low", cls: "bad" };
-  }
-
-  const series = [
-    anyPrivateOk ? 1 : 0.35,
-    dateCoverage,
-    dedupRate
-  ].map(v=>Math.max(0, Math.min(1, v)));
-
-  return { label, tag, dateCoverage, dedupRate, anyPrivateOk, series };
-}
-
-/*****************************************************************
- * STATE
- *****************************************************************/
-let blended = null;
-let currentAudience = "all";
-
-/*****************************************************************
- * CHARTS
- *****************************************************************/
-let whereChart = null;
-let trendChart = null;
-let skillsChart = null;
-let employersChart = null;
-let skillsKYOHChart = null;
-
-function renderWhereJobsChart(labels, values){
-  const ctx = $("#whereJobsChart");
-  if(whereChart) whereChart.destroy();
-
-  whereChart = new Chart(ctx, {
-    type: "bar",
-    data: { labels, datasets: [{ label:"Postings", data: values, borderWidth:1, borderRadius:10 }] },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ display:false } },
-      scales:{ y:{ beginAtZero:true, ticks:{ precision:0 } }, x:{ ticks:{ maxRotation:30, minRotation:30 } } }
-    }
-  });
-}
-function renderTrendChart(labels, values){
-  const ctx = $("#trendChart");
-  if(trendChart) trendChart.destroy();
-
-  trendChart = new Chart(ctx, {
-    type: "line",
-    data: { labels, datasets: [{ label:"AI postings (monthly)", data: values, borderWidth:2, pointRadius:2, tension:0.25 }] },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label:(c)=> `${c.parsed.y} postings` } } },
-      scales:{ y:{ beginAtZero:true, ticks:{ precision:0 } } }
-    }
-  });
-}
-function renderSkillsChart(labels, values){
-  const ctx = $("#skillsChart");
-  if(skillsChart) skillsChart.destroy();
-
-  skillsChart = new Chart(ctx, {
-    type:"bar",
-    data:{ labels, datasets:[{ label:"Mentions", data: values, borderWidth:1, borderRadius:10 }] },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      indexAxis:"y",
-      plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label:(c)=> `${c.parsed.x} mentions` } } },
-      scales:{ x:{ beginAtZero:true, ticks:{ precision:0 } }, y:{ ticks:{ font:{ weight:"800" } } } }
-    }
-  });
-}
-function renderEmployersChart(labels, values){
-  const ctx = $("#employersChart");
-  if(employersChart) employersChart.destroy();
-
-  employersChart = new Chart(ctx, {
-    type:"bar",
-    data:{ labels, datasets:[{ label:"AI postings (KY/OH)", data: values, borderWidth:1, borderRadius:10 }] },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      indexAxis:"y",
-      plugins:{ legend:{ display:false } },
-      scales:{ x:{ beginAtZero:true, ticks:{ precision:0 } }, y:{ ticks:{ font:{ weight:"800" } } } }
-    }
-  });
-}
-function renderSkillsKYOHChart(labels, values){
-  const ctx = $("#skillsKYOHChart");
-  if(skillsKYOHChart) skillsKYOHChart.destroy();
-
-  skillsKYOHChart = new Chart(ctx, {
-    type:"bar",
-    data:{ labels, datasets:[{ label:"Mentions (KY/OH)", data: values, borderWidth:1, borderRadius:10 }] },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      indexAxis:"y",
-      plugins:{ legend:{ display:false } },
-      scales:{ x:{ beginAtZero:true, ticks:{ precision:0 } }, y:{ ticks:{ font:{ weight:"800" } } } }
-    }
-  });
-}
-
-/*****************************************************************
- * LENS COMPUTATION (✅ adds verification counts)
- *****************************************************************/
-function computeLens(blended, aud){
-  const audFn = AUDIENCE_FILTERS[aud] || AUDIENCE_FILTERS.all;
-  const ai = blended.aiJobs.filter(audFn);
-  const base = blended.baseJobs.filter(audFn);
-
-  const aiSafe = ai.length ? ai : blended.aiJobs;
-  const baseSafe = base.length ? base : blended.baseJobs;
-
-  const share = aiSafe.length ? (aiSafe.filter(j => !!j.date).length / aiSafe.length) : 0;
-
-  const series14 = buildDailySeries(aiSafe, [], 14);
-  const deltaPts = (arr) => (arr && arr.length>=2) ? (arr[arr.length-1] - arr[0]) * 100 : 0;
-  const deltas = { sharePts: deltaPts(series14.aiShare) };
-
-  const quality = computeQuality(blended, aiSafe);
-
-  const sc = skillCounts(aiSafe);
-  const skillEntries = [...sc.entries()].sort((a,b)=>b[1]-a[1]).slice(0, 10);
-  const skillsTop = { labels: skillEntries.map(x=>x[0]), values: skillEntries.map(x=>x[1]) };
-
-  const trend = trendByMonth(aiSafe, 12);
-
-  const whereCounts = new Map();
-  for(const j of aiSafe){
-    const cat = normalizeCategoryDisplay(nkuExecCategory(j));
-    whereCounts.set(cat, (whereCounts.get(cat)||0) + 1);
-  }
-  let whereEntries = [...whereCounts.entries()].sort((a,b)=>b[1]-a[1]);
-  const top = whereEntries.slice(0, 8);
-  const rest = whereEntries.slice(8);
-  const restSum = rest.reduce((s, [,v])=>s+v, 0);
-  if(restSum > 0) top.push(["All others", restSum]);
-  const where = { labels: top.map(x=>x[0]), values: top.map(x=>x[1]), poolSize: aiSafe.length };
-
-  const mixUS = aiSafe.filter(j => j.source === "USAJOBS").length;
-  const mixAD = aiSafe.filter(j => j.source === "Adzuna").length;
-  const mixRM = aiSafe.filter(j => j.source === "Remotive").length;
-  const mixLI = aiSafe.filter(j => j.source === "LinkedIn").length;
-  const mix = { mixUS, mixAD, mixRM, mixLI };
-
-  const kyoh = aiSafe.filter(isOHKY);
-  const employerCounts = new Map();
-  for(const j of kyoh){
-    const c = asText(j.company).trim() || "Unknown";
-    employerCounts.set(c, (employerCounts.get(c)||0) + 1);
-  }
-  const topEmployers = [...employerCounts.entries()].sort((a,b)=>b[1]-a[1]).slice(0,10);
-  const kyohEmployers = { labels: topEmployers.map(x=>x[0]), values: topEmployers.map(x=>x[1]) };
-
-  const scKYOH = skillCounts(kyoh);
-  const topSkillsKYOH = [...scKYOH.entries()].sort((a,b)=>b[1]-a[1]).slice(0,10);
-  const skillsKYOH = { labels: topSkillsKYOH.map(x=>x[0]), values: topSkillsKYOH.map(x=>x[1]) };
-
-  // Raw total returned across sources (pre-dedupe, pre-lens)
-  const totalReturnedRaw = (blended.raw?.aiRaw || 0) + (blended.raw?.baseRaw || 0);
-
-  // ✅ Verification pools
-  const aiTotal = aiSafe.length;
-  const aiDated = aiSafe.filter(j => !!j.date).length;
-  const kyohTotal = kyoh.length;
-  const kyohDated = kyoh.filter(j => !!j.date).length;
-
-  return {
-    ai: aiSafe,
-    base: baseSafe,
-    share,
-    series14,
-    deltas,
-    quality,
-    skillsTop,
-    trend,
-    where,
-    mix,
-    kyohEmployers,
-    skillsKYOH,
-    totalReturnedRaw,
-    aiTotal,
-    aiDated,
-    kyohTotal,
-    kyohDated
-  };
-}
-
-function anyOk(val){
-  if(!val) return false;
-  if(Array.isArray(val)) return val.some(x => x && x.ok);
-  if(typeof val === "object") return !!val.ok || Object.values(val).some(anyOk);
-  return false;
-}
-function privateSourcesOk(debug){
-  if(!debug) return false;
-  // supports aiAD/aiRM/aiLI arrays, or nested objects
-  return anyOk(debug.aiAD) || anyOk(debug.aiRM) || anyOk(debug.aiLI)
-      || anyOk(debug.adzuna) || anyOk(debug.remotive) || anyOk(debug.linkedin)
-      || anyOk(debug.sources); // generic
-}
-  
-/*****************************************************************
- * RENDER
- *****************************************************************/
-function renderHeaderStatus(data){
-  const statusEl = $("#blendStatus");
-  const ok = privateSourcesOk(data.debug);
-
-  if(ok){
-    statusEl.textContent = "live (blended)";
-    statusEl.className = "live";
-  } else {
-    statusEl.textContent = "partial (public fallback)";
-    statusEl.className = "warn";
-  }
-
-  setText("#lastRefresh", new Date(data.fetchedAt).toLocaleString());
-  setText("#pagesUsed", String(data.pagesUsed || PAGES_PER_TERM));
-}
-
-/*****************************************************************
- * Explorer state + render
- *****************************************************************/
-let explorer = {
-  scope: "lens",     // lens | all | kyoh
-  search: "",
-  sort: "dateDesc",
-  page: 1,
-  pageSize: 25
-};
-
-function getExplorerPool(lens){
-  if(!blended || !lens) return [];
-  if(explorer.scope === "all") return blended.aiJobs;
-  if(explorer.scope === "kyoh") return lens.ai.filter(isOHKY);
-  return lens.ai; // lens
-}
-
-function compareStr(a,b){ return String(a||"").localeCompare(String(b||""), undefined, { sensitivity:"base" }); }
-
-function sortJobs(arr){
-  const s = explorer.sort;
-  const copy = [...arr];
-
-  const dateVal = (j) => {
-    if(!j.date) return null;
-    const t = new Date(j.date).getTime();
-    return Number.isNaN(t) ? null : t;
-  };
-
-  if(s === "dateAsc"){
-    copy.sort((x,y)=>{
-      const ax = dateVal(x), ay = dateVal(y);
-      if(ax == null && ay == null) return compareStr(x.title, y.title);
-      if(ax == null) return 1;
-      if(ay == null) return -1;
-      return ax - ay;
-    });
-  } else if(s === "dateDesc"){
-    copy.sort((x,y)=>{
-      const ax = dateVal(x), ay = dateVal(y);
-      if(ax == null && ay == null) return compareStr(x.title, y.title);
-      if(ax == null) return 1;
-      if(ay == null) return -1;
-      return ay - ax;
-    });
-  } else if(s === "companyAsc"){
-    copy.sort((x,y)=> compareStr(x.company, y.company) || compareStr(x.title, y.title));
-  } else if(s === "sourceAsc"){
-    copy.sort((x,y)=> compareStr(x.source, y.source) || compareStr(x.company, y.company) || compareStr(x.title, y.title));
-  } else {
-    copy.sort((x,y)=> compareStr(x.title, y.title));
-  }
-  return copy;
-}
-
-function filterJobs(arr){
-  const q = (explorer.search || "").trim().toLowerCase();
-  if(!q) return arr;
-  return arr.filter(j => {
-    const blob = `${asText(j.title)} ${asText(j.company)} ${asText(j.location)} ${asText(j.source)} ${asText(j.category)} ${asText(j.description)}`.toLowerCase();
-    return blob.includes(q);
-  });
-}
-
-function safeUrl(url){
-  const u = String(url||"").trim();
-  if(!u) return "";
-  if(/^https?:\/\//i.test(u)) return u;
-  return ""; // prevent opening javascript: or invalid
-}
-
-function renderExplorer(lens){
-  const tbody = $("#jobsTbody");
-  const meta = $("#jobMeta");
-  const pagerText = $("#jobPagerText");
-
-  if(!tbody || !meta || !pagerText) return;
-
-  const pool = getExplorerPool(lens);
-  const filtered = filterJobs(pool);
-  const sorted = sortJobs(filtered);
-
-  const total = sorted.length;
-  const pageSize = explorer.pageSize;
-  const totalPages = Math.max(1, Math.ceil(total / pageSize));
-  explorer.page = Math.max(1, Math.min(explorer.page, totalPages));
-
-  const start = (explorer.page - 1) * pageSize;
-  const slice = sorted.slice(start, start + pageSize);
-
-  const scopeLabel = explorer.scope === "all" ? "All AI postings" : (explorer.scope === "kyoh" ? "KY/OH subset" : "Current lens");
-  meta.textContent = `${scopeLabel} · ${total.toLocaleString()} matches`;
-
-  pagerText.textContent = total
-    ? `Showing ${Math.min(start+1,total).toLocaleString()}–${Math.min(start+pageSize,total).toLocaleString()} of ${total.toLocaleString()}`
-    : "No results (try clearing search).";
-
-  if(!slice.length){
-    tbody.innerHTML = `<tr><td colspan="5" class="mini">No results.</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = slice.map(j=>{
-    const date = formatDateShort(j.date);
-    const url = safeUrl(j.url);
-    const title = escapeHtml(asText(j.title) || "Untitled posting");
-    const company = escapeHtml(asText(j.company) || "Unknown");
-    const loc = escapeHtml(asText(j.location) || "—");
-    const src = escapeHtml(asText(j.source) || "—");
-    const cat = escapeHtml(normalizeCategoryDisplay(j.category || ""));
-    const hasUrl = !!url;
-
-    const link = hasUrl
-      ? `<a class="titleLink" href="${escapeHtml(url)}" target="_blank" rel="noopener">${title}</a>`
-      : `<span class="titleLink" style="cursor:not-allowed; opacity:.75;" title="No URL provided by source">${title}</span>`;
-
-    return `
-      <tr>
-        <td class="colDate">${escapeHtml(date)}</td>
-        <td>
-          ${link}
-          <div class="rowMeta">${escapeHtml(cat)}</div>
-        </td>
-        <td class="colCompany">${company}</td>
-        <td>${loc}</td>
-        <td class="colSource">${src}</td>
-      </tr>
-    `;
-  }).join("");
-}
-
-function openFirstExplorerResult(lens){
-  const pool = getExplorerPool(lens);
-  const filtered = filterJobs(pool);
-  const sorted = sortJobs(filtered);
-  const first = sorted[0];
-  const url = safeUrl(first?.url);
-  if(url) window.open(url, "_blank", "noopener");
-  else showHint("sampleSize");
-}
-
-/*****************************************************************
- * Main renderAll
- *****************************************************************/
-let _lastLens = null;
-function renderAll(){
-  if(!blended) return;
-  renderHeaderStatus(blended);
-
-  const lens = computeLens(blended, currentAudience);
-  _lastLens = lens;
-
-  animatePercent($("#kAiShare"), pct(lens.share));
-  setText("#kAiCount", lens.ai.length.toLocaleString());
-
-  // Total returned raw (pre-dedupe, pre-lens)
-  setText("#kTotalScanned", lens.totalReturnedRaw.toLocaleString());
-  setText("#kTotalTag", `AI raw ${ (blended.raw?.aiRaw||0).toLocaleString() } + base raw ${ (blended.raw?.baseRaw||0).toLocaleString() }`);
-
-  const t1 = $("#kAiShareDelta");
-  t1.textContent = `▲ ${lens.deltas.sharePts.toFixed(1)} pts`;
-  t1.className = "kpiTag " + tagForDelta(lens.deltas.sharePts).cls;
-
-  setText("#kSourceMix", `${lens.mix.mixUS} USAJOBS · ${lens.mix.mixAD} Adzuna · ${lens.mix.mixRM} Remotive · ${lens.mix.mixLI} LinkedIn`);
-
-  setText("#kQuality", lens.quality.label);
-  const qTag = $("#kQualityTag");
-  qTag.textContent = lens.quality.tag.text;
-  qTag.className = "kpiTag " + lens.quality.tag.cls;
-
-  $("#sparkAiShare").setAttribute("points", sparkPoints(lens.series14.aiShare));
-  $("#sparkAiCount").setAttribute("points", sparkPoints(lens.series14.aiCount));
-  $("#sparkTotal").setAttribute("points", sparkPoints(lens.series14.totalCount));
-  $("#sparkQuality").setAttribute("points", sparkPoints(lens.quality.series));
-
-  renderSkillsChart(lens.skillsTop.labels, lens.skillsTop.values);
-  renderTrendChart(lens.trend.labels, lens.trend.values);
-  renderWhereJobsChart(lens.where.labels, lens.where.values);
-  renderEmployersChart(lens.kyohEmployers.labels, lens.kyohEmployers.values);
-  renderSkillsKYOHChart(lens.skillsKYOH.labels, lens.skillsKYOH.values);
-
-  // ✅ Explorer (dates + clickable postings)
-  renderExplorer(lens);
-}
-
-/*****************************************************************
- * DRAWER
- *****************************************************************/
-function openDrawer(payload){
-  $("#drawerTitle").textContent = payload.title;
-  $("#drawerSubtitle").textContent = payload.subtitle;
-  $("#drawerBody").innerHTML = payload.html;
-  $("#drawer").classList.add("open");
-}
-function closeDrawer(){ $("#drawer").classList.remove("open"); }
-
-function showMethods(){
-  const dbg = blended?.debug || {};
-  const audLabel = ({ all:"All programs", business:"Business", informatics:"Informatics", health:"Health" }[currentAudience] || "All programs");
-
-  const lens = blended ? computeLens(blended, currentAudience) : null;
-  const dateCoverage = lens ? (lens.quality.dateCoverage*100).toFixed(1) + "%" : "—";
-  const dedupRate = lens ? (lens.quality.dedupRate*100).toFixed(1) + "%" : "—";
-  const privateOk = lens ? (lens.quality.anyPrivateOk ? "Yes" : "No") : "—";
-
-  const aiTotal = lens?.aiTotal ?? 0;
-  const aiDated = lens?.aiDated ?? 0;
-  const kyohTotal = lens?.kyohTotal ?? 0;
-  const kyohDated = lens?.kyohDated ?? 0;
-
-  openDrawer({
-    title: "Methods & Sources (Academic Detail)",
-    subtitle: `Lens: ${audLabel} · Pages/term: ${PAGES_PER_TERM} · Per page: ${RESULTS_PER_PAGE} · LinkedIn pages: ${LINKEDIN_PAGES_PER_TERM}`,
-    html: `
-      <div class="section">
-        <strong>What “blended live” means</strong>
-        <ul>
-          <li><strong>USAJOBS</strong> (public anchor)</li>
-          <li><strong>Adzuna</strong> (private-sector breadth)</li>
-          <li><strong>Remotive</strong> (remote-first breadth)</li>
-          <li><strong>LinkedIn</strong> (via Cloudflare Worker route <code>/linkedin</code>)</li>
-        </ul>
-        <p>We dedupe across sources to reduce double-counting.</p>
-      </div>
-
-      <div class="section">
-        <strong>Chart pool verification (why counts differ)</strong>
-        <ul>
-          <li><strong>AI pool used by KPI/Skills/Where:</strong> ${aiTotal.toLocaleString()}</li>
-          <li><strong>AI with usable dates (Trend input):</strong> ${aiDated.toLocaleString()}</li>
-          <li><strong>KY/OH subset (KY/OH charts input):</strong> ${kyohTotal.toLocaleString()}</li>
-          <li><strong>KY/OH with usable dates:</strong> ${kyohDated.toLocaleString()}</li>
-        </ul>
-        <p class="muted">Trend and KY/OH charts intentionally use subsets of the AI pool.</p>
-      </div>
-
-      <div class="section">
-        <strong>Data quality diagnostics</strong>
-        <ul>
-          <li><strong>Private-sector sources available:</strong> ${escapeHtml(privateOk)}</li>
-          <li><strong>Date coverage (AI lens):</strong> ${escapeHtml(dateCoverage)}</li>
-          <li><strong>Dedup strength (AI):</strong> ${escapeHtml(dedupRate)}</li>
-        </ul>
-      </div>
-
-      <div class="section">
-        <strong>Skill map (transparent)</strong>
-        <pre>${escapeHtml(JSON.stringify(SKILLS, null, 2))}</pre>
-      </div>
-
-      <div class="section">
-        <strong>Debug (last fetch)</strong>
-        <pre>${escapeHtml(JSON.stringify(dbg, null, 2))}</pre>
-      </div>
-    `
-  });
-}
-
-function showReadingGuide(){
-  openDrawer({
-    title: "How to use this in a dean/chair/director conversation",
-    subtitle: "A short, upbeat script + interpretation tips",
-    html: `
-      <div class="section">
-        <strong>Suggested 60-second walkthrough (positive)</strong>
-        <ul>
-          <li><strong>AI-signal share:</strong> “AI language is becoming normal in postings—NKU can lead with responsible literacy.”</li>
-          <li><strong>Sample size:</strong> “This is deduped across USAJOBS, Adzuna, Remotive, and LinkedIn for stronger evidence.”</li>
-          <li><strong>Top skills:</strong> “These mentions tell us which modules students need most—prompting, verification, ethics, privacy.”</li>
-          <li><strong>KY/OH focus:</strong> “These employers and skills help target regional partnerships and internships.”</li>
-          <li><strong>Where the jobs are:</strong> “AI isn’t just computing—this distribution shows cross-college relevance.”</li>
-          <li><strong>Explorer:</strong> “Here are the actual postings—click to open and spot-check dates and language.”</li>
-        </ul>
-      </div>
-    `
-  });
-}
-
-function showTrendNotes(){
-  openDrawer({
-    title: "Trend notes",
-    subtitle: "How the trend chart is built (and how to interpret it)",
-    html: `
-      <div class="section">
-        <strong>What you’re seeing</strong>
-        <p>Monthly counts of AI-matched postings within the selected lens. It uses postings with usable publish dates.</p>
-        <p class="muted">If many postings have missing dates, trend will undercount compared with the KPI.</p>
-      </div>
-    `
-  });
-}
-function showSkillNotes(){
-  openDrawer({
-    title: "Skill map notes",
-    subtitle: "Why this supports AI Literacy (in a positive way)",
-    html: `
-      <div class="section">
-        <strong>Why a transparent skill map</strong>
-        <p>For academic settings, transparency matters. The map is explicit and editable—use it to align with NKU outcomes and course design.</p>
-        <p class="muted">Counts are mentions, not endorsements, and one posting can include multiple skills.</p>
-      </div>
-    `
-  });
-}
-function showKYOHNotes(){
-  openDrawer({
-    title: "KY/OH focus notes",
-    subtitle: "How we interpret Kentucky/Ohio signals",
-    html: `
-      <div class="section">
-        <strong>What counts as KY/OH</strong>
-        <p>We detect location tokens in the posting location/title (e.g., Ohio, KY, Cincinnati, Covington, Louisville, Lexington).</p>
-        <p class="muted">Remote/US-wide postings may not contain these tokens; KY/OH charts can be much smaller than the AI sample.</p>
-      </div>
-    `
-  });
-}
-function showJobCategoriesHelp(){
-  openDrawer({
-    title: "Job categories",
-    subtitle: "How the 'Where the Jobs Are' chart is built",
-    html: `
-      <div class="section">
-        <strong>Executive taxonomy (stable)</strong>
-        <p>We map each posting into a stable NKU-friendly taxonomy (AI/ML, Data, DevOps/Cloud, etc.).</p>
-      </div>
-    `
-  });
-}
-function showExplorerHelp(){
-  openDrawer({
-    title: "Explorer help",
-    subtitle: "How to use postings + dates",
-    html: `
-      <div class="section">
-        <strong>What you can do</strong>
-        <ul>
-          <li><strong>Click a posting title</strong> to open the original source in a new tab.</li>
-          <li><strong>Date column</strong> shows publish/created date if provided by that source.</li>
-          <li><strong>Scope</strong> lets you view current lens vs all AI vs KY/OH subset.</li>
-          <li><strong>Search</strong> filters across title/company/location/source/category/description.</li>
-        </ul>
-        <p class="muted">Some sources do not provide a reliable date or URL for every item; those display as “—” or non-clickable titles.</p>
-      </div>
-    `
-  });
-}
-
-function showHint(which){
-  const hints = {
-    aiShare: {
-      title:"AI postings with usable dates",
-      body:`<p>Dated AI postings ÷ AI postings (lens)</p>`
-    },
-    sampleSize: {
-      title:"AI postings (sample)",
-      body:`<p>This is the number of deduped AI postings in the current lens. Use the Explorer below to spot-check actual postings.</p>`
-    },
-    totalScanned: {
-      title:"Total returned (raw, pre-filter)",
-      body:`<p>This is the total number of postings returned by upstream APIs across sources <strong>before</strong> dedupe and lens KPIs.</p>`
-    },
-    quality: {
-      title:"Data quality",
-      body:`<p>We combine private-source success + date coverage + dedup strength into a plain-language label.</p>`
-    }
-  };
-  const h = hints[which];
-  if(!h) return;
-  openDrawer({ title: h.title, subtitle: "Definition & interpretation", html: `<div class="section">${h.body}</div>` });
-}
-
-/*****************************************************************
- * BOOT
- *****************************************************************/
-async function init(){
-  $("#drawerClose").addEventListener("click", closeDrawer);
-  document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeDrawer(); });
-
-  $("#openMethods").addEventListener("click", showMethods);
-  $("#tabMethods").addEventListener("click", showMethods);
-  $("#tabOverview").addEventListener("click", ()=>{
-    $("#tabOverview").classList.add("active");
-    $("#tabMethods").classList.remove("active");
-    closeDrawer();
-  });
-  $("#tabPrint").addEventListener("click", ()=> window.print());
-
-  $("#openReadingGuide").addEventListener("click", showReadingGuide);
-  $("#openTrendNotes").addEventListener("click", showTrendNotes);
-  $("#openSkillNotes").addEventListener("click", showSkillNotes);
-  $("#openKYOHNotes").addEventListener("click", showKYOHNotes);
-  $("#openKYOHNotes2").addEventListener("click", showKYOHNotes);
-  $("#openJobCats").addEventListener("click", showJobCategoriesHelp);
-  $("#openExplorerHelp").addEventListener("click", showExplorerHelp);
-
-  $$(".hint").forEach(h=> h.addEventListener("click", ()=> showHint(h.dataset.hint)));
-
-  $("#forceRefresh").addEventListener("click", ()=>{
-    clearCache();
-    location.reload();
-  });
-
-  $$("#audienceToggle button").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      currentAudience = btn.dataset.aud || "all";
-      $$("#audienceToggle button").forEach(b=> b.setAttribute("aria-pressed", b.dataset.aud === currentAudience ? "true" : "false"));
-      renderAll();
-    });
-  });
-
-  // Explorer bindings
-  const jobSearch = $("#jobSearch");
-  const jobScope = $("#jobScope");
-  const jobSort = $("#jobSort");
-  const jobPageSize = $("#jobPageSize");
-  const jobPrev = $("#jobPrev");
-  const jobNext = $("#jobNext");
-  const jobOpenFirst = $("#jobOpenFirst");
-
-  function rerenderExplorer(){
-    if(!_lastLens) return;
-    renderExplorer(_lastLens);
-  }
-
-  jobSearch.addEventListener("input", ()=>{
-    explorer.search = jobSearch.value || "";
-    explorer.page = 1;
-    rerenderExplorer();
-  });
-
-  jobScope.addEventListener("change", ()=>{
-    explorer.scope = jobScope.value;
-    explorer.page = 1;
-    rerenderExplorer();
-  });
-
-  jobSort.addEventListener("change", ()=>{
-    explorer.sort = jobSort.value;
-    explorer.page = 1;
-    rerenderExplorer();
-  });
-
-  jobPageSize.addEventListener("change", ()=>{
-    explorer.pageSize = parseInt(jobPageSize.value, 10) || 25;
-    explorer.page = 1;
-    rerenderExplorer();
-  });
-
-  jobPrev.addEventListener("click", ()=>{
-    explorer.page = Math.max(1, explorer.page - 1);
-    rerenderExplorer();
-  });
-
-  jobNext.addEventListener("click", ()=>{
-    explorer.page = explorer.page + 1;
-    rerenderExplorer();
-  });
-
-  jobOpenFirst.addEventListener("click", ()=>{
-    if(!_lastLens) return;
-    openFirstExplorerResult(_lastLens);
-  });
-
-  // Keyboard shortcut: "/" focuses search
-  document.addEventListener("keydown", (e)=>{
-    if(e.key === "/" && document.activeElement !== jobSearch){
-      e.preventDefault();
-      jobSearch.focus();
-    }
-  });
-
-  const shimmer = (w,h)=>`<span class="skel" style="width:${w}px;height:${h}px;"></span>`;
-  $("#kAiShare").innerHTML = shimmer(90,28);
-  $("#kAiCount").innerHTML = shimmer(70,28);
-  $("#kTotalScanned").innerHTML = shimmer(90,28);
-  $("#kQuality").innerHTML = shimmer(70,22);
-  $("#jobsTbody").innerHTML = `<tr><td colspan="5" class="mini">Loading…</td></tr>`;
-
-  try{
-    blended = await fetchBlend();
-    renderAll();
-  }catch(err){
-    console.error(err);
-    const statusEl = $("#blendStatus");
-    statusEl.textContent = "error";
-    statusEl.className = "bad";
-    openDrawer({
-      title: "Data fetch error",
-      subtitle: "The dashboard could not load market data.",
-      html: `
-        <div class="section">
-          <strong>What to try</strong>
-          <ul>
-            <li>Verify Worker is live: <code>${escapeHtml(PROXY_BASE)}</code></li>
-            <li>Verify LinkedIn route exists: <code>${escapeHtml(PROXY_BASE)}/linkedin</code></li>
-            <li>Click <strong>Force refresh</strong> to clear cache.</li>
-            <li>If you see rate limits, reduce LinkedIn pages or terms.</li>
-          </ul>
-          <pre>${escapeHtml(String(err))}</pre>
-        </div>
-      `
-    });
-    $("#jobsTbody").innerHTML = `<tr><td colspan="5" class="mini">Could not load postings.</td></tr>`;
-  }
-}
-
-init();
-</script>
-</body>
-</html>
+    // ===== SKILL MAP =====
+    const SKILLS = [
+      { skill:"AI tools (Copilot/ChatGPT)", keys:["copilot","chatgpt","assistant"] },
+      { skill:"Prompting & workflow design", keys:["prompt","prompting","agent","agentic","workflow","orchestration"] },
+      { skill:"LLM apps (RAG + vector)", keys:["rag","retrieval","vector","embedding","langchain","prompt engineering"] },
+      { skill:"Responsible AI / ethics", keys:["responsible ai","ethics","fairness","bias","governance","policy","compliance"] },
+      { skill:"AI evaluation & testing", keys:["evaluation","testing","red team","red-team","benchmark","validation","monitoring","model risk"] },
+      { skill:"Privacy", keys:["privacy","pii","phi","gdpr","hipaa","data protection"] },
+      { skill:"Security", keys:["security","secure","infosec","soc","zero trust","iam","identity","access","vulnerability","threat"] },
+      { skill:"SQL / BI dashboards", keys:["sql","power bi","tableau","dashboard","analytics","reporting"] },
+      { skill:"Data engineering", keys:["data engineer","pipeline","warehouse","lakehouse","spark","dbt"] },
+      { skill:"Python", keys:["python","scripting","etl"] },
+      { skill:"Cloud platforms", keys:["aws","azure","gcp","cloud","kubernetes","docker"] },
+      { skill:"Process improvement / automation", keys:["process improvement","automation","workflow","rpa","lean","six sigma","kaizen"] },
+    ];
+
+    // ===== DOM UTILS =====
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+    function setText(sel,
